@@ -1,0 +1,102 @@
+/* Reset básico para limpar margens padrões */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilização da Barra de Navegação */
+.navbar {
+    background-color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+}
+
+.logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+/* Efeito ao passar o mouse */
+.nav-links a:hover {
+    color: #ff9800;
+}
+
+/* Destaque para a página atual */
+.nav-links a.active {
+    border-bottom: 2px solid #ff9800;
+    padding-bottom: 5px;
+}
+
+/* Garante que o corpo da página ocupe a tela toda */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f7f6; /* Um cinza bem claro, mais elegante que o branco puro */
+    color: #333;
+}
+
+/* Centralização do conteúdo principal */
+main {
+    flex: 1; /* Faz o main ocupar todo o espaço entre o menu e o rodapé */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center;     /* Centraliza horizontalmente */
+    text-align: center;
+    padding: 20px;
+}
+
+/* Estilização dos textos para ficarem "bonitos" */
+main h1 {
+    font-size: 3rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+main p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px; /* Evita que o texto fique muito largo em telas grandes */
+    line-height: 1.6;
+}
+
+/* Adicionando um botão de chamada (opcional, mas fica profissional) */
+.btn-principal {
+    margin-top: 30px;
+    padding: 12px 30px;
+    background-color: #ff9800;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-principal:hover {
+    background-color: #e68a00;
+    transform: scale(1.05); /* Efeito de aumentar levemente ao passar o mouse */
+}
