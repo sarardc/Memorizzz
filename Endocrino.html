@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapas Mentais — Endocrinologia & Diabetes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111624;
+    --surface2: #171d2e;
+    --border: #1e2840;
+    --text: #d8e0f0;
+    --muted: #5a6a8a;
+    --accent1: #e8a045; /* amber — fisiologia */
+    --accent2: #4fc3a1; /* teal — definição */
+    --accent3: #7c9ef5; /* blue — tratamento */
+    --accent4: #e0657a; /* rose — complicações */
+    --accent5: #b38cf5; /* violet — pé diabético */
+    --glow1: rgba(232,160,69,0.12);
+    --glow2: rgba(79,195,161,0.12);
+    --glow3: rgba(124,158,245,0.12);
+    --glow4: rgba(224,101,122,0.12);
+    --glow5: rgba(179,140,245,0.12);
+    --radius: 14px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,158,245,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 90%, rgba(179,140,245,0.04) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: sticky; top:0; z-index:100;
+    background: rgba(10,14,23,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .logo span {
+    color: var(--accent3);
+  }
+
+  /* Nav tabs */
+  nav {
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex: 1;
+  }
+
+  nav::-webkit-scrollbar { display:none; }
+
+  .tab-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--muted);
+    white-space: nowrap;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tab-btn .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    opacity: 0.6;
+  }
+
+  .tab-btn[data-part="1"]:hover, .tab-btn[data-part="1"].active {
+    background: var(--glow1); border-color: var(--accent1); color: var(--accent1);
+  }
+  .tab-btn[data-part="2"]:hover, .tab-btn[data-part="2"].active {
+    background: var(--glow2); border-color: var(--accent2); color: var(--accent2);
+  }
+  .tab-btn[data-part="3"]:hover, .tab-btn[data-part="3"].active {
+    background: var(--glow3); border-color: var(--accent3); color: var(--accent3);
+  }
+  .tab-btn[data-part="4"]:hover, .tab-btn[data-part="4"].active {
+    background: var(--glow4); border-color: var(--accent4); color: var(--accent4);
+  }
+  .tab-btn[data-part="5"]:hover, .tab-btn[data-part="5"].active {
+    background: var(--glow5); border-color: var(--accent5); color: var(--accent5);
+  }
+
+  /* ===== PAGES ===== */
+  .page { display:none; position:relative; z-index:1; }
+  .page.active { display:block; }
+
+  .page-hero {
+    padding: 3.5rem 2rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .hero-sub {
+    font-size: 0.92rem;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* ===== GRID LAYOUT ===== */
+  .content-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+  .section-gap { margin-top: 2rem; }
+
+  @media (max-width: 1000px) {
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .col-span-3 { grid-column: span 2; }
+  }
+  @media (max-width: 700px) {
+    .grid-2, .grid-3, .grid-auto { grid-template-columns: 1fr; }
+    .col-span-2, .col-span-3 { grid-column: span 1; }
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Color variants */
+  .card-amber { border-color: rgba(232,160,69,0.3); }
+  .card-amber::before { background: var(--glow1); }
+  .card-amber:hover { box-shadow: 0 8px 32px rgba(232,160,69,0.1); }
+
+  .card-teal { border-color: rgba(79,195,161,0.3); }
+  .card-teal::before { background: var(--glow2); }
+  .card-teal:hover { box-shadow: 0 8px 32px rgba(79,195,161,0.1); }
+
+  .card-blue { border-color: rgba(124,158,245,0.3); }
+  .card-blue::before { background: var(--glow3); }
+  .card-blue:hover { box-shadow: 0 8px 32px rgba(124,158,245,0.1); }
+
+  .card-rose { border-color: rgba(224,101,122,0.3); }
+  .card-rose::before { background: var(--glow4); }
+  .card-rose:hover { box-shadow: 0 8px 32px rgba(224,101,122,0.1); }
+
+  .card-violet { border-color: rgba(179,140,245,0.3); }
+  .card-violet::before { background: var(--glow5); }
+  .card-violet:hover { box-shadow: 0 8px 32px rgba(179,140,245,0.1); }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* ===== CARD ELEMENTS ===== */
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-title .icon {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .icon-amber { background: rgba(232,160,69,0.2); color: var(--accent1); }
+  .icon-teal  { background: rgba(79,195,161,0.2); color: var(--accent2); }
+  .icon-blue  { background: rgba(124,158,245,0.2); color: var(--accent3); }
+  .icon-rose  { background: rgba(224,101,122,0.2); color: var(--accent4); }
+  .icon-violet{ background: rgba(179,140,245,0.2); color: var(--accent5); }
+
+  .badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-amber { background: rgba(232,160,69,0.15); color: var(--accent1); border: 1px solid rgba(232,160,69,0.25); }
+  .badge-teal  { background: rgba(79,195,161,0.15); color: var(--accent2); border: 1px solid rgba(79,195,161,0.25); }
+  .badge-blue  { background: rgba(124,158,245,0.15); color: var(--accent3); border: 1px solid rgba(124,158,245,0.25); }
+  .badge-rose  { background: rgba(224,101,122,0.15); color: var(--accent4); border: 1px solid rgba(224,101,122,0.25); }
+  .badge-violet{ background: rgba(179,140,245,0.15); color: var(--accent5); border: 1px solid rgba(179,140,245,0.25); }
+  .badge-warn  { background: rgba(255,190,50,0.15); color: #ffbe32; border: 1px solid rgba(255,190,50,0.25); }
+  .badge-danger{ background: rgba(255,80,80,0.15); color: #ff6060; border: 1px solid rgba(255,80,80,0.25); }
+  .badge-ok    { background: rgba(80,220,130,0.15); color: #50dc82; border: 1px solid rgba(80,220,130,0.25); }
+
+  /* Items list */
+  .items { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+
+  .items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #c0cce4;
+  }
+
+  .items li::before {
+    content: '›';
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 0.05em;
+  }
+
+  .c-amber li::before { color: var(--accent1); }
+  .c-teal  li::before { color: var(--accent2); }
+  .c-blue  li::before { color: var(--accent3); }
+  .c-rose  li::before { color: var(--accent4); }
+  .c-violet li::before { color: var(--accent5); }
+
+  .items li strong { color: var(--text); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.8rem; }
+  .items li em { color: var(--muted); font-style: italic; }
+
+  /* KV rows */
+  .kv { display: flex; flex-direction: column; gap: 0.55rem; }
+  .kv-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .kv-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .kv-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    min-width: 90px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kv-val { color: #cdd8f0; line-height: 1.55; }
+  .kv-val strong { color: var(--text); }
+
+  /* Table */
+  .mini-table { width:100%; border-collapse: collapse; font-size: 0.8rem; }
+  .mini-table th {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.45rem 0.6rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .mini-table td {
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #c0cce4;
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  .mini-table tr:last-child td { border-bottom: none; }
+  .mini-table td strong { color: var(--text); font-weight: 600; }
+
+  /* Alert box */
+  .alert-box {
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .alert-amber { background: rgba(232,160,69,0.08); border: 1px solid rgba(232,160,69,0.2); color: #e8c080; }
+  .alert-teal  { background: rgba(79,195,161,0.08); border: 1px solid rgba(79,195,161,0.2); color: #70d4b8; }
+  .alert-blue  { background: rgba(124,158,245,0.08); border: 1px solid rgba(124,158,245,0.2); color: #9ab5f5; }
+  .alert-rose  { background: rgba(224,101,122,0.08); border: 1px solid rgba(224,101,122,0.2); color: #e8909e; }
+  .alert-violet{ background: rgba(179,140,245,0.08); border: 1px solid rgba(179,140,245,0.2); color: #c8a8f5; }
+  .alert-danger{ background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.2); color: #ff8080; }
+  .alert-warn  { background: rgba(255,190,50,0.08); border: 1px solid rgba(255,190,50,0.2); color: #ffd070; }
+  .alert-ok    { background: rgba(80,220,130,0.08); border: 1px solid rgba(80,220,130,0.2); color: #70e898; }
+
+  .alert-icon { font-size: 1rem; flex-shrink:0; margin-top:0.05em; }
+  .alert-text strong { color: currentColor; font-family: 'Syne',sans-serif; font-weight:700; }
+
+  /* Timeline / flow */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-step {
+    display: flex;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    position: relative;
+  }
+  .flow-step:last-child { padding-bottom: 0; }
+  .flow-step::before {
+    content: '';
+    position: absolute;
+    left: 11px; top: 22px;
+    width: 1px; bottom: 0;
+    background: var(--border);
+  }
+  .flow-step:last-child::before { display: none; }
+  .flow-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 0.1em;
+    z-index: 1;
+  }
+  .dot-amber { background: rgba(232,160,69,0.2); color: var(--accent1); border: 1px solid rgba(232,160,69,0.4); }
+  .dot-teal  { background: rgba(79,195,161,0.2); color: var(--accent2); border: 1px solid rgba(79,195,161,0.4); }
+  .dot-blue  { background: rgba(124,158,245,0.2); color: var(--accent3); border: 1px solid rgba(124,158,245,0.4); }
+  .dot-rose  { background: rgba(224,101,122,0.2); color: var(--accent4); border: 1px solid rgba(224,101,122,0.4); }
+  .dot-violet{ background: rgba(179,140,245,0.2); color: var(--accent5); border: 1px solid rgba(179,140,245,0.4); }
+  .flow-content { flex: 1; }
+  .flow-title { font-family: 'Syne',sans-serif; font-weight:600; font-size:0.8rem; margin-bottom:0.25rem; color: var(--text); }
+  .flow-desc { font-size:0.8rem; color:#a0b0cc; line-height:1.55; }
+
+  /* Section divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 2rem 0;
+  }
+
+  /* Prova highlight */
+  .prova-section {
+    margin-top: 2rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .prova-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .prova-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.6rem;
+  }
+  .prova-item {
+    font-size: 0.79rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    line-height: 1.5;
+    color: #c0cce4;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .prova-item::before { content: '✦'; font-size: 0.55rem; flex-shrink:0; margin-top:0.25em; }
+  .pi-amber { background: rgba(232,160,69,0.07); }
+  .pi-amber::before { color: var(--accent1); }
+  .pi-teal  { background: rgba(79,195,161,0.07); }
+  .pi-teal::before  { color: var(--accent2); }
+  .pi-blue  { background: rgba(124,158,245,0.07); }
+  .pi-blue::before  { color: var(--accent3); }
+  .pi-rose  { background: rgba(224,101,122,0.07); }
+  .pi-rose::before  { color: var(--accent4); }
+  .pi-violet{ background: rgba(179,140,245,0.07); }
+  .pi-violet::before{ color: var(--accent5); }
+
+  /* Column divider for two-column text */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width:600px) { .two-col { grid-template-columns:1fr; } }
+
+  .sub-section { margin-top:0.9rem; }
+  .sub-label {
+    font-family: 'DM Mono',monospace;
+    font-size:0.65rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    margin-bottom:0.45rem;
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .page.active .card { animation: fadeUp 0.35s ease both; }
+  .page.active .card:nth-child(2) { animation-delay:0.05s; }
+  .page.active .card:nth-child(3) { animation-delay:0.1s; }
+  .page.active .card:nth-child(4) { animation-delay:0.15s; }
+  .page.active .card:nth-child(5) { animation-delay:0.2s; }
+  .page.active .card:nth-child(6) { animation-delay:0.25s; }
+  .page.active .card:nth-child(7) { animation-delay:0.3s; }
+
+  .text-sm { font-size: 0.8rem; color: #a0b0cc; line-height: 1.6; }
+  .mt-xs { margin-top: 0.5rem; }
+  .mt-sm { margin-top: 0.75rem; }
+  .mt-md { margin-top: 1rem; }
+
+  .row { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-top:0.5rem; }
+
+  /* Highlight span */
+  .hl { font-weight:600; }
+  .hl-amber { color: var(--accent1); font-family:'DM Mono',monospace; font-size:0.85em; }
+  .hl-teal  { color: var(--accent2); font-family:'DM Mono',monospace; font-size:0.85em; }
+  .hl-blue  { color: var(--accent3); font-family:'DM Mono',monospace; font-size:0.85em; }
+  .hl-rose  { color: var(--accent4); font-family:'DM Mono',monospace; font-size:0.85em; }
+  .hl-violet{ color: var(--accent5); font-family:'DM Mono',monospace; font-size:0.85em; }
+
+  p.text-sm + p.text-sm { margin-top: 0.4rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+     <a href="index.html" class="active">Página principal</a>
+    <div class="logo">Ana Sara · <span>Endócrino</span></div>
+    <nav id="nav">
+      <button class="tab-btn active" data-part="1" onclick="setTab(1)">
+        <span class="num">P1</span> Fisiologia Endócrina
+      </button>
+      <button class="tab-btn" data-part="2" onclick="setTab(2)">
+        <span class="num">P2</span> Definição &amp; Diagnóstico
+      </button>
+      <button class="tab-btn" data-part="3" onclick="setTab(3)">
+        <span class="num">P3</span> Tratamento DM2
+      </button>
+      <button class="tab-btn" data-part="4" onclick="setTab(4)">
+        <span class="num">P4</span> Complicações
+      </button>
+      <button class="tab-btn" data-part="5" onclick="setTab(5)">
+        <span class="num">P5</span> Pé Diabético
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     PARTE 1 — FISIOLOGIA ENDÓCRINA
+═══════════════════════════════════════════════ -->
+<div class="page active" id="page-1">
+  <div class="page-hero">
+    <p class="hero-label" style="color:var(--accent1)">Parte 1</p>
+    <h1 class="hero-title" style="color:var(--accent1)">Fisiologia Endócrina</h1>
+    <p class="hero-sub">Sistema de regulação hormonal, eixos hipotálamo-hipófise, feedback e princípios da endocrinologia clínica.</p>
+  </div>
+
+  <div class="content-wrap">
+    <div class="grid-3">
+
+      <!-- Conceito -->
+      <div class="card card-amber">
+        <div class="card-title"><span class="icon icon-amber">⚗</span> Endocrinologia</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Definição</span><span class="kv-val">Especialidade dedicada às glândulas endócrinas e sua secreção</span></div>
+          <div class="kv-row"><span class="kv-key">Hormônios</span><span class="kv-val">Liberados na circulação → efeito em tecidos-alvo distantes</span></div>
+          <div class="kv-row"><span class="kv-key">Regulação</span><span class="kv-val">Eixo hipotálamo → hipófise → glândula-alvo via feedback</span></div>
+        </div>
+        <div class="alert-box alert-amber mt-md">
+          <span class="alert-icon">💡</span>
+          <span class="alert-text"><strong>Pense assim:</strong> Hipotálamo = CEO, Hipófise = gerente regional, glândulas periféricas = operações</span>
+        </div>
+      </div>
+
+      <!-- Principais glândulas -->
+      <div class="card card-amber">
+        <div class="card-title"><span class="icon icon-amber">🏛</span> Glândulas Endócrinas</div>
+        <ul class="items c-amber">
+          <li><strong>Hipotálamo</strong> — hormônios de liberação e inibição (MANDACHUVAS)</li>
+          <li><strong>Adenohipófise</strong> — GH, TSH, FSH, LH, ACTH, prolactina</li>
+          <li><strong>Neuro-hipófise</strong> — ADH, ocitocina (armazenamento)</li>
+          <li><strong>Tireoide</strong> — T3, T4, calcitonina</li>
+          <li><strong>Paratireoide</strong> — PTH (↑Ca, ↓P)</li>
+          <li><strong>Pâncreas</strong> — insulina, glucagon, somatostatina</li>
+          <li><strong>Adrenal</strong> — cortisol, aldosterona, catecolaminas</li>
+          <li><strong>Gônadas</strong> — estrogênio, progesterona, testosterona</li>
+        </ul>
+      </div>
+
+      <!-- Receptores hormonais -->
+      <div class="card card-amber">
+        <div class="card-title"><span class="icon icon-amber">🔐</span> Receptores Hormonais</div>
+        <div class="sub-section">
+          <p class="sub-label">Receptores de membrana (hidrossolúveis)</p>
+          <ul class="items c-amber">
+            <li>Catecolaminas, peptídeos, glicoproteínas</li>
+            <li>Segundos mensageiros: AMPc, GMPc, IP3, DAG</li>
+            <li>Proteínas G, tirosina quinase</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Receptores intracelulares (lipossolúveis)</p>
+          <ul class="items c-amber">
+            <li>Esteroides, tireoidianos, vitamina D</li>
+            <li>Ligam-se ao DNA → regulação gênica direta</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Eixo Hipotálamo-Hipófise -->
+      <div class="card card-amber col-span-2">
+        <div class="card-title"><span class="icon icon-amber">🧠</span> Eixo Hipotálamo–Hipófise–Glândulas Periféricas</div>
+        <div class="grid-2" style="gap:1rem">
+          <div>
+            <p class="sub-label">Hipotálamo → Hipófise (fatores de liberação)</p>
+            <ul class="items c-amber">
+              <li><strong>TRH</strong> → libera TSH e prolactina</li>
+              <li><strong>GnRH</strong> → libera FSH e LH</li>
+              <li><strong>GHRH</strong> → libera GH; <strong>Somatostatina</strong> → inibe GH e TSH</li>
+              <li><strong>CRH</strong> → libera ACTH</li>
+              <li><strong>Dopamina</strong> → inibe prolactina</li>
+            </ul>
+          </div>
+          <div>
+            <p class="sub-label">Feedback Negativo (principal regulador)</p>
+            <div class="flow">
+              <div class="flow-step">
+                <div class="flow-dot dot-amber">1</div>
+                <div class="flow-content">
+                  <div class="flow-title">Hipotálamo libera hormônio</div>
+                  <div class="flow-desc">Ex: TRH estimula hipófise</div>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-dot dot-amber">2</div>
+                <div class="flow-content">
+                  <div class="flow-title">Hipófise libera trofinina</div>
+                  <div class="flow-desc">Ex: TSH estimula tireoide</div>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-dot dot-amber">3</div>
+                <div class="flow-content">
+                  <div class="flow-title">Glândula produz hormônio</div>
+                  <div class="flow-desc">Ex: T4 livre</div>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-dot dot-amber">4</div>
+                <div class="flow-content">
+                  <div class="flow-title">Feedback inibitório</div>
+                  <div class="flow-desc">T4↑ → TSH↓, TRH↓</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interpretação tireoidiana -->
+      <div class="card card-amber">
+        <div class="card-title"><span class="icon icon-amber">🦋</span> Interpretação Tireoidiana</div>
+        <table class="mini-table">
+          <thead>
+            <tr><th>Condição</th><th>T4 Livre</th><th>TSH</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Hiperti. Primário</strong></td><td><span class="badge badge-danger">↑ Alto</span></td><td><span class="badge badge-ok">↓ Baixo</span></td></tr>
+            <tr><td><strong>Hiperti. Central</strong></td><td><span class="badge badge-danger">↑ Alto</span></td><td><span class="badge badge-danger">↑ Alto</span></td></tr>
+            <tr><td><strong>Hipoti. Primário</strong></td><td><span class="badge badge-ok">↓ Baixo</span></td><td><span class="badge badge-danger">↑ Alto</span></td></tr>
+            <tr><td><strong>Hipoti. Central</strong></td><td><span class="badge badge-ok">↓ Baixo</span></td><td><span class="badge badge-ok">↓ Baixo</span></td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-warn mt-md">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-text"><strong>Regra:</strong> Causa primária → feedback exacerba o TSH na direção oposta. Central → TSH inapropriadamente normal ou baixo.</span>
+        </div>
+      </div>
+
+      <!-- Insulina e metabolismo intermediário -->
+      <div class="card card-amber col-span-2">
+        <div class="card-title"><span class="icon icon-amber">⚡</span> Metabolismo Intermediário & Insulina</div>
+        <div class="grid-2" style="gap:1rem">
+          <div>
+            <p class="sub-label">Ações da insulina (anabólica)</p>
+            <ul class="items c-amber">
+              <li><strong>Glicólise</strong> — energia celular em miócitos e hepatócitos</li>
+              <li><strong>Gliconeogênese</strong> → glicogênio (GLUT-2 e GLUT-4)</li>
+              <li><strong>Lipogênese</strong> → triglicerídeos no adipócito</li>
+              <li>Liberação: basal (jejum) + estimulada (refeições)</li>
+              <li>Amplificadores entéricos: <strong>GLP-1</strong>, GIP, CCK, secretina</li>
+              <li>Secreção pancreática: <strong>40-50 U/dia</strong></li>
+            </ul>
+          </div>
+          <div>
+            <p class="sub-label">Hormônios contrainsulínicos (catabólicos)</p>
+            <ul class="items c-amber">
+              <li><strong>Glucagon</strong> (células α) — glicogenólise + gliconeogênese</li>
+              <li><strong>Adrenalina</strong> (medula adrenal) — glicogenólise rápida</li>
+              <li><strong>Cortisol</strong> (córtex adrenal) — gliconeogênese + lipólise</li>
+              <li><strong>GH</strong> (adenohipófise) — resistência periférica à insulina</li>
+            </ul>
+            <div class="alert-box alert-amber" style="margin-top:0.6rem">
+              <span class="alert-icon">🔄</span>
+              <span class="alert-text">Mecanismo catabólico: glicogenólise → gliconeogênese → lipólise → corpos cetônicos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hipófise anterior -->
+      <div class="card card-amber">
+        <div class="card-title"><span class="icon icon-amber">🔬</span> Adenohipófise — Resumo</div>
+        <table class="mini-table">
+          <thead><tr><th>Hormônio</th><th>Estimulado por</th><th>Efeito</th></tr></thead>
+          <tbody>
+            <tr><td><strong>GH</strong></td><td>GHRH</td><td>Crescimento, IGF-1</td></tr>
+            <tr><td><strong>TSH</strong></td><td>TRH</td><td>↑ T3, T4</td></tr>
+            <tr><td><strong>ACTH</strong></td><td>CRH</td><td>↑ Cortisol</td></tr>
+            <tr><td><strong>FSH/LH</strong></td><td>GnRH</td><td>Gonádico</td></tr>
+            <tr><td><strong>Prolactina</strong></td><td>TRH</td><td>Lactação</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PTH e Cálcio -->
+      <div class="card card-amber">
+        <div class="card-title"><span class="icon icon-amber">🦴</span> PTH &amp; Cálcio</div>
+        <ul class="items c-amber">
+          <li><strong>Ca²⁺ baixo</strong> → ↑ PTH → ↑ Ca²⁺ sérico</li>
+          <li>PTH: ↑ reabsorção óssea, ↑ reabsorção renal Ca²⁺, ↑ vitamina D ativa</li>
+          <li>Calcitonina (tireoide): oposto ao PTH → ↓ Ca²⁺</li>
+          <li>Vitamina D ativa (calcitriol): ↑ absorção intestinal Ca²⁺ e P</li>
+        </ul>
+        <div class="alert-box alert-amber mt-md">
+          <span class="alert-icon">⚡</span>
+          <span class="alert-text"><strong>Feedback:</strong> Ca²⁺ ↑ inibe PTH; Ca²⁺ ↓ estimula PTH — resposta imediata em minutos.</span>
+        </div>
+      </div>
+
+    </div><!-- /grid-3 -->
+
+    <div class="prova-section">
+      <div class="prova-title" style="color:var(--accent1)">
+        <span>✦</span> Pontos que mais caem na prova — Fisiologia Endócrina
+      </div>
+      <div class="prova-grid">
+        <div class="prova-item pi-amber">Hipotiroidismo primário: T4↓ + TSH↑ (inverso ao central)</div>
+        <div class="prova-item pi-amber">GLP-1 amplifica insulina de forma glicose-dependente (base dos análogos)</div>
+        <div class="prova-item pi-amber">Feedback negativo clássico: glândula ativa inibe hipótamo-hipófise</div>
+        <div class="prova-item pi-amber">GH é contrainsulínico — acromegalia → DM2</div>
+        <div class="prova-item pi-amber">PTH ↑Ca e ↓P; calcitonina ↓Ca (oposta ao PTH)</div>
+        <div class="prova-item pi-amber">ACTH → cortisol → gliconeogênese → hiperglicemia (corticoide diabetogênico)</div>
+        <div class="prova-item pi-amber">Dopamina inibe prolactina — bloqueadores dopaminérgicos causam hiperprolactinemia</div>
+        <div class="prova-item pi-amber">Somatostatina inibe GH e TSH — usada no tratamento de acromegalia</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-1 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     PARTE 2 — DEFINIÇÃO, CLASSIFICAÇÃO E DIAGNÓSTICO
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-2">
+  <div class="page-hero">
+    <p class="hero-label" style="color:var(--accent2)">Parte 2</p>
+    <h1 class="hero-title" style="color:var(--accent2)">Definição, Classificação &amp; Diagnóstico</h1>
+    <p class="hero-sub">Fisiopatologia, critérios diagnósticos atualizados (SBD 2024), classificação dos tipos e rastreamento.</p>
+  </div>
+
+  <div class="content-wrap">
+    <div class="grid-3">
+
+      <!-- Definição -->
+      <div class="card card-teal">
+        <div class="card-title"><span class="icon icon-teal">📖</span> Definição</div>
+        <p class="text-sm">Distúrbio do <strong>metabolismo intermediário</strong> caracterizado por hiperglicemia persistente, decorrente de:</p>
+        <ul class="items c-teal mt-sm">
+          <li>Deficiência na <strong>produção</strong> de insulina</li>
+          <li>Deficiência na <strong>ação</strong> da insulina</li>
+          <li>Ambos os mecanismos associados</li>
+        </ul>
+        <div class="alert-box alert-teal mt-md">
+          <span class="alert-icon">🌍</span>
+          <span class="alert-text"><strong>Epidemiologia:</strong> 415 mi de pessoas no mundo; estimativa 642 mi em 2040; 80% em países de baixa/média renda; Brasil: ~14 mi diabéticos.</span>
+        </div>
+      </div>
+
+      <!-- Tabela diagnóstico -->
+      <div class="card card-teal col-span-2">
+        <div class="card-title"><span class="icon icon-teal">📊</span> Critérios Diagnósticos (SBD 2024)</div>
+        <table class="mini-table">
+          <thead>
+            <tr><th>Critério</th><th>Normal</th><th>Pré-DM</th><th>Diabetes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Glicemia Jejum</strong></td>
+              <td><span class="badge badge-ok">≤ 99 mg/dL</span></td>
+              <td><span class="badge badge-warn">100–125</span></td>
+              <td><span class="badge badge-danger">≥ 126</span></td>
+            </tr>
+            <tr>
+              <td><strong>TTGO 2h (75g)</strong></td>
+              <td><span class="badge badge-ok">≤ 139</span></td>
+              <td><span class="badge badge-warn">140–199</span></td>
+              <td><span class="badge badge-danger">≥ 200</span></td>
+            </tr>
+            <tr>
+              <td><strong>TTGO 1h ★ NOVO</strong></td>
+              <td><span class="badge badge-ok">≤ 154</span></td>
+              <td><span class="badge badge-warn">155–208</span></td>
+              <td><span class="badge badge-danger">≥ 209</span></td>
+            </tr>
+            <tr>
+              <td><strong>HbA1c</strong></td>
+              <td><span class="badge badge-ok">≤ 5,6%</span></td>
+              <td><span class="badge badge-warn">5,7–6,4%</span></td>
+              <td><span class="badge badge-danger">≥ 6,5%</span></td>
+            </tr>
+            <tr>
+              <td><strong>Glicemia ao acaso + sintomas</strong></td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="badge badge-danger">≥ 200</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-warn mt-md">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-text"><strong>Regra da confirmação:</strong> 1 exame alterado = repetir para confirmar (exceto 2 exames alterados na mesma amostra ou sintomas + glicemia ≥200). TTGO-1h é SUPERIOR ao TTGO-2h — preferir quando indicado.</span>
+        </div>
+      </div>
+
+      <!-- DM1 -->
+      <div class="card card-teal">
+        <div class="card-title"><span class="icon icon-teal">🧬</span> DM Tipo 1</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">Destruição autoimune das células β pancreáticas por <strong>linfócitos T CD8+</strong></span></div>
+          <div class="kv-row"><span class="kv-key">Marcadores</span><span class="kv-val">Anti-GAD, anti-IAA, anti-IA-2, anti-ZnT8 (genes HLA associados)</span></div>
+          <div class="kv-row"><span class="kv-key">Perfil</span><span class="kv-val">Crianças, adolescentes, adultos jovens; início abrupto; cetoacidose possível</span></div>
+          <div class="kv-row"><span class="kv-key">Subtipo 1A</span><span class="kv-val">Imuno-mediado (90%)</span></div>
+          <div class="kv-row"><span class="kv-key">LADA</span><span class="kv-val">Autoimune lentamente progressivo; >30 anos; independente de insulina por ≥6 meses</span></div>
+        </div>
+        <div class="row">
+          <span class="badge badge-danger">Insulinoterapia obrigatória</span>
+          <span class="badge badge-warn">Peptídeo C↓↓</span>
+        </div>
+      </div>
+
+      <!-- DM2 -->
+      <div class="card card-teal">
+        <div class="card-title"><span class="icon icon-teal">🏭</span> DM Tipo 2 — Fisiopatologia</div>
+        <p class="sub-label">Octeto maligno (DeFronzo)</p>
+        <ul class="items c-teal">
+          <li>Resistência à insulina (músculo, fígado, adiposo)</li>
+          <li>↓ 1ª fase de secreção de insulina → ↑ glicose pós-prandial</li>
+          <li>↑ produção hepática de glicose</li>
+          <li>Hiperinsulinemia tardia → exaustão células β</li>
+          <li>↑ glucagon (hiperglucagonemia)</li>
+          <li>Disfunção incretínica (↓ GLP-1)</li>
+          <li>↑ reabsorção renal de glicose</li>
+          <li>Disfunção neurotransmissores centrais</li>
+        </ul>
+        <div class="row mt-sm">
+          <span class="badge badge-warn">90-95% dos DM</span>
+          <span class="badge badge-warn">Período silencioso 5-10 anos</span>
+        </div>
+      </div>
+
+      <!-- DM2 Fatores de Risco -->
+      <div class="card card-teal">
+        <div class="card-title"><span class="icon icon-teal">⚠</span> Fatores de Risco DM2</div>
+        <ul class="items c-teal">
+          <li>Obesidade / gordura visceral / sedentarismo</li>
+          <li>Histórico familiar 1º grau de DM2</li>
+          <li>Pré-diabetes (GJ 100-125 ou HbA1c 5,7-6,4%)</li>
+          <li>HAS, dislipidemia (HDL baixo, TG alto)</li>
+          <li>Diabetes gestacional anterior / macrossomia</li>
+          <li>SOP (síndrome ovários policísticos)</li>
+          <li>Medicamentos: corticoides, tiazídicos, betabloqueadores, antipsicóticos atípicos</li>
+          <li>Idade ≥ 35-45 anos</li>
+        </ul>
+      </div>
+
+      <!-- DM Gestacional -->
+      <div class="card card-teal">
+        <div class="card-title"><span class="icon icon-teal">🤰</span> Diabetes Gestacional</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Definição</span><span class="kv-val">Hiperglicemia reconhecida pela 1ª vez na gravidez; resolução após parto</span></div>
+          <div class="kv-row"><span class="kv-key">Rastreio</span><span class="kv-val">Semanas 24–28 de gestação (critérios IADPSG)</span></div>
+          <div class="kv-row"><span class="kv-key">GJ</span><span class="kv-val">≥ 92 mg/dL em jejum = DMG</span></div>
+          <div class="kv-row"><span class="kv-key">TTGO 1h</span><span class="kv-val">≥ 180 mg/dL</span></div>
+          <div class="kv-row"><span class="kv-key">TTGO 2h</span><span class="kv-val">≥ 153 mg/dL</span></div>
+        </div>
+        <div class="alert-box alert-rose mt-md">
+          <span class="alert-icon">🚨</span>
+          <span class="alert-text"><strong>Risco:</strong> 50% das mulheres com DMG desenvolvem DM2 em 10 anos. Rastrear novamente após o parto.</span>
+        </div>
+      </div>
+
+      <!-- Outros tipos e MODY -->
+      <div class="card card-teal">
+        <div class="card-title"><span class="icon icon-teal">🗂</span> Outros Tipos Específicos</div>
+        <div class="sub-section">
+          <p class="sub-label">Defeito monogênico — MODY</p>
+          <ul class="items c-teal">
+            <li>Defeito genético das células β (autossômico dominante)</li>
+            <li>MODY 2 — GCK (glicoquinase): hiperglicemia leve estável, sem tratamento</li>
+            <li>MODY 3 — HNF1α: sensível sulfonilureia, evolui para insulina</li>
+            <li>Diabetes neonatal, mitocondrial</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Endocrinopatias diabetogênicas</p>
+          <ul class="items c-teal">
+            <li>Acromegalia, Cushing, Feocromocitoma</li>
+            <li>Glucagonoma, Hipertireoidismo, Aldosteronoma</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Rastreamento -->
+      <div class="card card-teal col-span-2">
+        <div class="card-title"><span class="icon icon-teal">🔎</span> Rastreamento DM2 (Recomendações SBD 2024)</div>
+        <div class="grid-2" style="gap:1rem">
+          <ul class="items c-teal">
+            <li>Todos com <strong>≥35 anos</strong> (R6)</li>
+            <li>Sobrepeso/obesidade + ≥1 fator de risco</li>
+            <li>FINDRISC alto/muito alto</li>
+            <li>1º exame: GJ e/ou HbA1c (R7)</li>
+            <li>Pré-diabetes → TTGO-1h para não detectados (R8)</li>
+          </ul>
+          <div>
+            <p class="sub-label">Periodicidade (após rastreio normal)</p>
+            <ul class="items c-teal">
+              <li>Exames normais + &lt;3 FR → reavaliar em <strong>3 anos</strong></li>
+              <li>Exames normais + ≥3 FR ou FINDRISC alto → <strong>12 meses</strong></li>
+              <li>Pré-diabetes → <strong>12 meses</strong></li>
+              <li>Apenas 1 exame com critério DM → <strong>6 meses</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <div class="prova-section">
+      <div class="prova-title" style="color:var(--accent2)">
+        <span>✦</span> Pontos que mais caem — Definição &amp; Diagnóstico
+      </div>
+      <div class="prova-grid">
+        <div class="prova-item pi-teal">TTGO-1h ≥209 mg/dL = novo critério DM2 pela SBD (mais sensível que TTGO-2h)</div>
+        <div class="prova-item pi-teal">HbA1c ≥6,5% = DM; 5,7-6,4% = pré-DM — sem preparo prévio, conveniente</div>
+        <div class="prova-item pi-teal">DM1 = HLA + anti-GAD + insulinopenia; DM2 = insulinorresistência + hiperinsulinemia inicial</div>
+        <div class="prova-item pi-teal">LADA simula DM2 mas tem anticorpos anti-GAD positivos — pensar em magros com DM2</div>
+        <div class="prova-item pi-teal">Glicemia ao acaso ≥200 + sintomas = único critério que não precisa confirmação</div>
+        <div class="prova-item pi-teal">2 exames alterados na mesma amostra = diagnóstico sem necessidade de repetir</div>
+        <div class="prova-item pi-teal">Corticoides, tiazídicos e antipsicóticos atípicos são diabetogênicos — rastrear antes/após</div>
+        <div class="prova-item pi-teal">DM2 ao diagnóstico: 50% já têm complicações micro/macrovasculares — período silencioso longo</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-2 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     PARTE 3 — TRATAMENTO DM2
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-3">
+  <div class="page-hero">
+    <p class="hero-label" style="color:var(--accent3)">Parte 3</p>
+    <h1 class="hero-title" style="color:var(--accent3)">Tratamento do DM2</h1>
+    <p class="hero-sub">Metas, intervenção no estilo de vida, classes farmacológicas, mecanismos e contraindicações.</p>
+  </div>
+
+  <div class="content-wrap">
+    <div class="grid-3">
+
+      <!-- Metas -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">🎯</span> Metas de Tratamento</div>
+        <table class="mini-table">
+          <thead><tr><th>Parâmetro</th><th>Meta Geral</th></tr></thead>
+          <tbody>
+            <tr><td><strong>HbA1c</strong></td><td><span class="badge badge-blue">&lt; 7% (individualizar!)</span></td></tr>
+            <tr><td>Glicemia Jejum</td><td>80–130 mg/dL</td></tr>
+            <tr><td>Glicemia Pós-prandial</td><td>&lt; 180 mg/dL</td></tr>
+            <tr><td>PA</td><td>&lt; 130/80 mmHg</td></tr>
+            <tr><td>LDL (DCV estabelecida)</td><td>&lt; 55 mg/dL</td></tr>
+            <tr><td>IMC</td><td>&lt; 25 (eutrófico)</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-blue mt-md">
+          <span class="alert-icon">💡</span>
+          <span class="alert-text"><strong>INDIVIDUALIZE:</strong> Idosos, hipoglicemia frequente, DRC avançada, curta expectativa → meta menos rígida (HbA1c &lt;8%).</span>
+        </div>
+      </div>
+
+      <!-- Estilo de vida -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">🏃</span> Intervenção no Estilo de Vida</div>
+        <ul class="items c-blue">
+          <li><strong>Emagrecimento</strong> — estudo DIRECT: remissão DM2 em 46% com perda ≥15 kg</li>
+          <li><strong>Atividade física</strong> — 150 min/semana; captação de glicose ↑ por <em>48h</em> após exercício</li>
+          <li>Aeróbico + resistidos + combinados (meta-análise)</li>
+          <li>Interromper sedentarismo a cada <strong>30 minutos</strong> (sitting-time)</li>
+          <li><strong>Dieta</strong> — redução carboidratos simples, ↑ fibras</li>
+          <li><strong>Sono</strong> adequado (privação → resistência à insulina)</li>
+          <li>Cessação do tabagismo</li>
+        </ul>
+      </div>
+
+      <!-- Metformina -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">💊</span> Metformina — 1ª Escolha</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">↓ Produção hepática de glicose; ↑ captação muscular; ↓ absorção intestinal</span></div>
+          <div class="kv-row"><span class="kv-key">Potência</span><span class="kv-val">↓ GJ 60mg/dL; ↓ HbA1c 1-2%</span></div>
+          <div class="kv-row"><span class="kv-key">Peso</span><span class="kv-val">Neutro a leve emagrecimento</span></div>
+          <div class="kv-row"><span class="kv-key">Hipoglicemia</span><span class="kv-val">Não causa (monoterapia)</span></div>
+          <div class="kv-row"><span class="kv-key">Dose</span><span class="kv-val">500-850mg 1x/dia; máx 2.550mg/dia; iniciar após refeição</span></div>
+        </div>
+        <p class="sub-label" style="margin-top:0.75rem">Contraindicações</p>
+        <div class="row">
+          <span class="badge badge-danger">IRC: Cr ♂≥1,5 ♀≥1,4</span>
+          <span class="badge badge-danger">ICC grave</span>
+          <span class="badge badge-danger">Hepatopatia crônica</span>
+          <span class="badge badge-danger">DPOC grave</span>
+          <span class="badge badge-danger">Suspender antes contraste</span>
+        </div>
+      </div>
+
+      <!-- iSGLT2 -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">💧</span> iSGLT2 — Gliflozinas</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">Inibe cotransportador SGLT2 no rim → glicosúria ~70g/dia</span></div>
+          <div class="kv-row"><span class="kv-key">Potência</span><span class="kv-val">↓ HbA1c 0,8-1,4%; ↓ PA 4-6 mmHg; ↓ peso 2-4 kg</span></div>
+          <div class="kv-row"><span class="kv-key">Fármacos</span><span class="kv-val">Dapaglifozina 10mg, Empaglifozina 10/25mg, Canaglifozina 100/300mg</span></div>
+        </div>
+        <div class="alert-box alert-ok mt-sm">
+          <span class="alert-icon">❤️</span>
+          <span class="alert-text"><strong>EMPA-REG:</strong> Empaglifozina ↓ morte CV 38%, ↓ hospitalização IC 35% em pacientes com DCV estabelecida → 1ª linha em DM2 + DCV/ICC/DRC</span>
+        </div>
+        <p class="sub-label" style="margin-top:0.75rem">Efeitos adversos</p>
+        <div class="row">
+          <span class="badge badge-warn">Infecção fúngica genital</span>
+          <span class="badge badge-warn">ITU</span>
+          <span class="badge badge-danger">CAD euglicêmica (raro)</span>
+          <span class="badge badge-warn">↑ LDL 4-8%</span>
+        </div>
+      </div>
+
+      <!-- GLP-1 -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">🧪</span> Análogos de GLP-1</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">Estimulam secreção insulina glicose-dependente; ↑ saciedade; ↓ glucagon; ↓ esvaziamento gástrico</span></div>
+          <div class="kv-row"><span class="kv-key">Efeito</span><span class="kv-val">↓ HbA1c 1-1,5%; ↓ peso 3-5 kg; ↓ eventos CV (LEADER, SUSTAIN)</span></div>
+          <div class="kv-row"><span class="kv-key">Fármacos</span><span class="kv-val">Liraglutida 1,2-1,8mg SC/dia; Semaglutida 0,5-1mg SC/sem; Dulaglutida 1,5mg SC/sem</span></div>
+        </div>
+        <div class="row mt-sm">
+          <span class="badge badge-warn">Náusea/vômitos iniciais</span>
+          <span class="badge badge-danger">CI em pancreatite ativa</span>
+          <span class="badge badge-danger">CI carcinoma medular tireoide</span>
+        </div>
+      </div>
+
+      <!-- Sulfonilureias -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">🔋</span> Sulfonilureias</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">Fecha canais K⁺-ATP → despolarização célula β → secreção de insulina (não glicose-dependente)</span></div>
+          <div class="kv-row"><span class="kv-key">Potência</span><span class="kv-val">↓ GJ 60-70mg/dL; ↓ HbA1c 1-2%</span></div>
+        </div>
+        <table class="mini-table" style="margin-top:0.7rem">
+          <thead><tr><th>Fármaco</th><th>Dose mín.</th><th>Dose máx.</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Glibenclamida</strong></td><td>5mg</td><td>20mg <span class="badge badge-danger" style="font-size:0.55rem">Maior hipoglicemia</span></td></tr>
+            <tr><td><strong>Glimepirida</strong></td><td>2mg</td><td>8mg</td></tr>
+            <tr><td><strong>Gliclazida MR</strong></td><td>30mg</td><td>120mg <span class="badge badge-ok" style="font-size:0.55rem">Menor hipoglicemia</span></td></tr>
+          </tbody>
+        </table>
+        <div class="row mt-sm">
+          <span class="badge badge-danger">Hipoglicemia</span>
+          <span class="badge badge-warn">Ganho de peso</span>
+          <span class="badge badge-danger">CI: IRC grave, gestante</span>
+        </div>
+      </div>
+
+      <!-- Pioglitazona -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">🏭</span> Pioglitazona (Glitazona)</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">Agonista PPAR-γ → ↑ sensibilidade insulina no músculo e adiposo</span></div>
+          <div class="kv-row"><span class="kv-key">Potência</span><span class="kv-val">↓ GJ 60mg/dL; ↓ HbA1c 1-2%</span></div>
+          <div class="kv-row"><span class="kv-key">Vantagens</span><span class="kv-val">Sem hipoglicemia; benefício na esteatose hepática; ↓ eventos CV</span></div>
+        </div>
+        <p class="sub-label" style="margin-top:0.7rem">Contraindicações</p>
+        <div class="row">
+          <span class="badge badge-danger">ICC classe III-IV</span>
+          <span class="badge badge-danger">Mulheres com osteoporose</span>
+          <span class="badge badge-danger">Histórico Ca bexiga</span>
+          <span class="badge badge-warn">Edema, ganho de peso</span>
+        </div>
+      </div>
+
+      <!-- iDPP-4 -->
+      <div class="card card-blue">
+        <div class="card-title"><span class="icon icon-blue">🔬</span> iDPP-4 (Gliptinas)</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Mecanismo</span><span class="kv-val">Inibe DPP-4 → ↑ GLP-1 e GIP endógenos → secreção insulina glicose-dependente</span></div>
+          <div class="kv-row"><span class="kv-key">Potência</span><span class="kv-val">↓ HbA1c 0,6-0,8% (menor que outros)</span></div>
+          <div class="kv-row"><span class="kv-key">Fármacos</span><span class="kv-val">Sitagliptina, Saxagliptina, Linagliptina, Vildagliptina, Alogliptina</span></div>
+          <div class="kv-row"><span class="kv-key">Perfil</span><span class="kv-val">Peso neutro; baixo risco hipoglicemia; bem tolerado; opção em idosos</span></div>
+        </div>
+        <div class="alert-box alert-warn mt-sm">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-text">Saxagliptina: sinal de alerta para ↑ hospitalização por IC (SAVOR-TIMI). Linagliptina não requer ajuste renal.</span>
+        </div>
+      </div>
+
+      <!-- Algoritmo DM2 -->
+      <div class="card card-blue col-span-2">
+        <div class="card-title"><span class="icon icon-blue">🗺</span> Algoritmo de Tratamento DM2</div>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-dot dot-blue">1</div>
+            <div class="flow-content">
+              <div class="flow-title">Diagnóstico DM2 → Estilo de vida + Metformina</div>
+              <div class="flow-desc">Iniciar desde o diagnóstico (a não ser contraindicação). Se HbA1c &gt;9% + sintomas: dupla terapia de início.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-blue">2</div>
+            <div class="flow-content">
+              <div class="flow-title">DCV estabelecida / ICC / DRC com albuminúria?</div>
+              <div class="flow-desc"><strong>Sim → adicionar iSGLT2 ou GLP-1 com benefício CV comprovado</strong> (empaglifozina, canaglifozina, liraglutida, semaglutida)</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-blue">3</div>
+            <div class="flow-content">
+              <div class="flow-title">Sem DCV: adicionar 2º agente conforme perfil</div>
+              <div class="flow-desc">Obesidade → GLP-1/iSGLT2 | Hipoglicemia risco → iSGLT2/GLP-1/iDPP-4 | Custo → sulfonilureia/pioglitazona | Simples → iDPP-4</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-blue">4</div>
+            <div class="flow-content">
+              <div class="flow-title">HbA1c ainda fora da meta → terapia tripla ou insulina</div>
+              <div class="flow-desc">Insulina basal: iniciar se HbA1c &gt;10% ou sintomas. Insulinização plena se falência de células β.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <div class="prova-section">
+      <div class="prova-title" style="color:var(--accent3)">
+        <span>✦</span> Pontos que mais caem — Tratamento DM2
+      </div>
+      <div class="prova-grid">
+        <div class="prova-item pi-blue">Metformina = 1ª linha universal; CI em IRC (Cr ♂≥1,5) e suspender antes de contraste iodado</div>
+        <div class="prova-item pi-blue">iSGLT2 = 1ª linha em DM2 + DCV/ICC/DRC — benefício renal e cardiovascular comprovado</div>
+        <div class="prova-item pi-blue">GLP-1 = maior redução de peso + proteção CV — semaglutida reduz eventos CV (SUSTAIN-6)</div>
+        <div class="prova-item pi-blue">Glibenclamida: maior risco hipoglicemia entre sulfonilureias (estudo GUIDE)</div>
+        <div class="prova-item pi-blue">Gliclazida MR: 50% menos hipoglicemia que glimepirida e glibenclamida</div>
+        <div class="prova-item pi-blue">Pioglitazona CI absoluta em ICC III-IV e histórico de Ca de bexiga</div>
+        <div class="prova-item pi-blue">GLP-1 não causa hipoglicemia em monoterapia (glicose-dependente) — seguro</div>
+        <div class="prova-item pi-blue">Exercício aumenta captação de glicose por 48h independente de insulina (GLUT-4 transloca)</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-3 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     PARTE 4 — COMPLICAÇÕES DO DIABETES
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-4">
+  <div class="page-hero">
+    <p class="hero-label" style="color:var(--accent4)">Parte 4</p>
+    <h1 class="hero-title" style="color:var(--accent4)">Complicações do Diabetes</h1>
+    <p class="hero-sub">Complicações agudas (CAD, SHH, hipoglicemia) e crônicas (nefro, retino, neuropatia, macrovasculares).</p>
+  </div>
+
+  <div class="content-wrap">
+
+    <!-- AGUDAS -->
+    <p style="font-family:'Syne',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent4);margin-bottom:0.75rem">Complicações Agudas</p>
+    <div class="grid-3">
+
+      <!-- CAD -->
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">🔥</span> Cetoacidose Diabética (CAD)</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Fisiopato</span><span class="kv-val">Insulinopenia absoluta → lipólise → cetonemia + glicosúria + acidose metabólica</span></div>
+          <div class="kv-row"><span class="kv-key">Triagem</span><span class="kv-val">pH &lt;7,3 + HCO₃ &lt;18 + cetonemia/cetonúria + glicemia &gt;250</span></div>
+          <div class="kv-row"><span class="kv-key">Gatilhos</span><span class="kv-val">Infecção (50%), omissão insulina, trauma, IAM, pancreatite</span></div>
+          <div class="kv-row"><span class="kv-key">Clínica</span><span class="kv-val">Náuseas, vômitos, dor abdominal, hálito cetônico, respiração de Kussmaul, confusão</span></div>
+          <div class="kv-row"><span class="kv-key">Tratamento</span><span class="kv-val">SF 0,9% → insulina regular IV → KCl → monitorizar</span></div>
+        </div>
+        <div class="alert-box alert-danger mt-sm">
+          <span class="alert-icon">🚨</span>
+          <span class="alert-text">K⁺ SEMPRE antes de insulina — hipocalemia ↑ risco arritmia fatal. Se K⁺ &lt;3,5 → repor primeiro!</span>
+        </div>
+      </div>
+
+      <!-- SHH -->
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">💧</span> Síndrome Hiperosmolar (SHH)</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Perfil</span><span class="kv-val">DM2, idosos, sem cetose (insulina residual)</span></div>
+          <div class="kv-row"><span class="kv-key">Glicemia</span><span class="kv-val">&gt; 600 mg/dL (frequentemente 800-1.200)</span></div>
+          <div class="kv-row"><span class="kv-key">Osmolaridade</span><span class="kv-val">&gt; 320 mOsm/kg</span></div>
+          <div class="kv-row"><span class="kv-key">pH</span><span class="kv-val">Normal (&gt;7,3) — distingue da CAD</span></div>
+          <div class="kv-row"><span class="kv-key">Mortalidade</span><span class="kv-val">10-20% (maior que CAD)</span></div>
+          <div class="kv-row"><span class="kv-key">Tratamento</span><span class="kv-val">Hidratação agressiva primeiro; insulina após hipotensão corrigida</span></div>
+        </div>
+      </div>
+
+      <!-- Hipoglicemia -->
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">🍬</span> Hipoglicemia</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Definição</span><span class="kv-val">Glicemia &lt;70 mg/dL (limiar de alerta); &lt;54 clinicamente significativa</span></div>
+          <div class="kv-row"><span class="kv-key">Sintomas</span><span class="kv-val">Adrenérgicos: sudorese, tremor, taquicardia, palidez. Neuroglicopênicos: confusão, convulsão, coma</span></div>
+          <div class="kv-row"><span class="kv-key">Leve-mod</span><span class="kv-val">15g carboidrato VO → reavaliar em 15min (regra 15-15)</span></div>
+          <div class="kv-row"><span class="kv-key">Grave</span><span class="kv-val">Glucagon 1mg SC/IM OU glicose 20% EV 20mL</span></div>
+        </div>
+        <div class="row mt-sm">
+          <span class="badge badge-danger">Glibenclamida = maior risco</span>
+          <span class="badge badge-ok">GLP-1/iSGLT2/iDPP-4 = menor risco</span>
+        </div>
+      </div>
+    </div><!-- /agudas -->
+
+    <div class="divider"></div>
+    <p style="font-family:'Syne',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent4);margin-bottom:0.75rem">Complicações Crônicas — Microvasculares</p>
+
+    <div class="grid-3">
+
+      <!-- Nefropatia -->
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">🫘</span> Nefropatia Diabética</div>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-dot dot-rose">1</div>
+            <div class="flow-content">
+              <div class="flow-title">Nefropatia Incipiente</div>
+              <div class="flow-desc">Microalbuminúria 30-300 mg/24h · Lesão glomerular sem TFG reduzida</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-rose">2</div>
+            <div class="flow-content">
+              <div class="flow-title">Nefropatia Clínica</div>
+              <div class="flow-desc">Macroalbuminúria &gt;300 mg/24h · TFG progressivamente ↓</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-rose">3</div>
+            <div class="flow-content">
+              <div class="flow-title">Insuficiência Renal Terminal</div>
+              <div class="flow-desc">Terapia de substituição renal · DM = 50% dos novos casos de diálise</div>
+            </div>
+          </div>
+        </div>
+        <div class="alert-box alert-rose mt-sm">
+          <span class="alert-icon">💊</span>
+          <span class="alert-text"><strong>Tratamento:</strong> iECA ou BRA → proteção renal desde microalbuminúria. iSGLT2 (dapaglifozina): reduz progressão DRC.</span>
+        </div>
+      </div>
+
+      <!-- Retinopatia -->
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">👁</span> Retinopatia Diabética</div>
+        <p class="text-sm"><strong>Principal causa de cegueira</strong> adquirida entre 20-74 anos. Mais comum no DM1.</p>
+        <div class="sub-section">
+          <p class="sub-label">Progressão DM1</p>
+          <ul class="items c-rose">
+            <li>5 anos: 25% · 10 anos: 60% · 15 anos: 80% · 20 anos: <strong>100%</strong></li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Classificação</p>
+          <ul class="items c-rose">
+            <li><strong>RDNP</strong> (não proliferativa): microaneurismas, micro-hemorragias, exsudatos, leve/moderada/grave</li>
+            <li><strong>RDP</strong> (proliferativa): neovascularização por isquemia → descolamento retina</li>
+            <li><strong>Edema macular diabético</strong>: mais frequente no DM2</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Rastreio / Tratamento</p>
+          <ul class="items c-rose">
+            <li>DM1: fundoscopia 3-5 anos após diagnóstico; DM2: ao diagnóstico</li>
+            <li>Tratamento: fotocoagulação a laser; anti-VEGF intravítreo</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Neuropatia -->
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">⚡</span> Neuropatia Diabética</div>
+        <p class="text-sm">Complicação crônica <strong>mais frequente</strong>. 40-50% do DM2 afetados.</p>
+        <div class="sub-section">
+          <p class="sub-label">Polineuropatia sensitivo-motora simétrica (mais comum)</p>
+          <ul class="items c-rose">
+            <li>Parestesias, queimação, choque em MMII</li>
+            <li>Hiperestesia (dor ao toque do lençol)</li>
+            <li>↓ sensibilidade tátil/térmica/dolorosa</li>
+            <li>↓ reflexos tendinosos profundos → risco úlceras</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Neuropatia autonômica</p>
+          <ul class="items c-rose">
+            <li>Gastroparesia, bexiga neurogênica, disfunção erétil</li>
+            <li>Hipotensão ortostática, taquicardia em repouso</li>
+            <li><strong>Hipoglicemia despercebida</strong> (perigo!)</li>
+          </ul>
+        </div>
+        <p class="sub-label">Tratamento dor neuropática</p>
+        <div class="row">
+          <span class="badge badge-blue">Duloxetina 1ª linha</span>
+          <span class="badge badge-blue">Pregabalina</span>
+          <span class="badge badge-blue">Gabapentina</span>
+          <span class="badge badge-warn">Benfotiamina</span>
+          <span class="badge badge-warn">Ácido tióctico 600mg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <p style="font-family:'Syne',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent4);margin-bottom:0.75rem">Complicações Crônicas — Macrovasculares</p>
+
+    <div class="grid-3">
+      <div class="card card-rose col-span-2">
+        <div class="card-title"><span class="icon icon-rose">❤️</span> Macrovasculares — Risco Cardiovascular</div>
+        <div class="grid-2" style="gap:1rem">
+          <div>
+            <p class="sub-label">Mecanismo aterogênico</p>
+            <ul class="items c-rose">
+              <li>Hiperglicemia → disfunção endotelial + estado pró-trombótico</li>
+              <li>Dislipidemia: ↑ TG, ↑ apolipoproteína B, ↓ HDL, LDL pequeno/denso</li>
+              <li>Estado pró-inflamatório → formação de placa de ateroma</li>
+              <li>HAS em &gt;60% dos diabéticos (resistência insulina → retenção Na/H₂O)</li>
+            </ul>
+          </div>
+          <div>
+            <p class="sub-label">Prevenção primária/secundária</p>
+            <ul class="items c-rose">
+              <li>AAS 81-100mg + estatina de alta intensidade</li>
+              <li>iECA ou BRA (PA + proteção renal)</li>
+              <li>Betabloqueador ≥2 anos se SCA prévio</li>
+              <li>iSGLT2 e GLP-1 (proteção CV primária e secundária)</li>
+            </ul>
+            <div class="alert-box alert-rose" style="margin-top:0.6rem">
+              <span class="alert-icon">🎯</span>
+              <span class="alert-text"><strong>LDL alvo:</strong> &lt;55 mg/dL em DCV estabelecida; &lt;70 mg/dL em alto risco CV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-rose">
+        <div class="card-title"><span class="icon icon-rose">🫀</span> Cardiomiopatia Diabética</div>
+        <ul class="items c-rose">
+          <li>Insuficiência cardíaca <strong>independente</strong> de DAC ou HAS</li>
+          <li>Hipertrofia e fibrose miocárdica por hiperglicemia direta</li>
+          <li>Disfunção diastólica precede sistólica</li>
+          <li>Disfunção endotelial → edema intersticial → fibrose</li>
+          <li>Tto: controle glicêmico rigoroso + iSGLT2 (reduz volume/pressão)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prova-section">
+      <div class="prova-title" style="color:var(--accent4)">
+        <span>✦</span> Pontos que mais caem — Complicações
+      </div>
+      <div class="prova-grid">
+        <div class="prova-item pi-rose">CAD: pH &lt;7,3 + HCO₃ &lt;18 + cetonemia — repor K⁺ ANTES da insulina se K⁺ &lt;3,5</div>
+        <div class="prova-item pi-rose">SHH: glicemia &gt;600 + osmolaridade &gt;320 + pH normal — maior mortalidade que CAD</div>
+        <div class="prova-item pi-rose">Retinopatia DM1: prevalência 100% em 20 anos de doença; fundoscopia 3-5 anos após dx</div>
+        <div class="prova-item pi-rose">DM2: fundoscopia ao diagnóstico (já pode ter retinopatia no diagnóstico)</div>
+        <div class="prova-item pi-rose">Microalbuminúria = 1º sinal de nefropatia; tratar com iECA/BRA para retardar progressão</div>
+        <div class="prova-item pi-rose">Neuropatia autonômica: hipoglicemia despercebida + hipotensão ortostática</div>
+        <div class="prova-item pi-rose">DM = causa mais comum de amputação não traumática + cegueira adquirida + diálise no Brasil</div>
+        <div class="prova-item pi-rose">iSGLT2 reduz hospitalização por IC 35% e progressão de DRC — indicar em DM2 + DRC</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-4 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     PARTE 5 — PÉ DIABÉTICO
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-5">
+  <div class="page-hero">
+    <p class="hero-label" style="color:var(--accent5)">Parte 5</p>
+    <h1 class="hero-title" style="color:var(--accent5)">Pé Diabético</h1>
+    <p class="hero-sub">Fisiopatologia, classificação WIfI, estratificação de risco, diagnóstico e tratamento das lesões. Cirurgia Vascular — P7 FACENE 2026.1</p>
+  </div>
+
+  <div class="content-wrap">
+    <div class="grid-3">
+
+      <!-- Definição epidemio -->
+      <div class="card card-violet">
+        <div class="card-title"><span class="icon icon-violet">📌</span> Epidemiologia</div>
+        <ul class="items c-violet">
+          <li><strong>20%</strong> dos internamentos de pacientes diabéticos</li>
+          <li><strong>70%</strong> das amputações nos diabéticos</li>
+          <li><strong>85%</strong> das amputações precedidas por úlceras nos pés</li>
+          <li>25% dos diabéticos desenvolvem úlcera plantar</li>
+          <li>1 amputação a cada 30 segundos no mundo</li>
+          <li>Pé neuropático: 65% | Pé isquêmico: 35%</li>
+        </ul>
+        <div class="alert-box alert-violet mt-md">
+          <span class="alert-icon">⚕️</span>
+          <span class="alert-text"><strong>Tríade fisiopatológica:</strong> Neuropatia periférica + Doença arterial periférica + Deformidades estruturais</span>
+        </div>
+      </div>
+
+      <!-- Neuropático vs Isquêmico -->
+      <div class="card card-violet col-span-2">
+        <div class="card-title"><span class="icon icon-violet">⚡</span> Pé Neuropático vs Pé Isquêmico</div>
+        <table class="mini-table">
+          <thead>
+            <tr><th>Característica</th><th>Neuropático</th><th>Isquêmico</th><th>Neuroisquêmico</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Temperatura</td><td><span class="badge badge-danger">Quente (+2-3°C)</span></td><td><span class="badge badge-blue">Frio</span></td><td>Variável</td></tr>
+            <tr><td>Pulsos</td><td><span class="badge badge-ok">Presentes/amplos</span></td><td><span class="badge badge-danger">Diminuídos/ausentes</span></td><td>Diminuídos</td></tr>
+            <tr><td>Pele</td><td>Seca, calosidades, fissuras</td><td>Fina, brilhante, sem pelos</td><td>Mista</td></tr>
+            <tr><td>Dor</td><td><span class="badge badge-ok">Indolor</span></td><td><span class="badge badge-danger">Dolorosa</span></td><td>Variável</td></tr>
+            <tr><td>Localização</td><td>Pressão plantar</td><td>Extremidades distais</td><td>Mista</td></tr>
+            <tr><td>Deformidades</td><td>Dedos em garra, pé cavo</td><td>Gangrena seca</td><td>Ambas</td></tr>
+            <tr><td>Fluxo venoso</td><td>Veias túrgidas, shunts AV</td><td>Veias colabadas</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-violet mt-sm">
+          <span class="alert-icon">🔑</span>
+          <span class="alert-text"><strong>Neuroisquêmico</strong> = associação de ambos, mais comum na prática, pior prognóstico</span>
+        </div>
+      </div>
+
+      <!-- Classificação de Wagner -->
+      <div class="card card-violet">
+        <div class="card-title"><span class="icon icon-violet">📊</span> Classificação de Wagner</div>
+        <table class="mini-table">
+          <thead><tr><th>Grau</th><th>Descrição</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-ok">0</span></td><td>Pé em risco — sem lesão ativa</td></tr>
+            <tr><td><span class="badge badge-ok">1</span></td><td>Úlcera superficial, sem infecção</td></tr>
+            <tr><td><span class="badge badge-warn">2</span></td><td>Úlcera profunda, com infecção SEM osteomielite</td></tr>
+            <tr><td><span class="badge badge-warn">3</span></td><td>Profunda, abscesso COM osteomielite</td></tr>
+            <tr><td><span class="badge badge-danger">4</span></td><td>Necrose localizada — dedos ou antepé</td></tr>
+            <tr><td><span class="badge badge-danger">5</span></td><td>Necrose de quase todo o pé</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- WIfI -->
+      <div class="card card-violet col-span-2">
+        <div class="card-title"><span class="icon icon-violet">🏥</span> Sistema WIfI — Classificação Moderna</div>
+        <div class="grid-3" style="gap:0.75rem">
+          <div>
+            <p class="sub-label">W — Wound (Ferida) 0-3</p>
+            <ul class="items c-violet">
+              <li>0: Sem úlcera ou gangrena</li>
+              <li>1: Úlcera pequena/superficial</li>
+              <li>2: Profunda (osso/tendão exposto)</li>
+              <li>3: Extensa antepé/mediopé</li>
+            </ul>
+          </div>
+          <div>
+            <p class="sub-label">I — Ischemia (ABI) 0-3</p>
+            <ul class="items c-violet">
+              <li>0: ABI ≥0,80 | PA ≥100</li>
+              <li>1: ABI 0,60-0,79 | PA 70-100</li>
+              <li>2: ABI 0,40-0,59 | PA 50-70</li>
+              <li>3: ABI ≤0,39 | PA &lt;50</li>
+            </ul>
+          </div>
+          <div>
+            <p class="sub-label">fI — foot Infection 0-3</p>
+            <ul class="items c-violet">
+              <li>0: Não infectada</li>
+              <li>1: Leve (eritema &lt;2cm)</li>
+              <li>2: Moderada (eritema &gt;2cm ou profundas)</li>
+              <li>3: Grave — SIRS</li>
+            </ul>
+          </div>
+        </div>
+        <div class="alert-box alert-violet mt-sm">
+          <span class="alert-icon">🎯</span>
+          <span class="alert-text"><strong>Risco de amputação:</strong> VL (muito baixo) → L (baixo) → M (moderado) → H (alto). Combinar os 3 domínios para estimar o prognóstico.</span>
+        </div>
+      </div>
+
+      <!-- Diagnóstico -->
+      <div class="card card-violet">
+        <div class="card-title"><span class="icon icon-violet">🔬</span> Propedêutica Diagnóstica</div>
+        <div class="kv">
+          <div class="kv-row"><span class="kv-key">Monofilamento</span><span class="kv-val">10g de Simmes-Weinstein; 10 pontos; não sentir em ≥1 ponto = perda sensitiva protetora</span></div>
+          <div class="kv-row"><span class="kv-key">ITB</span><span class="kv-val">≥0,8 normal; &lt;0,4 grave; &gt;1,3 calcificado (não confiável em DM)</span></div>
+          <div class="kv-row"><span class="kv-key">TcPO₂</span><span class="kv-val">Mais confiável em DM; ≥60 normal; &lt;30 necessita revascularização</span></div>
+          <div class="kv-row"><span class="kv-key">Osteomielite</span><span class="kv-val">RM = padrão-ouro (sens &gt;90%); probe-to-bone + = alta probabilidade; RX alterado após 10-14 dias</span></div>
+        </div>
+      </div>
+
+      <!-- Charcot vs Osteomielite -->
+      <div class="card card-violet col-span-2">
+        <div class="card-title"><span class="icon icon-violet">🦴</span> Charcot Agudo vs Osteomielite</div>
+        <table class="mini-table">
+          <thead><tr><th>Critério</th><th>Charcot</th><th>Osteomielite</th></tr></thead>
+          <tbody>
+            <tr><td>Mecanismo</td><td>Microtraumas → inflamação NÃO infecciosa → reabsorção óssea</td><td>Úlcera → invasão bacteriana → necrose óssea</td></tr>
+            <tr><td>Temperatura</td><td><span class="badge badge-danger">Quente</span></td><td>Variável</td></tr>
+            <tr><td>Úlcera</td><td>Frequentemente AUSENTE (fase inicial)</td><td><span class="badge badge-danger">PRESENTE e crônica</span></td></tr>
+            <tr><td>Probe-to-bone</td><td>Negativo</td><td><span class="badge badge-danger">Positivo = diagnóstico</span></td></tr>
+            <tr><td>RM</td><td>Edema múltiplos ossos, fragmentos, SEM abscesso</td><td>Edema FOCAL + ABSCESSO + realce periférico</td></tr>
+            <tr><td>Sistêmico</td><td>Ausente</td><td>Febre, leucocitose possíveis</td></tr>
+            <tr><td>Tratamento</td><td>Total Contact Cast + repouso 3-6 meses</td><td>ATB 6-12 sem OU cirurgia (desbridamento ósseo)</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box alert-warn mt-sm">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-text">Charcot + úlcera pode se COMPLICAR com osteomielite — ambos coexistindo. A RM diferencia.</span>
+        </div>
+      </div>
+
+      <!-- Tratamento antibiótico -->
+      <div class="card card-violet">
+        <div class="card-title"><span class="icon icon-violet">💊</span> Antibioticoterapia por Gravidade</div>
+        <div class="sub-section">
+          <p class="sub-label">Infecção Leve — eritema &lt;2cm</p>
+          <ul class="items c-violet">
+            <li>Via oral; 7-14 dias</li>
+            <li><strong>Amoxicilina-Clavulanato</strong> 875/125mg VO 12/12h</li>
+            <li>Cefalexina 500mg VO 6/6h</li>
+            <li>Alergia: Clindamicina 300mg 6/6h</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Infecção Moderada — eritema &gt;2cm, profundas, sem SIRS</p>
+          <ul class="items c-violet">
+            <li>IV + oral; 2-4 semanas</li>
+            <li>Ampicilina-Sulbactam 3g IV 6/6h</li>
+            <li>Pip-Tazo 4,5g IV 8/8h</li>
+            <li>Ceftriaxona + Metronidazol</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Infecção Grave — SIRS, internação</p>
+          <ul class="items c-violet">
+            <li>Vancomicina + Pip-Tazo (cobertura MRSA + Pseudomonas)</li>
+            <li>Ajustar por cultura; desbridamento urgente</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Níveis de amputação -->
+      <div class="card card-violet">
+        <div class="card-title"><span class="icon icon-violet">🔪</span> Níveis de Amputação</div>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-dot dot-violet">1</div>
+            <div class="flow-content">
+              <div class="flow-title">Transmetatarsiana</div>
+              <div class="flow-desc">Necrose limitada ao antepé + perfusão adequada (TcPO₂ ≥40). Marcha funcional 80-90%.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-violet">2</div>
+            <div class="flow-content">
+              <div class="flow-title">Lisfranc</div>
+              <div class="flow-desc">Antepé + mediopé comprometidos. Dificuldade de cicatrização. Pouco utilizada.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-violet">3</div>
+            <div class="flow-content">
+              <div class="flow-title">Transtibial (abaixo do joelho)</div>
+              <div class="flow-desc">Preferível quando revascularização falha ou TcPO₂ &lt;30-40. Cicatrização 80-90%, preserva joelho. <strong>Prótese funcional boa</strong>.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-dot dot-violet">4</div>
+            <div class="flow-content">
+              <div class="flow-title">Guilhotina</div>
+              <div class="flow-desc">Emergência: sepse não controlada, gangrena gasosa. Sem fechamento primário → revascularização → re-amputação formal.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terapias adjuvantes -->
+      <div class="card card-violet">
+        <div class="card-title"><span class="icon icon-violet">🔧</span> Terapias Adjuvantes</div>
+        <div class="sub-section">
+          <p class="sub-label">VAC (Pressão Negativa)</p>
+          <ul class="items c-violet">
+            <li>Pós-desbridamento amplo, preparo para enxerto</li>
+            <li>↑ cicatrização 28-45% vs curativos convencionais</li>
+            <li>CI: osteomielite ativa não tratada, necrose não desbridada</li>
+          </ul>
+        </div>
+        <div class="sub-section">
+          <p class="sub-label">Oxigenoterapia Hiperbárica (OHB)</p>
+          <ul class="items c-violet">
+            <li>2,0-2,5 ATA, 90-120 min, 20-40 sessões</li>
+            <li>Indicada em refratárias COM TcPO₂ &lt;40</li>
+            <li>Cochrane 2015: ↑ cicatrização 1 ano (RR 1,27); ↓ amputações maiores (RR 0,69)</li>
+            <li>CI absoluta: pneumotórax não tratado</li>
+          </ul>
+        </div>
+        <div class="alert-box alert-violet mt-sm">
+          <span class="alert-icon">⚡</span>
+          <span class="alert-text"><strong>Ambas são ADJUVANTES</strong> — não substituem desbridamento, controle de infecção, descarga e revascularização.</span>
+        </div>
+      </div>
+
+      <!-- Prevenção -->
+      <div class="card card-violet col-span-2">
+        <div class="card-title"><span class="icon icon-violet">🛡</span> Prevenção — Estratificação de Risco &amp; Cuidados</div>
+        <div class="grid-2" style="gap:1rem">
+          <div>
+            <p class="sub-label">Grupo 1 — Sem úlcera ativa</p>
+            <ul class="items c-violet">
+              <li><strong>A:</strong> Sem isquemia + sem neuropatia → orientação, revisão 12 meses</li>
+              <li><strong>B:</strong> Sem isquemia + com neuropatia → monofilamento, calçados, 6-12 meses</li>
+              <li><strong>C:</strong> + deformidade → calçados hiperprofundos, palmilhas moldadas</li>
+            </ul>
+          </div>
+          <div>
+            <p class="sub-label">Grupo 2 — Com úlcera/isquemia/Charcot</p>
+            <ul class="items c-violet">
+              <li><strong>A:</strong> Sem infecção → descarga, curativo, seguimento frequente</li>
+              <li><strong>B:</strong> Com infecção → ATB + desbridamento</li>
+              <li><strong>C1:</strong> Charcot agudo → Total Contact Cast</li>
+              <li><strong>D:</strong> Isquemia crítica → avaliar revascularização</li>
+            </ul>
+          </div>
+        </div>
+        <div class="divider" style="margin:0.75rem 0"></div>
+        <p class="sub-label">Cuidados domiciliares (orientar desde o diagnóstico)</p>
+        <div class="row">
+          <span class="badge badge-violet">Inspeção diária</span>
+          <span class="badge badge-violet">Água morna + secar entre dedos</span>
+          <span class="badge badge-violet">Calçados sem costuras</span>
+          <span class="badge badge-danger">NUNCA descalço</span>
+          <span class="badge badge-danger">NÃO remover calos em casa</span>
+          <span class="badge badge-violet">Unhas retas</span>
+          <span class="badge badge-violet">Meias sem costuras</span>
+          <span class="badge badge-violet">Hidratar (evitar entre dedos)</span>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <div class="prova-section">
+      <div class="prova-title" style="color:var(--accent5)">
+        <span>✦</span> Pontos que mais caem — Pé Diabético
+      </div>
+      <div class="prova-grid">
+        <div class="prova-item pi-violet">Pé neuropático: quente + pulso amplo + indolor; pé isquêmico: frio + pulso ausente + doloroso</div>
+        <div class="prova-item pi-violet">Monofilamento 10g: ≥1 ponto sem sentir = perda sensibilidade protetora = alto risco úlcera</div>
+        <div class="prova-item pi-violet">Wagner 3 = osteomielite; diagnóstico por RM (padrão-ouro) ou probe-to-bone positivo</div>
+        <div class="prova-item pi-violet">WIfI: combina Ferida + Isquemia + Infecção para estimar risco de amputação e necessidade revascularização</div>
+        <div class="prova-item pi-violet">Charcot: quente + indolor + pulsos amplos + sem úlcera inicial; tratar com Total Contact Cast 3-6 meses</div>
+        <div class="prova-item pi-violet">Amputação transtibial: melhor cicatrização (80-90%), preserva joelho, prótese funcional — preferível ao transfemoral</div>
+        <div class="prova-item pi-violet">OHB indicada em refratárias COM TcPO₂ &lt;40 mmHg (hipóxia documentada) — ADJUVANTE</div>
+        <div class="prova-item pi-violet">TcPO₂ mais confiável que ITB em diabéticos (calcificação arterial eleva falsamente o ITB)</div>
+        <div class="prova-item pi-violet">Infecção leve: Amox-Clavulanato VO 7-14 dias; grave: Vancomicina + Pip-Tazo + internação</div>
+        <div class="prova-item pi-violet">85% das amputações precedidas por úlceras → prevenção salva membros</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-5 -->
+
+
+<script>
+  function setTab(n) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + n).classList.add('active');
+    document.querySelector('.tab-btn[data-part="' + n + '"]').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

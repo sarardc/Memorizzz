@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapas Mentais — Neurologia | Ana Sara</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d0f1a;
+    --surface: #141624;
+    --card: #1a1d2e;
+    --border: #252840;
+    --text: #e8eaf6;
+    --muted: #8b90b8;
+    --accent1: #7c6fea; /* neuro purple */
+    --accent2: #2ecfa8; /* mint teal */
+    --accent3: #f7b731; /* amber */
+    --accent4: #ff6b6b; /* coral */
+    --accent5: #4fc3f7; /* sky */
+    --accent6: #ab47bc; /* violet */
+    --nmc: #ff7043;
+    --nmp: #29b6f6;
+    --cerebelo: #66bb6a;
+    --tronco: #ffa726;
+    --medula: #ef5350;
+    --mening: #ec407a;
+    --sgb-blue: #42a5f5;
+    --sgb-green: #26c6da;
+    --cefaleia-pink: #f06292;
+    --cefaleia-purple: #9575cd;
+    --cefaleia-teal: #26c6da;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 24px;
+    height: 56px;
+  }
+
+  nav .logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 16px;
+    white-space: nowrap;
+  }
+
+  nav button {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  nav button:hover { color: var(--text); border-color: var(--border); }
+  nav button.active { background: var(--accent1); color: #fff; border-color: var(--accent1); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 32px 24px 80px; max-width: 1400px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 48px 20px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(124,111,234,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 { font-size: clamp(28px,5vw,52px); font-weight: 900; letter-spacing: -0.02em; }
+  .hero h1 span { color: var(--accent1); }
+  .hero p { color: var(--muted); font-size: 16px; margin-top: 10px; }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .sec-header h2 {
+    font-size: clamp(20px,3vw,28px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .sec-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
+
+  @media(max-width:900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  @media(max-width:600px) { .grid-auto { grid-template-columns: 1fr; } }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .card:hover { transform: translateY(-2px); }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .card.purple::before { background: var(--accent1); }
+  .card.teal::before { background: var(--accent2); }
+  .card.amber::before { background: var(--accent3); }
+  .card.coral::before { background: var(--accent4); }
+  .card.sky::before { background: var(--accent5); }
+  .card.violet::before { background: var(--accent6); }
+  .card.nmc::before { background: var(--nmc); }
+  .card.nmp::before { background: var(--nmp); }
+  .card.green::before { background: var(--cerebelo); }
+  .card.orange::before { background: var(--tronco); }
+  .card.red::before { background: var(--medula); }
+  .card.pink::before { background: var(--mening); }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon { font-size: 18px; }
+
+  /* ── COMPARE TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .compare-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .th-nmc { color: var(--nmc); }
+  .th-nmp { color: var(--nmp); }
+  .th-feature { color: var(--muted); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .badge-nmc { background: rgba(255,112,67,0.15); color: var(--nmc); }
+  .badge-nmp { background: rgba(41,182,246,0.15); color: var(--nmp); }
+  .badge-warn { background: rgba(247,183,49,0.15); color: var(--accent3); }
+  .badge-ok { background: rgba(46,207,168,0.15); color: var(--accent2); }
+  .badge-alert { background: rgba(255,107,107,0.15); color: var(--accent4); }
+  .badge-purple { background: rgba(124,111,234,0.15); color: var(--accent1); }
+
+  /* ── LIST ITEMS ── */
+  .list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .list-item:last-child { border-bottom: none; }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── HIGHLIGHT BOXES ── */
+  .highlight {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+
+  .hl-amber { background: rgba(247,183,49,0.08); border-left: 3px solid var(--accent3); }
+  .hl-coral { background: rgba(255,107,107,0.08); border-left: 3px solid var(--accent4); }
+  .hl-teal { background: rgba(46,207,168,0.08); border-left: 3px solid var(--accent2); }
+  .hl-purple { background: rgba(124,111,234,0.08); border-left: 3px solid var(--accent1); }
+  .hl-sky { background: rgba(79,195,247,0.08); border-left: 3px solid var(--accent5); }
+  .hl-pink { background: rgba(240,98,146,0.08); border-left: 3px solid var(--cefaleia-pink); }
+
+  .hl-title {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  /* ── MNEMONIC ── */
+  .mnemonic {
+    background: rgba(124,111,234,0.08);
+    border: 1px dashed rgba(124,111,234,0.4);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .mnemonic strong { color: var(--accent1); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 5px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent2);
+    border: 2px solid var(--bg);
+  }
+
+  .tl-item strong { display: block; font-weight: 700; color: var(--text); }
+  .tl-item span { color: var(--muted); }
+
+  /* ── PILL TABS ── */
+  .pill-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+  .pill-tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .pill-tab:hover { color: var(--text); }
+  .pill-tab.active { color: #fff; }
+
+  /* ── SYNDROMES ALTERNAS ── */
+  .syndrome-row {
+    display: grid;
+    grid-template-columns: 120px 100px 1fr 1fr;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .syndrome-row:hover { background: rgba(255,255,255,0.04); }
+  .syn-name { font-weight: 700; }
+  .syn-loc { font-size: 11px; color: var(--muted); }
+  .syn-ipsi { color: var(--accent3); }
+  .syn-contra { color: var(--accent5); }
+
+  @media(max-width:700px) {
+    .syndrome-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── DRUG TABLE ── */
+  .drug-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .drug-table th {
+    background: rgba(255,255,255,0.04);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .drug-table td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.5; }
+  .drug-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* ── CAUTION BOX ── */
+  .caution {
+    background: rgba(255,107,107,0.07);
+    border: 1px solid rgba(255,107,107,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+
+  .caution-title { font-weight: 700; color: var(--accent4); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+
+  /* ── SUCCESS BOX ── */
+  .success {
+    background: rgba(46,207,168,0.07);
+    border: 1px solid rgba(46,207,168,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+
+  .success-title { font-weight: 700; color: var(--accent2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+
+  /* ── SCROLL HELPER ── */
+  .spacer { height: 32px; }
+
+  /* ── REFLEXES MAP ── */
+  .reflex-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .reflex-item:last-child { border-bottom: none; }
+  .reflex-level { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--accent3); font-weight: 600; background: rgba(247,183,49,0.1); padding: 2px 8px; border-radius: 4px; }
+
+  /* ── PROVA ALERT ── */
+  .prova-box {
+    background: linear-gradient(135deg, rgba(124,111,234,0.12), rgba(46,207,168,0.08));
+    border: 1px solid rgba(124,111,234,0.3);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .prova-title {
+    font-weight: 800;
+    color: var(--accent1);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .prova-item {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  .prova-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--accent1);
+    font-weight: 700;
+    background: rgba(124,111,234,0.15);
+    padding: 1px 6px;
+    border-radius: 4px;
+    height: fit-content;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── SUBCARD ── */
+  .subcard {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+
+  .subcard-title {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  /* ── FULL-WIDTH ── */
+  .full { grid-column: 1 / -1; }
+
+  /* ── SPIDER MAP ── */
+  .spider-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    padding: 20px 0;
+  }
+
+  .central-node {
+    background: var(--accent1);
+    color: #fff;
+    font-weight: 800;
+    font-size: 16px;
+    padding: 16px 28px;
+    border-radius: 50px;
+    text-align: center;
+    margin-bottom: 24px;
+    box-shadow: 0 0 40px rgba(124,111,234,0.3);
+  }
+
+  .spoke-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; width: 100%; }
+
+  .spoke {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    transition: border-color 0.2s;
+  }
+
+  .spoke:hover { border-color: var(--accent1); }
+  .spoke-title { font-weight: 700; font-size: 12px; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="active">Página principal</a>
+  <span class="logo">🧠 Neuro</span>
+  <button class="active" onclick="goTo('p1', this)">Parte 1 — Síndromes Neurológicas</button>
+  <button onclick="goTo('p2', this)">Parte 2 — Guillain-Barré</button>
+  <button onclick="goTo('p3', this)">Parte 3 — Cefaléias</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PARTE 1 — SÍNDROMES NEUROLÓGICAS
+══════════════════════════════════════════════════════════════ -->
+<div class="page active" id="p1">
+
+  <div class="hero">
+    <div class="tag" style="background:rgba(124,111,234,0.15);color:var(--accent1)">Parte 1 · Mapa Mental</div>
+    <h1>Principais <span>Síndromes</span><br>Neurológicas</h1>
+    <p>Diagnóstico topográfico · Vias longas · NMC vs NMP · Tronco · Cerebelo · Medula · Periférico</p>
+  </div>
+
+  <!-- BLOCO 1: DIAGNÓSTICO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(124,111,234,0.2);color:var(--accent1)">1</div>
+    <h2>Processo Diagnóstico Neurológico</h2>
+  </div>
+
+  <div class="card purple" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent1)"><span class="icon">🔍</span> As 4 Etapas em Sequência</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+      <div class="highlight hl-purple">
+        <div class="hl-title" style="color:var(--accent1)">① Sindrômico</div>
+        Anamnese + exame físico → reconhece o padrão
+      </div>
+      <div class="highlight hl-teal">
+        <div class="hl-title" style="color:var(--accent2)">② Topográfico</div>
+        "ONDE está a lesão?" → músculo · nervo · raiz · medula · tronco · córtex
+      </div>
+      <div class="highlight hl-amber">
+        <div class="hl-title" style="color:var(--accent3)">③ Etiológico</div>
+        "O QUE está causando?" → neuroimagem · LCR · ENMG · biópsia
+      </div>
+      <div class="highlight hl-coral">
+        <div class="hl-title" style="color:var(--accent4)">④ Nosológico</div>
+        Classificação segundo critérios internacionais
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:28px">
+    <div class="card teal">
+      <div class="card-title" style="color:var(--accent2)"><span class="icon">📖</span> Terminologia Essencial</div>
+      <div class="list-item"><div class="dot" style="background:var(--nmc)"></div><div><strong>Paresia</strong> — fraqueza parcial (prefixos: mono, hemi, para, tetra)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div><strong>Plegia</strong> — perda TOTAL da força muscular</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cerebelo)"></div><div><strong>Ataxia</strong> — incoord. motora SEM fraqueza (cerebelar/vestibular)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div><strong>Parestesia</strong> — sensação anormal espontânea (via sensitiva comprometida)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent3)"></div><div><strong>Disartria</strong> — fala "embolada" por disfunção motora de articulação (≠ afasia)</div></div>
+    </div>
+    <div class="card amber">
+      <div class="card-title" style="color:var(--accent3)"><span class="icon">⚡</span> Reflexos — Níveis Medulares</div>
+      <div class="reflex-item"><span>Bicipital</span><span class="reflex-level">C5–C6</span></div>
+      <div class="reflex-item"><span>Estilo-radial</span><span class="reflex-level">C5–C6</span></div>
+      <div class="reflex-item"><span>Tricipital</span><span class="reflex-level">C7–C8</span></div>
+      <div class="reflex-item"><span>Patelar</span><span class="reflex-level">L3–L4</span></div>
+      <div class="reflex-item"><span>Aquiliano</span><span class="reflex-level">L5–S1</span></div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted)">↑ acima do arco = hiperreflexia (NMC) · ↓ no arco = arreflexia (NMP)</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BLOCO 2: NMC vs NMP -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(255,112,67,0.2);color:var(--nmc)">2</div>
+    <h2>NMC (1º Neurônio) vs NMP (2º Neurônio)</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;border-color:rgba(255,255,255,0.08)">
+    <div class="card-title"><span class="icon">⚖️</span> Tabela Comparativa</div>
+    <div style="overflow-x:auto">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-feature">Característica</th>
+          <th class="th-nmc">🔴 NMC (Piramidal)</th>
+          <th class="th-nmp">🔵 NMP (Periférico)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Distribuição da paresia</td><td><span class="badge badge-nmc">Dimidiada (hemi)</span> — mesmo lado</td><td><span class="badge badge-nmp">Bem delimitada</span> — território nervo/raiz</td></tr>
+        <tr><td>Reflexos profundos</td><td><strong style="color:var(--nmc)">HIPERREFLEXIA</strong> (liberação do arco)</td><td><strong style="color:var(--nmp)">HIPORREFLEXIA / ARREFLEXIA</strong></td></tr>
+        <tr><td>Tônus</td><td><strong style="color:var(--nmc)">HIPERTONIA espástica</strong><br><small style="color:var(--muted)">Fenômeno do canivete (vel-dependente)</small></td><td><strong style="color:var(--nmp)">HIPOTONIA</strong> (flacidez)</td></tr>
+        <tr><td>Atrofia muscular</td><td>Tardia (por desuso)</td><td><strong style="color:var(--nmp)">PRECOCE e intensa</strong> (denervação)</td></tr>
+        <tr><td>Fasciculações</td><td>Ausentes</td><td><strong style="color:var(--nmp)">PRESENTES</strong></td></tr>
+        <tr><td>Sinal de Babinski</td><td><strong style="color:var(--nmc)">POSITIVO ✔</strong> — patognomônico</td><td>Negativo / ausente</td></tr>
+        <tr><td>Fase aguda</td><td>Pode ter <em>hipotonia transitória</em><br><small style="color:var(--muted)">(choque medular/encefálico)</small></td><td>Hipotonia desde o início</td></tr>
+        <tr><td>Topografia</td><td>Córtex · cápsula interna · pedúnculos · medula (trato corticospinal)</td><td>Corno anterior · raízes · plexo · nervos periféricos</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="caution" style="margin-top:12px">
+      <div class="caution-title">⚠️ Armadilha de Prova</div>
+      NMC agudo → pode ter HIPOTONIA (choque medular). Não confunda com NMP! Hiperreflexia e espasticidade aparecem DEPOIS da fase aguda/subaguda.
+    </div>
+    <div class="success">
+      <div class="success-title">🎯 ELA — Único cenário misto</div>
+      Esclerose Lateral Amiotrófica: NMC + NMP simultâneos → espasticidade + fasciculações + atrofia. Único diagnóstico com esse padrão.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BLOCO 3: CÓRTEX E LACUNAR -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(79,195,247,0.2);color:var(--accent5)">3</div>
+    <h2>Córtex Cerebral vs Síndromes Lacunares</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:28px">
+    <div class="card sky">
+      <div class="card-title" style="color:var(--accent5)"><span class="icon">🧠</span> Lesão Cortical</div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div>Sinais e sintomas <strong>DIMIDIADOS</strong> (braço+perna mesmo lado)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div>Afasias/disfasias — lobo dominante (áreas de Broca e Wernicke)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div>Déficits visuais (hemianopsia, amaurose)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div>Agnosias, Apraxias</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div>Negligência hemiespacial (lobo não-dominante)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div><strong style="color:var(--accent4)">⚠️ SONOLÊNCIA</strong> — altera consciência!</div></div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="subcard">
+          <div class="subcard-title" style="color:var(--accent5)">Lobo Dominante (E)</div>
+          Afasia · Apraxia · Acalculia · Agnosia visual
+        </div>
+        <div class="subcard">
+          <div class="subcard-title" style="color:var(--accent6)">Lobo Não-Dom. (D)</div>
+          Negligência hemiespacial · Anosognosia · Visuoespacial
+        </div>
+      </div>
+    </div>
+
+    <div class="card violet">
+      <div class="card-title" style="color:var(--accent6)"><span class="icon">🔵</span> Síndromes Lacunares</div>
+      <div class="highlight hl-purple" style="margin-bottom:10px">
+        <div class="hl-title" style="color:var(--accent1)">Definição</div>
+        Infartos &lt;15mm em artérias perfurantes profundas por lipohialinose/microaterosclerose (HAS crônica). Locais: cápsula interna + tálamo
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>Déficit motor puro</strong> — hemiparesia (cápsula interna post.)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>Déficit sensitivo puro</strong> — hemianestesia (tálamo)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>Disartria-mão desajeitada</strong></div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>Hemiparesia atáxica</strong> — hemiparesia + ataxia ipsilateral</div></div>
+      <div class="success" style="margin-top:10px">
+        <div class="success-title">✅ Consciência PRESERVADA</div>
+        Sem afasia · sem agnosia · sem negligência.<br>Paciente NÃO FICA SONOLENTO (córtex íntegro).
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">Déficits completos e PROPORCIONADOS (braço = perna)</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BLOCO 4: TRONCO ENCEFÁLICO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(255,167,38,0.2);color:var(--tronco)">4</div>
+    <h2>Síndromes de Tronco Encefálico</h2>
+  </div>
+
+  <div class="card orange" style="margin-bottom:16px">
+    <div class="card-title" style="color:var(--tronco)"><span class="icon">✖️</span> Conceito de Síndrome Cruzada / Alterna</div>
+    <p style="font-size:14px;line-height:1.7;color:var(--text)">
+      Nervo craniano comprometido <strong style="color:var(--accent3)">IPSILATERAL</strong> à lesão + via longa (motor/sensitivo) comprometida <strong style="color:var(--accent5)">CONTRALATERAL</strong>.
+      É patognomônico de lesão de TRONCO — nenhuma outra topografia produz esse padrão cruzado.
+    </p>
+    <div class="mnemonic">
+      <strong>Mnemônicos:</strong> III/IV = Mesencéfalo · VI/VII = Ponte · IX/X/XII + Horner = Bulbo
+    </div>
+  </div>
+
+  <!-- Síndromes Alternas -->
+  <div class="card" style="margin-bottom:20px;border-color:rgba(255,255,255,0.08)">
+    <div class="card-title"><span class="icon">🗺️</span> Mapa das Síndromes Alternas</div>
+    <div style="display:grid;grid-template-columns:120px 90px 1fr 1fr;gap:0;margin-bottom:8px;padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted)">
+      <span>Síndrome</span><span>Local</span><span style="color:var(--accent3)">Ipsilateral</span><span style="color:var(--accent5)">Contralateral</span>
+    </div>
+    <div class="syndrome-row">
+      <div><div class="syn-name" style="color:#ff8a65">Weber</div><div class="syn-loc">Mesencéfalo</div></div>
+      <div class="syn-loc">Par III</div>
+      <div class="syn-ipsi">Paralisia do III (ptose + midríase + olho para baixo e fora)</div>
+      <div class="syn-contra">Hemiparesia (pedúnculo)</div>
+    </div>
+    <div class="syndrome-row">
+      <div><div class="syn-name" style="color:#ff8a65">Benedikt</div><div class="syn-loc">Mesencéfalo</div></div>
+      <div class="syn-loc">Par III</div>
+      <div class="syn-ipsi">Paralisia do III</div>
+      <div class="syn-contra">Hipercinesia (tremor/coréia) + rigidez + alt. sens. profunda (núcleo rubro + lemnisco)</div>
+    </div>
+    <div class="syndrome-row">
+      <div><div class="syn-name" style="color:#ffca28">Raymond</div><div class="syn-loc">Ponte</div></div>
+      <div class="syn-loc">Par VI</div>
+      <div class="syn-ipsi">Paralisia do VI (estrabismo convergente, diplopia horizontal)</div>
+      <div class="syn-contra">Hemiparesia</div>
+    </div>
+    <div class="syndrome-row">
+      <div><div class="syn-name" style="color:#ffca28">Millard-Gubler</div><div class="syn-loc">Ponte</div></div>
+      <div class="syn-loc">Par VII</div>
+      <div class="syn-ipsi">Paralisia do VII — facial periférica <em>(toda a hemiface)</em></div>
+      <div class="syn-contra">Hemiparesia</div>
+    </div>
+    <div class="syndrome-row" style="border-color:rgba(46,207,168,0.3)">
+      <div><div class="syn-name" style="color:var(--accent2)">Wallenberg</div><div class="syn-loc">Bulbo lateral (PICA)</div></div>
+      <div class="syn-loc">V, IX, X, Horner</div>
+      <div class="syn-ipsi">↓ sens. térmica/dolorosa FACE (V) + fraqueza palato/faringe (IX/X) + Horner + incoordenação</div>
+      <div class="syn-contra">↓ sens. térmica/dolorosa TRONCO e membros (espinotalâmico)</div>
+    </div>
+    <div class="caution" style="margin-top:12px">
+      <div class="caution-title">⚠️ Wallenberg — Sem hemiparesia!</div>
+      Trato corticospinal POUPADO na lesão bulbar lateral. "Sinais bizarros e muitos" = marcador de lesão bulbar.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BLOCO 5: CEREBELO E VESTIBULAR -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(102,187,106,0.2);color:var(--cerebelo)">5</div>
+    <h2>Síndromes Cerebelar e Vestibular</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:28px">
+    <div class="card green">
+      <div class="card-title" style="color:var(--cerebelo)"><span class="icon">🎯</span> Síndrome Cerebelar</div>
+      <div class="highlight hl-teal" style="margin-bottom:10px"><strong>Força NORMAL — só a coordenação é comprometida!</strong></div>
+      <div class="list-item"><div class="dot" style="background:var(--cerebelo)"></div><div><strong>Ataxia</strong> axial (marcha) ou apendicular (membros)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cerebelo)"></div><div><strong>Dismetria</strong> — erro no alcance do alvo (índex-nariz)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cerebelo)"></div><div><strong>Disdiadococcinesia</strong> — movimentos alternados rápidos</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cerebelo)"></div><div><strong>Nistagmo horizontal</strong></div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cerebelo)"></div><div><strong>Marcha ebriosa</strong>, alargamento de base</div></div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="subcard">
+          <div class="subcard-title" style="color:var(--accent3)">Arqui-Paleocerebelo</div>
+          Vérmis + flóculo-nodular → controla MARCHA/TRONCO. Ataxia axial. Ex: etilismo
+        </div>
+        <div class="subcard">
+          <div class="subcard-title" style="color:var(--cerebelo)">Neocerebelo</div>
+          Hemisférios → controla MEMBROS. Ataxia apendicular unilateral ipsilateral
+        </div>
+      </div>
+      <div class="mnemonic" style="margin-top:10px">
+        <strong>Por que ipsilateral?</strong> Duplo cruzamento (espino-cerebelar + pedúnculo superior) = resultado IPSILATERAL
+      </div>
+    </div>
+
+    <div class="card amber">
+      <div class="card-title" style="color:var(--accent3)"><span class="icon">🌀</span> Vertigem Central vs Periférica</div>
+      <div style="overflow-x:auto">
+      <table class="compare-table" style="font-size:12px">
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th style="color:var(--accent3)">Periférica</th>
+            <th style="color:var(--accent5)">Central</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Intensidade</td><td><strong>MUITO INTENSA</strong></td><td>Pouco intensa</td></tr>
+          <tr><td>Hipoacusia</td><td><strong>COMUM</strong></td><td>Raro</td></tr>
+          <tr><td>Coordenação</td><td>Normal</td><td><strong style="color:var(--accent4)">ALTERADA</strong></td></tr>
+          <tr><td>Nistagmo</td><td>Horizontal unidirecional (inibe com fixação)</td><td><strong style="color:var(--accent4)">Multidirecional</strong> — não inibe</td></tr>
+          <tr><td>Diplopia</td><td>Ausente</td><td><strong style="color:var(--accent4)">Pode ter</strong></td></tr>
+          <tr><td>Causas</td><td>VPPB, Ménière, neurite</td><td>AVC, EM, tumor, enxaqueca basilar</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="caution" style="margin-top:10px">
+        <div class="caution-title">🚨 Atenção ao Nistagmo</div>
+        Nistagmo multidirecional (vertical, torsional) = CENTRAL. Urgência neurológica!
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BLOCO 6: MEDULA -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(239,83,80,0.2);color:var(--medula)">6</div>
+    <h2>Síndromes Medulares</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:28px">
+    <div class="card red">
+      <div class="card-title" style="color:var(--medula)"><span class="icon">📍</span> Dermátomos-Chave</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <div class="reflex-item"><span>Clavícula</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">C5</span></div>
+        <div class="reflex-item"><span>Polegar</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">C6</span></div>
+        <div class="reflex-item"><span>Dedo mínimo</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">C8</span></div>
+        <div class="reflex-item"><span>Mamilos</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">T4</span></div>
+        <div class="reflex-item"><span>Umbigo</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">T10</span></div>
+        <div class="reflex-item"><span>Virilha</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">T12</span></div>
+        <div class="reflex-item"><span>Joelho</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">L3–L4</span></div>
+        <div class="reflex-item"><span>Hálux</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">L5</span></div>
+        <div class="reflex-item"><span>Maléolo lateral</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">S1</span></div>
+        <div class="reflex-item"><span>Períneo</span><span class="reflex-level" style="background:rgba(239,83,80,0.15);color:var(--medula)">S2–S4</span></div>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">Dermátomo mais baixo com sens. preservada = lesão ACIMA desse nível</div>
+    </div>
+
+    <div class="card red">
+      <div class="card-title" style="color:var(--medula)"><span class="icon">🔀</span> Brown-Séquard (Hemissecção)</div>
+      <div class="highlight hl-coral" style="margin-bottom:10px">
+        <div class="hl-title" style="color:var(--accent4)">Padrão Dissociado</div>
+        Lesão de METADE lateral da medula
+      </div>
+      <div class="subcard" style="border-color:rgba(255,112,67,0.3)">
+        <div class="subcard-title" style="color:var(--nmc)">IPSILATERAL à lesão</div>
+        ↓ Força (trato corticospinal lateral — cruzou no bulbo)<br>
+        ↓ Propriocepção + vibração (colunas posteriores — cruzam no bulbo)
+      </div>
+      <div class="subcard" style="border-color:rgba(41,182,246,0.3);margin-top:8px">
+        <div class="subcard-title" style="color:var(--nmp)">CONTRALATERAL à lesão</div>
+        ↓ Dor + temperatura (espinotalâmico — cruza na medula)
+      </div>
+      <div class="mnemonic" style="margin-top:10px">
+        <strong>Resumo:</strong> perde FORÇA ipsilateral · perde DOR e TEMP contralateral
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BLOCO 7: PERIFÉRICO + MIOPATIA + JNM + HIC + MENÍNGEA -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(236,64,122,0.2);color:var(--mening)">7</div>
+    <h2>Nervos Periféricos · Miopatia · JNM · HIC · Meníngea</h2>
+  </div>
+
+  <div class="grid-auto" style="margin-bottom:20px">
+
+    <div class="card coral">
+      <div class="card-title" style="color:var(--accent4)"><span class="icon">🦵</span> Mononeuropatias</div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent4)">Pé Caído — Fibular</div>
+        Cabeça da fíbula · Marcha escarvante (steppage) · Dorsiflexão/eversão ↓
+      </div>
+      <div class="subcard" style="margin-top:8px">
+        <div class="subcard-title" style="color:var(--accent3)">Sábado à Noite — Radial</div>
+        Espiral do úmero · "Wrist drop" · mão caída · Dorso do polegar
+      </div>
+      <div class="subcard" style="margin-top:8px">
+        <div class="subcard-title" style="color:var(--accent5)">Túnel do Carpo — Mediano</div>
+        Retináculo flexores · 3,5 dedos radiais · Tinel + Phalen positivos
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">Mediano = lateral 3,5 · Ulnar = medial 1,5</div>
+    </div>
+
+    <div class="card purple">
+      <div class="card-title" style="color:var(--accent1)"><span class="icon">🧬</span> Polineuropatia</div>
+      <div class="highlight hl-purple">
+        <div class="hl-title" style="color:var(--accent1)">Padrão Bota e Luva</div>
+        Fibras mais longas acometidas primeiro (dying-back) → simétrico
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--accent1)"></div><div>Hiporreflexia distal + atrofia muscular distal</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent1)"></div><div><strong>DM</strong> — causa mais comum no Brasil</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent1)"></div><div>Tóxica · Carencial · Hereditária · Inflamatória (GBS, CIDP)</div></div>
+    </div>
+
+    <div class="card teal">
+      <div class="card-title" style="color:var(--accent2)"><span class="icon">💪</span> Síndrome Miopática</div>
+      <div class="highlight hl-teal">Fraqueza <strong>PROXIMAL SIMÉTRICA</strong> (raiz de membros)</div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>Sem sintomas sensitivos</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>Reflexos normais ou discretamente ↓</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>CPK elevada (inflamatórias e distrofias)</div></div>
+      <div class="mnemonic" style="margin-top:8px">
+        <strong>Sinal de Gowers:</strong> escala nas próprias pernas ao se levantar = fraqueza proximal de MMII
+      </div>
+    </div>
+
+    <div class="card violet">
+      <div class="card-title" style="color:var(--accent6)"><span class="icon">⚡</span> Miastenia Gravis (JNM)</div>
+      <div class="highlight hl-purple">Anti-AChR (85%) · Anti-MuSK (10%) · Associado a timoma</div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>FATIGABILIDADE</strong> — piora com uso repetitivo</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>FLUTUABILIDADE</strong> — piora ao entardecer/calor</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div>Acometimento ocular/facial (início em 50%)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div>SEM sensitivo · Reflexos NORMAIS</div></div>
+      <div class="caution" style="margin-top:8px">
+        <div class="caution-title">Lambert-Eaton (inverso!)</div>
+        MELHORA com esforço · Anti-VGCC · Paraneoplásica (CPC pulmão)
+      </div>
+    </div>
+
+    <div class="card pink">
+      <div class="card-title" style="color:var(--mening)"><span class="icon">💥</span> HIC</div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Cefaleia <strong>holocraniana</strong> progressiva</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Vômito em <strong>JATO</strong> (sem náuseas) — matinal</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Edema de papila (papiledema) — fundoscopia</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>VI par = mais afetado (trajeto longo)</div></div>
+      <div class="caution" style="margin-top:8px">
+        <div class="caution-title">🚨 Tríade de Cushing (herniação iminente!)</div>
+        Hipertensão + Bradicardia + Bradipneia → isquemia do centro vasomotor bulbar
+      </div>
+    </div>
+
+    <div class="card pink">
+      <div class="card-title" style="color:var(--mening)"><span class="icon">🦠</span> Síndrome Meníngea</div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Rigidez de nuca</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div><strong>Kernig</strong>: flexão quadril 90° → resistência extensão joelho</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div><strong>Brudzinski</strong>: flexão pescoço → flexão reflexa MMII</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Fono + Fotofobia · Posição de gatilho</div></div>
+      <div class="success" style="margin-top:8px">
+        <div class="success-title">Tríade Meningite Bacteriana</div>
+        Febre + Cefaleia + Rigidez de nuca → meningite ATÉ PROVA CONTRÁRIA
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BLOCO FINAL: PONTOS-CHAVE PROVA -->
+  <div class="prova-box">
+    <div class="prova-title">🎯 18 Pontos para Acertar na Prova — Síndromes Neurológicas</div>
+    <div class="prova-item"><span class="prova-num">01</span>NMC agudo = pode ter hipotonia (choque). Hiperreflexia aparece DEPOIS.</div>
+    <div class="prova-item"><span class="prova-num">02</span>Babinski POSITIVO = SEMPRE lesão piramidal (NMC). Patognomônico.</div>
+    <div class="prova-item"><span class="prova-num">03</span>ELA = único cenário NMC + NMP simultâneos (espasticidade + fasciculações + atrofia).</div>
+    <div class="prova-item"><span class="prova-num">04</span>Síndrome lacunar = consciência PRESERVADA, sem afasia/agnosia. Déficits completos e proporcionados.</div>
+    <div class="prova-item"><span class="prova-num">05</span>Lesão cortical = consciência ALTERADA (sonolência), afasia, negligência.</div>
+    <div class="prova-item"><span class="prova-num">06</span>Tronco encefálico = síndrome CRUZADA: nervo craniano ipsilateral + via longa contralateral.</div>
+    <div class="prova-item"><span class="prova-num">07</span>Wallenberg (bulbo lateral): SEM hemiparesia! Perde dor/temp na FACE ipsilateral e CORPO contralateral. Horner ipsilateral.</div>
+    <div class="prova-item"><span class="prova-num">08</span>Cerebelo = força NORMAL, só coordenação comprometida. Sintomas IPSILATERAIS (duplo cruzamento).</div>
+    <div class="prova-item"><span class="prova-num">09</span>Vertigem central: nistagmo multidirecional, sem hipoacusia, outros sinais neurológicos. Urgência!</div>
+    <div class="prova-item"><span class="prova-num">10</span>Brown-Séquard: perde FORÇA + propriocepção ipsilateral | perde DOR + temperatura contralateral.</div>
+    <div class="prova-item"><span class="prova-num">11</span>Miastenia Gravis: FATIGABILIDADE + FLUTUABILIDADE + sem sensitivo + reflexos normais. Anti-AChR.</div>
+    <div class="prova-item"><span class="prova-num">12</span>Lambert-Eaton: MELHORA com esforço (inverso da MG). Anti-VGCC. Pensar em CPC pulmão.</div>
+    <div class="prova-item"><span class="prova-num">13</span>HIC: Cefaleia holocraniana + vômito em jato (sem náuseas) + edema de papila. VI par = mais afetado.</div>
+    <div class="prova-item"><span class="prova-num">14</span>Tríade de Cushing (HIC grave): Hipertensão + Bradicardia + Bradipneia = herniação iminente!</div>
+    <div class="prova-item"><span class="prova-num">15</span>Síndrome meníngea: rigidez de nuca + Kernig + Brudzinski + febre = meningite até prova contrária.</div>
+    <div class="prova-item"><span class="prova-num">16</span>Miopatia: fraqueza PROXIMAL simétrica + sem sensitivo + reflexos normais. Sinal de Gowers.</div>
+    <div class="prova-item"><span class="prova-num">17</span>Polineuropatia: padrão bota e luva + hiporreflexia distal. DM = causa mais comum.</div>
+    <div class="prova-item"><span class="prova-num">18</span>Nível medular POUPA A FACE. Nível sensitivo bem definido. Disfunção esfincteriana.</div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PARTE 2 — GUILLAIN-BARRÉ
+══════════════════════════════════════════════════════════════ -->
+<div class="page" id="p2">
+
+  <div class="hero">
+    <div class="tag" style="background:rgba(66,165,245,0.15);color:var(--sgb-blue)">Parte 2 · Mapa Mental</div>
+    <h1>Síndrome de <span style="color:var(--sgb-blue)">Guillain-Barré</span></h1>
+    <p>Polirradiculoneurite aguda · NMI · Diagnóstico · Tratamento · Complicações · Prognóstico</p>
+  </div>
+
+  <!-- DEFINIÇÃO + EPIDEMIOLOGIA -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(66,165,245,0.2);color:var(--sgb-blue)">1</div>
+    <h2>Definição, Epidemiologia e Mimetismo Molecular</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card sky">
+      <div class="card-title" style="color:var(--sgb-blue)"><span class="icon">🔬</span> O que é SGB?</div>
+      <div class="highlight hl-sky" style="margin-bottom:10px">
+        <div class="hl-title" style="color:var(--accent5)">Definição</div>
+        Polirradiculoneurite aguda autoimune. Autoanticorpos atacam raízes nervosas e nervos periféricos (SNP). <strong>Princial causa de paralisia flácida aguda no mundo.</strong>
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-blue)"></div><div>Incidência: 1–2 casos/100.000 hab/ano</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-blue)"></div><div>Ambos os sexos · adultos jovens · ↑ com a idade</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-blue)"></div><div>Maior frequência no sexo masculino</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Brasil: surtos ligados a arboviroses (Zika 2015–2016 → 130 casos em PE vs. média de 15/ano)</div></div>
+    </div>
+
+    <div class="card teal">
+      <div class="card-title" style="color:var(--sgb-green)"><span class="icon">🦠</span> Mimetismo Molecular</div>
+      <div class="highlight hl-teal" style="margin-bottom:10px">
+        Agente infeccioso → anticorpos que reagem cruzadamente com estruturas do SNP (gangliosídeos).
+        <br>~2/3 dos pacientes relatam infecção nas <strong>6 semanas anteriores</strong>
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-green)"></div><div><strong>Campylobacter jejuni</strong> — 26–41% dos casos (principal bacteriano) → anti-GM1</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-green)"></div><div>CMV · EBV · Zika · Hepatite E · Mycoplasma</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-green)"></div><div>Intervalo típico: <strong>1–3 semanas</strong> entre infecção e início dos sintomas</div></div>
+      <div class="mnemonic" style="margin-top:10px"><strong>Infecções mais freq:</strong> IVAS + gastroenterocolite (10–20%)</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- FISIOPATOLOGIA -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(38,198,218,0.2);color:var(--sgb-green)">2</div>
+    <h2>Fisiopatologia — Formas Desmielinizante e Axonal</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-title"><span class="icon">🧩</span> Comparativo das Formas</div>
+    <div style="overflow-x:auto">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Característica</th>
+          <th style="color:var(--sgb-blue)">AIDP/PRNDIA (Desmielinizante)</th>
+          <th style="color:var(--accent3)">AMAN (Axonal Motora)</th>
+          <th style="color:var(--accent4)">AMSAN (Axonal Sensitivo-Motora)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Frequência</td><td><strong>~90% dos casos</strong></td><td>Menos comum</td><td>Menos comum</td></tr>
+        <tr><td>Alvo</td><td>Bainha de mielina</td><td>Axolema (axônio motor)</td><td>Axônio motor E sensitivo</td></tr>
+        <tr><td>Mecanismo</td><td>Linfócitos T + macrófagos + complemento</td><td>Humoral predominante (anti-GM1/GM2)</td><td>Anti-GM1, anti-GM2</td></tr>
+        <tr><td>Gravidade</td><td>Moderada; boa recuperação</td><td>Mais grave que AIDP</td><td><strong style="color:var(--accent4)">MAIS GRAVE</strong></td></tr>
+        <tr><td>Anticorpos</td><td>Não identificados (forma clássica)</td><td>Anti-GM1, anti-GM2</td><td>Anti-GM1, anti-GM2</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- NMI COMPARISON -->
+  <div class="card sky" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--sgb-blue)"><span class="icon">⚖️</span> Por que SGB é NMI? — Comparativo 1º vs 2º NM</div>
+    <div style="overflow-x:auto">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Característica</th>
+          <th class="th-nmc">1º NM (NMS) — Lesão Central</th>
+          <th class="th-nmp">2º NM (NMI) ← SGB</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Tônus</td><td>ESPÁSTICO (aumentado)</td><td><strong style="color:var(--nmp)">FLÁCIDO ← SGB</strong></td></tr>
+        <tr><td>Reflexos profundos</td><td>EXACERBADOS (hiperreflexia)</td><td><strong style="color:var(--nmp)">AUSENTES (arreflexia) ← SGB</strong></td></tr>
+        <tr><td>Atrofia</td><td>Tardia (desuso)</td><td><strong style="color:var(--nmp)">PRECOCE e PROEMINENTE ← SGB</strong></td></tr>
+        <tr><td>Babinski</td><td>PRESENTE (patognomônico)</td><td><strong style="color:var(--nmp)">AUSENTE ← SGB</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="caution" style="margin-top:10px">
+      <div class="caution-title">⚠️ Babinski em suposta SGB</div>
+      Presença de Babinski em paciente com suspeita de SGB → DÚVIDA DIAGNÓSTICA → investigar lesão central (mielite transversa?)
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CLÍNICA -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(66,165,245,0.2);color:var(--sgb-blue)">3</div>
+    <h2>Manifestações Clínicas e Variantes</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card sky">
+      <div class="card-title" style="color:var(--sgb-blue)"><span class="icon">📋</span> Quadro Clínico Clássico (AIDP)</div>
+      <div class="timeline">
+        <div class="tl-item"><strong style="color:var(--accent3)">Fraqueza muscular</strong><span>Ascendente (MMII → MMSS → face) · Flácida · Simétrica · Rapidamente progressiva em dias</span></div>
+        <div class="tl-item"><strong style="color:var(--accent4)">Arreflexia</strong><span>Cardinal da SGB · Babinski AUSENTE</span></div>
+        <div class="tl-item"><strong style="color:var(--sgb-blue)">Pares cranianos (~50%)</strong><span>Paralisia facial BILATERAL mais comum · Disfagia · Disartria</span></div>
+        <div class="tl-item"><strong style="color:var(--accent6)">Disautonomia (~50%)</strong><span>Taquicardia sinusal (50%) · Arritmias · Hiper/hipotensão · Disfunção urinária/intestinal</span></div>
+        <div class="tl-item"><strong style="color:var(--accent4)">Insuf. Respiratória (~30%)</strong><span>Musculatura respiratória + diafragma</span></div>
+        <div class="tl-item"><strong style="color:var(--muted)">Pico: 1–4 semanas</strong><span>Geralmente &lt;2 semanas → NADIR → platô → recuperação</span></div>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <div class="card-title" style="color:var(--sgb-green)"><span class="icon">🔀</span> Variantes Clínicas</div>
+      <div class="subcard" style="border-color:rgba(171,71,188,0.3)">
+        <div class="subcard-title" style="color:var(--accent6)">Miller-Fisher (5–25%)</div>
+        Tríade: <strong>OFTALMOPLEGIA + ATAXIA + ARREFLEXIA</strong><br>
+        Sem fraqueza importante em membros · Anticorpo: <strong>anti-GQ1b</strong> (90%) · Benigna, recuperação ~6 meses<br>
+        <small style="color:var(--muted)">DDx: Encefalite de Bickerstaff (também anti-GQ1b, mas + alteração consciência + sinais piramidais)</small>
+      </div>
+      <div class="subcard" style="margin-top:8px;border-color:rgba(239,83,80,0.3)">
+        <div class="subcard-title" style="color:var(--accent4)">Pandisautonômica Aguda</div>
+        Rara · Falência simpático E parassimpático · Hipotensão postural · Arritmias · Diarreia
+      </div>
+      <div class="subcard" style="margin-top:8px">
+        <div class="subcard-title" style="color:var(--muted)">Outras</div>
+        Paraparética (5–10%) · Faríngea-cervical-braquial · Diplopia facial bilateral · Puramente sensitiva (&lt;1%)
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- DIAGNÓSTICO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(38,198,218,0.2);color:var(--sgb-green)">4</div>
+    <h2>Diagnóstico — Critérios, LCR, ENMG</h2>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:20px">
+    <div class="card teal">
+      <div class="card-title" style="color:var(--sgb-green)"><span class="icon">📊</span> Critérios NINDS (Asbury)</div>
+      <div class="highlight hl-teal" style="margin-bottom:10px">
+        <div class="hl-title" style="color:var(--accent2)">OBRIGATÓRIOS (ambos)</div>
+        1. Fraqueza progressiva bilateral MMII e/ou MMSS<br>
+        2. Hipo/arreflexia nos membros afetados
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent2)">Que fortalecem</div>
+        Progressão &lt;4 sem · Simetria relativa · Paralisia facial bilateral · Disautonomia · LCR dissociação · ENMG anormal
+      </div>
+      <div class="caution" style="margin-top:8px">
+        <div class="caution-title">🚩 Red Flags (põem em dúvida)</div>
+        Assimetria marcante · Nível sensitivo (→ mielite!) · Disfunção vesical precoce · Febre no início · Progressão &gt;4 sem
+      </div>
+    </div>
+
+    <div class="card sky">
+      <div class="card-title" style="color:var(--sgb-blue)"><span class="icon">🧪</span> LCR — Dissociação Albumino-Citológica</div>
+      <div class="list-item"><div class="dot" style="background:var(--accent3)"></div><div><strong style="color:var(--accent3)">Proteína ELEVADA</strong> (&gt;40mg/dL, até 200mg/dL)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div><strong style="color:var(--accent2)">Células NORMAIS</strong> (≤4–10/mm³)</div></div>
+      <div class="caution" style="margin-top:10px">
+        <div class="caution-title">⏰ Timing Crítico!</div>
+        1ª semana: LCR <strong>NORMAL</strong> em 30–50% → NÃO exclui SGB<br>
+        Pico da proteína: 4–6 semanas
+      </div>
+      <div class="highlight hl-amber" style="margin-top:8px">
+        <div class="hl-title" style="color:var(--accent3)">Pleocitose &gt;50 cél → outra causa!</div>
+        Meningite linfocítica · Carcinomatose · Mielite infecciosa
+      </div>
+    </div>
+
+    <div class="card purple">
+      <div class="card-title" style="color:var(--accent1)"><span class="icon">⚡</span> ENMG</div>
+      <div class="subcard" style="margin-bottom:8px">
+        <div class="subcard-title" style="color:var(--sgb-blue)">Forma Desmielinizante</div>
+        ↑ Latência motora distal · Bloqueio de condução · ↑ Latência onda F · "Sural sparing"
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent4)">Forma Axonal</div>
+        ↓ Amplitude potenciais · SEM características de desmielinização
+      </div>
+      <div class="highlight hl-purple" style="margin-top:8px">
+        <div class="hl-title" style="color:var(--accent1)">Maior rendimento</div>
+        3–8 semanas do início · Pode ser normal na 1ª semana · Não é indispensável
+      </div>
+    </div>
+  </div>
+
+  <!-- DIFERENCIAIS -->
+  <div class="card coral" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent4)"><span class="icon">🔄</span> Diagnósticos Diferenciais</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent4)">Mielite Transversa</div>
+        Nível sensitivo + disfunção esfincteriana PRECOCE + Babinski + hiperreflexia
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent3)">Miastenia Gravis</div>
+        Fraqueza FLUTUANTE (piora exercício) · Reflexos normais · Início ocular
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent6)">Botulismo</div>
+        Fraqueza DESCENDENTE · Paralisia craniana proeminente · SEM sensitivo · LCR normal
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent5)">AVC de Tronco</div>
+        Babinski + hiperreflexia + alteração consciência (sinais centrais)
+      </div>
+    </div>
+    <div class="mnemonic" style="margin-top:12px">
+      <strong>Red Flags que AFASTAM SGB:</strong> Nível sensitivo + esfincter precoce = mielite · Flutuante = MG · Descendente = botulismo · Febre + pleocitose = infecção medular
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TRATAMENTO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(66,165,245,0.2);color:var(--sgb-blue)">5</div>
+    <h2>Tratamento e Manejo (10 Passos)</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card sky">
+      <div class="card-title" style="color:var(--sgb-blue)"><span class="icon">💉</span> IgIV — 1ª Linha de Escolha</div>
+      <div class="highlight hl-sky">
+        <div class="hl-title" style="color:var(--accent5)">Dose</div>
+        <strong>400 mg/kg/dia por 5 dias</strong> = total 2g/kg
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-blue)"></div><div>Iniciar até <strong>2 semanas</strong> do início da fraqueza</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>Fácil administração · Disponível no SUS</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>Preferível em grávidas, crianças, instabilidade hemodinâmica</div></div>
+    </div>
+
+    <div class="card teal">
+      <div class="card-title" style="color:var(--sgb-green)"><span class="icon">🔄</span> Plasmaférese — Igualmente Eficaz</div>
+      <div class="highlight hl-teal">
+        <div class="hl-title" style="color:var(--accent2)">Esquema</div>
+        <strong>4–5 sessões</strong> (200–250 mL/kg total)
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--sgb-green)"></div><div>Até <strong>4 semanas</strong> do início</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Requer acesso central e equipe treinada</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Mais complexa para crianças e grávidas</div></div>
+      <div class="caution" style="margin-top:10px">
+        <div class="caution-title">⛔ Corticoides = INEFICAZES</div>
+        8 ECRs sem benefício · Corticoide ORAL pode até piorar o desfecho!
+      </div>
+    </div>
+  </div>
+
+  <div class="card amber" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent3)"><span class="icon">🏥</span> UTI e Monitoramento</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px">Critérios de Admissão em UTI</div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Progressão rápida da fraqueza (&lt;2 sem)</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Disautonomia (instabilidade FC e PA)</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Desconforto respiratório ou disfagia grave</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>EGRIS &gt;4</div></div>
+      </div>
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px">Regra 20/30/40 — Intubação</div>
+        <div class="highlight hl-coral">
+          CV &lt;20 mL/kg <strong>OU</strong> PImáx &lt;30 cmH₂O <strong>OU</strong> PEmáx &lt;40 cmH₂O → Alto risco de falência respiratória → avaliar intubação
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--muted)">Incapaz de contar até 15 em uma expiração = prediz VMI</div>
+      </div>
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px">EGRIS Score</div>
+        <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>0–2: baixo risco VMI (4%)</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent3)"></div><div>3–4: risco intermediário (24%)</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>≥5: alto risco VMI (65%)</div></div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted)">Até 22% dos pacientes necessitam VMI na 1ª semana</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PROGNÓSTICO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(46,207,168,0.2);color:var(--accent2)">6</div>
+    <h2>Complicações, Prognóstico e Reabilitação</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card teal">
+      <div class="card-title" style="color:var(--accent2)"><span class="icon">📈</span> Prognóstico</div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>~85% recuperação funcional satisfatória</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>~80% recuperam marcha independente em 6 meses</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent3)"></div><div>Mortalidade: <strong>3–10%</strong> (mesmo com tratamento)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Fadiga residual: 60–80% dos pacientes</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Dor neuropática: &gt;1/3 dos pacientes a 1 ano</div></div>
+      <div class="highlight hl-teal" style="margin-top:10px">
+        <div class="hl-title" style="color:var(--accent2)">Curso da doença</div>
+        MONOFÁSICO · Recidivas: 2–5% · TRF (fluctuações): 6–10%<br>
+        Recidivas repetidas → reclassificar como CIDP
+      </div>
+    </div>
+
+    <div class="card sky">
+      <div class="card-title" style="color:var(--sgb-blue)"><span class="icon">🏋️</span> Complicações e Reabilitação</div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent4)">Complicações Diretas</div>
+        IR (~30%) · Disautonomia (65%) · Pico risco: 2ª–3ª semana
+      </div>
+      <div class="subcard" style="margin-top:8px">
+        <div class="subcard-title" style="color:var(--accent3)">Indiretas (imobilização)</div>
+        TVP · Pneumonia · Escaras · Dor neuropática · Hiponatremia (SIADH) · Depressão
+      </div>
+      <div class="subcard" style="margin-top:8px">
+        <div class="subcard-title" style="color:var(--accent2)">Reabilitação — Início PRECOCE</div>
+        Fisioterapia motora + respiratória · Fonoaudiologia · Terapia ocupacional · Psicologia · Nutrição<br>
+        <small style="color:var(--muted)">Dor neuropática: gabapentina, pregabalina, amitriptilina</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROVA SGB -->
+  <div class="prova-box">
+    <div class="prova-title">🎯 Pontos para Acertar na Prova — Guillain-Barré</div>
+    <div class="prova-item"><span class="prova-num">01</span>SGB = NMI = flácida, arrefléxica, SEM Babinski, SEM nível sensitivo, SEM disfunção esfincteriana precoce</div>
+    <div class="prova-item"><span class="prova-num">02</span>Principal agente bacteriano: <strong>Campylobacter jejuni</strong> (26–41%) → anti-GM1 → forma axonal</div>
+    <div class="prova-item"><span class="prova-num">03</span>Infecção antecede em 1–3 semanas · 2/3 dos pacientes têm infecção prévia nas 6 semanas antes</div>
+    <div class="prova-item"><span class="prova-num">04</span>LCR na 1ª semana pode ser NORMAL (30–50%) → NÃO exclui SGB. Dissociação albumino-citológica aparece depois</div>
+    <div class="prova-item"><span class="prova-num">05</span>Miller-Fisher: oftalmoplegia + ataxia + arreflexia + anti-GQ1b. Geralmente benigna</div>
+    <div class="prova-item"><span class="prova-num">06</span>Tratamento: IgIV (1ª linha) ou Plasmaférese. IGUALMENTE eficazes. Corticoides = CONTRAINDICADOS</div>
+    <div class="prova-item"><span class="prova-num">07</span>IgIV: 400mg/kg/dia × 5 dias (total 2g/kg) → iniciar em até 2 semanas</div>
+    <div class="prova-item"><span class="prova-num">08</span>Regra 20/30/40: CV&lt;20 ou PImáx&lt;30 ou PEmáx&lt;40 → risco alto de VMI</div>
+    <div class="prova-item"><span class="prova-num">09</span>Pico dos sintomas: 1–4 semanas (geralmente &lt;2 semanas). Nadir = maior risco de IR</div>
+    <div class="prova-item"><span class="prova-num">10</span>Disautonomia em até 65% · Taquicardia sinusal é a mais comum (50%) · Pode ser fatal!</div>
+    <div class="prova-item"><span class="prova-num">11</span>Mortalidade 3–10% mesmo com tratamento. Principais causas: cardiovasculares e respiratórias</div>
+    <div class="prova-item"><span class="prova-num">12</span>Babinski em suspeita de SGB = DÚVIDA DIAGNÓSTICA. Pensar em mielite transversa</div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PARTE 3 — CEFALÉIAS
+══════════════════════════════════════════════════════════════ -->
+<div class="page" id="p3">
+
+  <div class="hero">
+    <div class="tag" style="background:rgba(240,98,146,0.15);color:var(--cefaleia-pink)">Parte 3 · Mapa Mental</div>
+    <h1>Cefaléias — <span style="color:var(--cefaleia-pink)">Neurologia</span></h1>
+    <p>ICHD-III · Enxaqueca · Tensional · Em Salvas · Neuralgia do Trigêmeo · Secundárias</p>
+  </div>
+
+  <!-- CLASSIFICAÇÃO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(240,98,146,0.2);color:var(--cefaleia-pink)">1</div>
+    <h2>Classificação ICHD-III e Epidemiologia</h2>
+  </div>
+
+  <div class="card pink" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--mening)"><span class="icon">📚</span> ICHD-III 2018 — As 3 Partes</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+      <div class="highlight hl-pink">
+        <div class="hl-title" style="color:var(--cefaleia-pink)">Parte 1 — Primárias (~90%)</div>
+        Grupo 1: <strong>Enxaqueca</strong> (com/sem aura, crônica)<br>
+        Grupo 2: <strong>Tensional</strong> (episódica infrequente, frequente, crônica)<br>
+        Grupo 3: <strong>Trigêmino-autonômicas</strong> (salvas, HPC, SUNCT)<br>
+        Grupo 4: Outras primárias (tosse, esforço, sexual)
+      </div>
+      <div class="highlight hl-amber">
+        <div class="hl-title" style="color:var(--accent3)">Parte 2 — Secundárias (~10%)</div>
+        Grupos 5–12 · Atribuídas a causa orgânica identificável:<br>
+        Trauma · Vascular · Intracraniana · Infecção · Homeostase · Medicamentos · Psiquiátrico
+      </div>
+      <div class="highlight hl-purple">
+        <div class="hl-title" style="color:var(--accent1)">Parte 3 — Neuralgias</div>
+        Neuralgias cranianas · Neuralgia do trigêmeo · Dores faciais atípicas
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:13px;color:var(--muted)">
+      Prevalência: <strong style="color:var(--text)">90% dos homens e 95% das mulheres</strong> têm cefaleia ao longo de um ano. ~9,3% das queixas médicas.
+    </div>
+  </div>
+
+  <!-- RED FLAGS -->
+  <div class="card coral" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent4)"><span class="icon">🚩</span> Red Flags — Investigar Cefaleia Secundária</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Thunderclap</div>Pior cefaleia da vida, pico em segundos → HSA?</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Início após 50 anos</div>Arterite células gigantes · Neoplasia</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Alteração neurológica</div>Exame focal ou alteração estado mental</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Febre + rigidez de nuca</div>Meningite até prova contrária</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Imunossupressão/Câncer</div>Metástase · Infecção oportunista</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Piora progressiva contínua</div>HIC · Neoplasia</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Esforço/Tosse/Sexual</div>Aneurisma · HIC</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Trauma recente</div>Hematoma subdural/epidural</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ENXAQUECA -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(149,117,205,0.2);color:var(--cefaleia-purple)">2</div>
+    <h2>Enxaqueca (Migrânea)</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card violet">
+      <div class="card-title" style="color:var(--cefaleia-purple)"><span class="icon">📋</span> Critérios ICHD-III — Sem Aura</div>
+      <div class="highlight hl-purple" style="margin-bottom:10px">
+        <div class="hl-title">A — ≥5 crises · B, C, D, E</div>
+      </div>
+      <div class="subcard" style="margin-bottom:8px">
+        <div class="subcard-title" style="color:var(--cefaleia-purple)">B — Duração 4–72h</div>
+        (sem tratamento ou com tratamento ineficaz)
+      </div>
+      <div class="subcard" style="margin-bottom:8px">
+        <div class="subcard-title" style="color:var(--cefaleia-purple)">C — ≥2 de 4 características</div>
+        1. Unilateral · 2. Pulsátil · 3. Moderada/forte (EVA≥5) · 4. Piora com atividade física
+      </div>
+      <div class="subcard" style="margin-bottom:8px">
+        <div class="subcard-title" style="color:var(--cefaleia-purple)">D — ≥1 de</div>
+        1. Náusea e/ou vômito · 2. Fotofobia E fonofobia
+      </div>
+      <div class="mnemonic">
+        <strong>Lembrar:</strong> 5 crises · 4-72h · 2 de 4 características · Foto+Fono OU náuseas<br>
+        Mulheres 2-3:1 · Pico 35–45 anos
+      </div>
+    </div>
+
+    <div class="card violet">
+      <div class="card-title" style="color:var(--cefaleia-purple)"><span class="icon">⚡</span> Aura — Critérios</div>
+      <div class="highlight hl-purple" style="margin-bottom:10px">
+        Fenômenos neurológicos focais REVERSÍVEIS antes ou durante a cefaleia
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Duração: <strong>5–60 minutos</strong> por tipo de sintoma</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Visual (mais comum): escotoma cintilante, fortification spectra</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Sensitiva: parestesia unilateral</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Motora (hemiplégica): rara, pode persistir &gt;60min</div></div>
+      <div class="caution" style="margin-top:10px">
+        <div class="caution-title">⚠️ Enxaqueca com Aura + ACO combinado</div>
+        Risco de AVC ~23x o basal! Contraindicação absoluta (OMS Cat 4). + Tabagismo aumenta mais ainda
+      </div>
+    </div>
+  </div>
+
+  <!-- TRATAMENTO ENXAQUECA -->
+  <div class="card" style="margin-bottom:20px;border-color:rgba(149,117,205,0.3)">
+    <div class="card-title" style="color:var(--cefaleia-purple)"><span class="icon">💊</span> Tratamento das Crises — Por Intensidade</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent2)">Crise FRACA — VO</div>
+        AAS 1000mg · Paracetamol 1000mg · Dipirona 1g · Ibuprofeno 800mg · Diclofenaco 50-100mg<br>
+        <small style="color:var(--muted)">+ Metoclopramida/Domperidona se náuseas</small>
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent3)">Crise MODERADA</div>
+        AAS · Naproxeno 750-1000mg · Ergotamina 1-2mg VO<br>
+        <strong style="color:var(--cefaleia-purple)">TRIPTANOS:</strong> Sumatriptano 50-100mg VO / 20mg IN · Rizatriptano 5-10mg · Zolmitriptano 2,5-5mg<br>
+        <small style="color:var(--muted)">CI triptanos: cardiopatia · HAS grave · AVC/AIT · Enxaqueca hemiplégica</small>
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent4)">Crise FORTE — Hospitalar</div>
+        Dipirona 1g IV · Sumatriptano 6mg SC · Dexametasona 4-8mg IV<br>
+        Haloperidol 5mg IV LENTO · Clorpromazina 0,1-0,7mg/kg IV<br>
+        <small style="color:var(--muted)">❌ Opioides: SEM eficácia + agravam cronificação</small>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--accent3)">⚡ Usar o medicamento PRECOCEMENTE (início da aura ou primeiros sintomas) = maior eficácia!</div>
+  </div>
+
+  <!-- PROFILAXIA ENXAQUECA -->
+  <div class="card violet" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--cefaleia-purple)"><span class="icon">🛡️</span> Tratamento Profilático — Indicações e Fármacos</div>
+    <div class="grid-2">
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px;color:var(--cefaleia-purple)">Indicações</div>
+        <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>≥3 crises incapacitantes/mês</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Duração &gt;48h frequente</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Enxaqueca crônica (≥15 dias/mês)</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--cefaleia-purple)"></div><div>Contraindicação/ineficácia dos abortivos</div></div>
+        <div class="highlight hl-purple" style="margin-top:10px">
+          Duração mínima: <strong>6 meses</strong><br>
+          Objetivo: ↓≥50% na frequência das crises<br>
+          Aguardar 60–90 dias para julgamento pleno
+        </div>
+      </div>
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px;color:var(--cefaleia-purple)">Fármaco × Comorbidade</div>
+        <div style="overflow-x:auto">
+        <table class="drug-table" style="font-size:12px">
+          <thead><tr><th>Fármaco</th><th>Comorbidade favorecida</th><th>CI principal</th></tr></thead>
+          <tbody>
+            <tr><td>Amitriptilina 25-50mg/noite</td><td>Depressão · Insônia</td><td>Glaucoma · HPB</td></tr>
+            <tr><td>Propranolol 40-120mg/dia</td><td>HAS · Ansiedade</td><td>Asma · Bradicardia</td></tr>
+            <tr><td>Topiramato 25-100mg/dia</td><td>Epilepsia · Obesidade</td><td>Litíase renal · TDAH</td></tr>
+            <tr><td>Valproato 250-500mg/dia</td><td>Epilepsia · Bipolar</td><td><strong style="color:var(--accent4)">GESTAÇÃO!</strong></td></tr>
+            <tr><td>Flunarizina 10mg/noite</td><td>Vertigem · Jovens</td><td>&gt;40 anos (parkinsonismo)</td></tr>
+            <tr><td>Anti-CGRP (SC/mês)</td><td>Refratária ≥2 profiláticos</td><td>Padrão ouro</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CEM -->
+  <div class="card coral" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent4)"><span class="icon">⚠️</span> CEM — Cefaleia por Excesso de Medicamentos (Enxaqueca Transformada)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+      <div>
+        <div class="subcard-title" style="color:var(--accent4)">Critério</div>
+        Uso de abortivos &gt;10 dias/mês por &gt;3 meses → cefaleia diária ou quase diária
+      </div>
+      <div>
+        <div class="subcard-title" style="color:var(--accent3)">Fisiopato</div>
+        Down-regulation vias inibitórias → dessensibilização · Profiláticos INEFICAZES enquanto CEM presente
+      </div>
+      <div>
+        <div class="subcard-title" style="color:var(--accent2)">Conduta</div>
+        1. Suspensão ABRUPTA dos medicamentos<br>
+        2. AINHs/corticoides curtos (abstinência 2-10 dias)<br>
+        3. Profilaxia (Topiramato ou Amitriptilina)<br>
+        4. TCC + Educação do paciente
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- COMPARATIVO DAS 3 CEFALÉIAS -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(38,198,218,0.2);color:var(--sgb-green)">3</div>
+    <h2>Comparativo das 3 Principais Cefaléias Primárias</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-title"><span class="icon">⚖️</span> Enxaqueca vs Tensional vs Em Salvas</div>
+    <div style="overflow-x:auto">
+    <table class="compare-table" style="font-size:12.5px">
+      <thead>
+        <tr>
+          <th>Característica</th>
+          <th style="color:var(--cefaleia-purple)">🟣 Enxaqueca</th>
+          <th style="color:var(--accent5)">🔵 Tensional</th>
+          <th style="color:var(--accent4)">🔴 Em Salvas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Sexo</td><td>F&gt;M (2-3:1)</td><td>F=M</td><td><strong style="color:var(--accent4)">M&gt;&gt;&gt;F (6:1)</strong></td></tr>
+        <tr><td>Idade</td><td>20-50 (pico 35-45)</td><td>Qualquer</td><td>20-40 anos</td></tr>
+        <tr><td>Localização</td><td>Unilateral (pode bilateral)</td><td><strong>"Capacete" bilateral</strong></td><td><strong style="color:var(--accent4)">UNILATERAL orbital</strong></td></tr>
+        <tr><td>Caráter</td><td>Pulsátil</td><td>Pressão/aperto</td><td><strong style="color:var(--accent4)">Excruciante — facada</strong></td></tr>
+        <tr><td>Intensidade</td><td>Moderada a forte</td><td>Leve a moderada</td><td><strong style="color:var(--accent4)">MUITO FORTE (a pior)</strong></td></tr>
+        <tr><td>Duração</td><td>4–72 horas</td><td>30 min–7 dias</td><td><strong style="color:var(--accent4)">15–180 minutos</strong></td></tr>
+        <tr><td>Náusea/Vômito</td><td>Presente ✔</td><td><strong>AUSENTE ✗</strong></td><td>Ausente</td></tr>
+        <tr><td>Foto+Fono</td><td>Ambas (ou ao menos uma)</td><td>Uma ou nenhuma</td><td>Ipsilateral leve</td></tr>
+        <tr><td>Sintomas autonômicos</td><td>Ausentes</td><td>Ausentes</td><td><strong style="color:var(--accent4)">IPSILATERAIS (lacrimejamento, rinorreia, ptose, miose)</strong></td></tr>
+        <tr><td>Comportamento crise</td><td>Imóvel, deitado</td><td>Pode manter atividade</td><td><strong style="color:var(--accent4)">AGITADO, inquieto</strong></td></tr>
+        <tr><td>Atividade física</td><td>PIORA</td><td>Não piora</td><td>—</td></tr>
+        <tr><td>Sono</td><td>Melhora</td><td>Pode piorar</td><td><strong style="color:var(--accent4)">50% acordam à noite (1º REM)</strong></td></tr>
+        <tr><td>Gatilho principal</td><td>Múltiplos</td><td>Estresse/postura</td><td><strong style="color:var(--accent4)">ÁLCOOL (durante surto)</strong></td></tr>
+        <tr><td>Aura</td><td>15–25% dos casos</td><td>Não</td><td>Não</td></tr>
+        <tr><td>Epidemiologia</td><td>Prevalente</td><td>MAIS PREVALENTE (até 80%)</td><td>Rara (0,4–1%); homens tabagistas</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- CEFALEIA EM SALVAS -->
+  <div class="card coral" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent4)"><span class="icon">🔥</span> Cefaleia em Salvas — Tratamento</div>
+    <div class="grid-2">
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px;color:var(--accent4)">Crise Aguda — 1ª Linha</div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div><strong>O₂ 100%</strong>: 7–10 L/min × 15min (máscara reservatório) · Eficácia 60–70%</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div><strong>Sumatriptano 6mg SC</strong>: inicio 5–10min · OU spray nasal 20mg</div></div>
+      </div>
+      <div>
+        <div class="subcard-title" style="margin-bottom:8px;color:var(--accent4)">Profilaxia (iniciar IMEDIATAMENTE ao surto)</div>
+        <div class="list-item"><div class="dot" style="background:var(--accent3)"></div><div><strong>Prednisona</strong> 40-80mg/dia (ponte rápida) + desmame gradual</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div><strong>Verapamil</strong> 120-480mg/dia (1ª linha) — 2–3 semanas para eficácia</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>Lítio</strong> 300-900mg/dia · Topiramato · Galcanezumabe</div></div>
+        <div class="mnemonic" style="margin-top:8px">
+          <strong>Estratégia:</strong> iniciar prednisona + verapamil juntos. A prednisona faz a "ponte" enquanto o verapamil não age.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- NEURALGIA DO TRIGÊMEO -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(240,98,146,0.2);color:var(--cefaleia-pink)">4</div>
+    <h2>Neuralgia do Trigêmeo</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card pink">
+      <div class="card-title" style="color:var(--mening)"><span class="icon">⚡</span> Características</div>
+      <div class="highlight hl-pink">
+        Dor PAROXÍSTICA, UNILATERAL, BREVÍSSIMA (fração de segundo a 2min), caráter de CHOQUE ELÉTRICO
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Divisões: V2 (maxilar) &gt; V3 (mandibular) &gt; V1 (oftálmico)</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div><strong>Zonas de gatilho</strong>: toque leve, falar, mastigar, escovar dentes → evita essas atividades</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--mening)"></div><div>Mais comum após 50 anos · Mulheres &gt; Homens</div></div>
+      <div class="caution" style="margin-top:8px">
+        <div class="caution-title">V1 acometido → investigar herpes zoster / EM</div>
+        NT bilateral → investigar Esclerose Múltipla!
+      </div>
+    </div>
+
+    <div class="card pink">
+      <div class="card-title" style="color:var(--mening)"><span class="icon">💊</span> Tratamento NT</div>
+      <div class="subcard" style="margin-bottom:8px;border-color:rgba(236,64,122,0.3)">
+        <div class="subcard-title" style="color:var(--mening)">1ª Linha — CARBAMAZEPINA</div>
+        100-200mg → titular até 400-800mg/dia (máx 1200mg)<br>
+        Bloqueio canais Na⁺ · Eficácia 70–80%<br>
+        <small style="color:var(--muted)">Monitorar: hemograma · Na · função hepática</small>
+      </div>
+      <div class="subcard" style="margin-bottom:8px">
+        <div class="subcard-title">Alternativas</div>
+        Oxcarbazepina (menos interações) · Gabapentina · Pregabalina
+      </div>
+      <div class="subcard">
+        <div class="subcard-title" style="color:var(--accent3)">Cirúrgico (refratário)</div>
+        Descompressão microvascular (Jannetta) · Rizotomia RF · Gamma Knife · Balão
+      </div>
+      <div class="mnemonic" style="margin-top:8px">
+        <strong>Urgência:</strong> Fenitoína IV 250mg lento para controle agudo da dor
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CEFALÉIAS SECUNDÁRIAS + TVC -->
+  <div class="sec-header">
+    <div class="sec-num" style="background:rgba(247,183,49,0.2);color:var(--accent3)">5</div>
+    <h2>Cefaléias Secundárias e Situações Especiais</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="card amber">
+      <div class="card-title" style="color:var(--accent3)"><span class="icon">🧠</span> Causas Vasculares Intracranianas</div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div><strong>HSA</strong>: "pior cefaleia da vida" · thunderclap · rigidez de nuca</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent3)"></div><div><strong>AVC isquêmico</strong>: ~30% têm cefaleia + déficit focal</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div><strong>Trombose Venosa Cerebral (TVC)</strong>: progressiva 70-91% · papiledema · convulsões</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent5)"></div><div><strong>Dissecção arterial</strong>: unilateral súbita + Horner ou dor cervical</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div><strong>HAS grave (≥180/120)</strong>: cefaleia difusa · occipital · pulsátil</div></div>
+    </div>
+
+    <div class="card amber">
+      <div class="card-title" style="color:var(--accent3)"><span class="icon">🩸</span> TVC — Diagnóstico e Tratamento</div>
+      <div class="highlight hl-amber" style="margin-bottom:10px">
+        <div class="hl-title" style="color:var(--accent3)">Sinal Delta Vazio</div>
+        TC com contraste: ausência de enchimento do seio sagital superior trombosado
+      </div>
+      <div class="list-item"><div class="dot" style="background:var(--accent6)"></div><div>ACO combinado: risco ~4x · + Aura migranosa: risco muito elevado = <strong>CONTRAINDICAÇÃO</strong></div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Puerpério: risco 60x o basal!</div></div>
+      <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div><strong>Tratamento:</strong> Heparina IV → anticoagulação oral 6 meses · Suspender ACO · Anticonvulsivante se crises</div></div>
+      <div class="caution" style="margin-top:8px">
+        <div class="caution-title">Caso Clínico Clássico</div>
+        Mulher jovem + ACO + tabagista + enxaqueca com aura → TVC ou AVC. NÃO prescrever ACO combinado!
+      </div>
+    </div>
+  </div>
+
+  <!-- GRUPO 4 - OUTRAS PRIMÁRIAS -->
+  <div class="card teal" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent2)"><span class="icon">💡</span> Grupo 4 — Outras Cefaléias Primárias (Indometacino-Responsivas)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent2)">Hemicrania Paroxística</div>Similar a salvas, mas MAIS CURTA (5-30min) e MAIS FREQUENTE (5-40/dia) · Resposta ABSOLUTA à indometacina</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent2)">Cefaleia da Tosse</div>Desencadeada por tosse · Sempre investigar Chiari ou lesão fossa posterior (RM obrigatória)</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent2)">Cefaleia do Esforço</div>5min–48h · Investigar aneurisma ou MAV na 1ª crise</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent2)">Cefaleia Sexual</div>Orgasmo · SEMPRE investigar na 1ª ocorrência (RM + angioRM). Se normal: indometacina preventiva</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent2)">Hemicrania Contínua</div>Dor CONTÍNUA unilateral + exacerbações + autonômicos · Resposta ABSOLUTA à indometacina</div>
+      <div class="subcard"><div class="subcard-title" style="color:var(--accent4)">Cefaleia Trovoada Primária</div>Pico &lt;1min · DIAGNÓSTICO DE EXCLUSÃO → afastar HSA, TVC, RCVS</div>
+    </div>
+  </div>
+
+  <!-- PS ALGORITHM -->
+  <div class="card sky" style="margin-bottom:20px">
+    <div class="card-title" style="color:var(--accent5)"><span class="icon">🏥</span> Algoritmo no Pronto-Socorro</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="subcard-title" style="color:var(--accent4);margin-bottom:8px">🚨 Investigar IMEDIATAMENTE (TC ± PL)</div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Thunderclap / "pior cefaleia da vida"</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Início após 50 anos</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Déficit neurológico focal / alteração consciência</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Febre + rigidez de nuca</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Câncer / HIV / imunossuprimido</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent4)"></div><div>Papiledema · Trauma recente</div></div>
+      </div>
+      <div>
+        <div class="subcard-title" style="color:var(--accent2);margin-bottom:8px">✅ Tratar como Primária</div>
+        <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>Preenche critérios ICHD-III da primária conhecida</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>SEM sinais de alerta</div></div>
+        <div class="list-item"><div class="dot" style="background:var(--accent2)"></div><div>Padrão habitual do paciente</div></div>
+        <div style="margin-top:10px;font-size:13px">
+          → Dipirona IV · AINH · Antiemético<br>
+          → Triptanos se enxaqueca moderada (sem CI)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILAXIA RESUMO -->
+  <div class="card" style="margin-bottom:20px;border-color:rgba(149,117,205,0.3)">
+    <div class="card-title" style="color:var(--cefaleia-purple)"><span class="icon">📊</span> Resumo dos Profiláticos por Condição</div>
+    <div style="overflow-x:auto">
+    <table class="drug-table">
+      <thead><tr><th>Fármaco</th><th>Indicação preferencial</th><th>Contraindicação</th><th>Dose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Amitriptilina</strong></td><td>Depressão + enxaqueca + insônia</td><td>Glaucoma · HPB · Arritmias</td><td>25-50mg/noite</td></tr>
+        <tr><td><strong>Propranolol</strong></td><td>HAS + ansiedade + enxaqueca</td><td>Asma · DPOC · DM · Bradicardia</td><td>40-120mg/dia</td></tr>
+        <tr><td><strong>Topiramato</strong></td><td>Epilepsia + obesidade + enxaqueca</td><td>Litíase renal · Glaucoma · TDAH</td><td>25-100mg/dia</td></tr>
+        <tr><td><strong>Valproato</strong></td><td>Epilepsia · Bipolar + enxaqueca</td><td><strong style="color:var(--accent4)">GESTAÇÃO (teratogênico)</strong> · Hepatopatia</td><td>250-500mg/dia</td></tr>
+        <tr><td><strong>Flunarizina</strong></td><td>Vertigem + enxaqueca · Jovens magros</td><td>&gt;40 anos (parkinsonismo) · Depressão</td><td>10mg/noite</td></tr>
+        <tr><td><strong>Anti-CGRP</strong> (erenumabe etc.)</td><td>Enxaqueca refratária ≥2 profiláticos</td><td>Gestação (dados insuficientes)</td><td>SC 1x/mês, mín 6 meses</td></tr>
+        <tr><td><strong>Verapamil</strong></td><td><strong style="color:var(--accent4)">Cefaleia em SALVAS</strong></td><td>BAV · IC descompensada</td><td>120-480mg/dia</td></tr>
+        <tr><td><strong>Lítio</strong></td><td>Salvas crônica refratária</td><td>IRC · Gestação</td><td>300-900mg (litemia 0,6-1,2)</td></tr>
+        <tr><td><strong>Indometacina</strong></td><td>Hemicrania paroxística · Hemicrania contínua</td><td>Úlcera péptica · IRC · Gestação</td><td>25-150mg/dia</td></tr>
+        <tr><td><strong>Carbamazepina</strong></td><td><strong style="color:var(--mening)">Neuralgia do Trigêmeo</strong></td><td>Gravidez · Monitorar hemograma/Na</td><td>Titular até 800mg/dia</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">⏱️ Duração mínima de TODOS os profiláticos: <strong style="color:var(--text)">6 meses</strong>. CEM bloqueia o efeito dos profiláticos!</div>
+  </div>
+
+  <!-- PROVA CEFALEIAS -->
+  <div class="prova-box">
+    <div class="prova-title">🎯 Pontos para Acertar na Prova — Cefaléias</div>
+    <div class="prova-item"><span class="prova-num">01</span>Diagnóstico de cefaleia = CLÍNICO (90% pela anamnese). Diário de cefaleia é ferramenta fundamental</div>
+    <div class="prova-item"><span class="prova-num">02</span>Enxaqueca sem aura: ≥5 crises · 4-72h · ≥2 de {unilateral, pulsátil, moderada/forte, piora com atividade} · Náuseas OU foto+fono</div>
+    <div class="prova-item"><span class="prova-num">03</span>Cefaleia tensional: bilateral · pressão/aperto · SEM náuseas/vômitos · Foto OU fono (apenas uma). A mais prevalente (80%), mas a que menos leva ao médico</div>
+    <div class="prova-item"><span class="prova-num">04</span>Cefaleia em salvas: unilateral orbital · 15-180min · Autonômico ipsilateral · AGITADO (≠ enxaqueca onde fica parado) · H:M=6:1 · Álcool = gatilho</div>
+    <div class="prova-item"><span class="prova-num">05</span>Triptanos: agonistas 5-HT1B/1D · CI em cardiopatia isquêmica · HAS grave · AVC/AIT · Enxaqueca hemiplégica</div>
+    <div class="prova-item"><span class="prova-num">06</span>Tratamento crise em salvas: O₂ 100% 7-10L/min OU Sumatriptano 6mg SC. Profilaxia: Verapamil 1ª linha</div>
+    <div class="prova-item"><span class="prova-num">07</span>Neuralgia do trigêmeo: Carbamazepina = escolha (70-80%). V2&gt;V3&gt;V1. "Zonas de gatilho" = toque leve desencadeia a dor</div>
+    <div class="prova-item"><span class="prova-num">08</span>Enxaqueca com aura + ACO combinado = CONTRAINDICAÇÃO ABSOLUTA (risco AVC ~23x). Usar pílula de progestágeno isolado ou DIU</div>
+    <div class="prova-item"><span class="prova-num">09</span>TVC: cefaleia progressiva + papiledema + convulsões + déficit focal. Tratamento: Heparina → anticoag. oral. Sinal delta vazio na TC</div>
+    <div class="prova-item"><span class="prova-num">10</span>CEM: abortivos &gt;10 dias/mês &gt;3 meses → cefaleia diária. Conduta: suspensão ABRUPTA</div>
+    <div class="prova-item"><span class="prova-num">11</span>Hemicrania paroxística e contínua: resposta ABSOLUTA à indometacina (critério diagnóstico)</div>
+    <div class="prova-item"><span class="prova-num">12</span>Thunderclap headache → SEMPRE investigar HSA (TC + PL se TC negativa)</div>
+    <div class="prova-item"><span class="prova-num">13</span>Cefaleia da tosse/esforço/sexual = SEMPRE investigar com RM na 1ª ocorrência (Chiari, aneurisma, MAV)</div>
+    <div class="prova-item"><span class="prova-num">14</span>Flunarizina &gt;40 anos = contraindicada (risco de parkinsonismo). Valproato gestação = teratogênico</div>
+    <div class="prova-item"><span class="prova-num">15</span>Opioides na enxaqueca: SEM eficácia + agravam cronificação + induzem CEM. NÃO usar!</div>
+  </div>
+
+</div>
+
+<script>
+function goTo(pageId, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
