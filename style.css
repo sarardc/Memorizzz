@@ -100,3 +100,10 @@ main p {
     background-color: #e68a00;
     transform: scale(1.05); /* Efeito de aumentar levemente ao passar o mouse */
 }
+
+footer {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px; /* Evita que o texto fique muito largo em telas grandes */
+    line-height: 1.6;
+}
