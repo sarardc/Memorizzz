@@ -101,9 +101,41 @@ main p {
     transform: scale(1.05); /* Efeito de aumentar levemente ao passar o mouse */
 }
 
+/* Estilização do Rodapé */
 footer {
-    font-size: 1.2rem;
-    color: #666;
-    max-width: 600px; /* Evita que o texto fique muito largo em telas grandes */
-    line-height: 1.6;
+    background-color: #333; /* Mesma cor do menu para manter o padrão */
+    color: white;
+    padding: 20px 0;
+    text-align: center; /* Garante a centralização do texto */
+    
+    /* Centralização robusta com Flexbox */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    width: 100%;
+}
+
+footer p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Opcional: Links de redes sociais no rodapé */
+.footer-links {
+    list-style: none;
+    display: flex;
+    gap: 15px; /* Espaço entre os links */
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #ff9800;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
 }
