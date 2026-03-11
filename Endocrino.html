@@ -28,6 +28,29 @@
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
+    /* Mobile styles */
+    @media screen and (max-width: 600px) {
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        nav .tab {
+            font-size: 14px; /* Reduce font size */
+            flex: 1 0 100%; /* Allow tabs to take full width */
+        }
+
+        .logo {
+            height: 50px; /* Make logo smaller */
+            width: auto;
+        }
+
+        header {
+           
+        }
+    }
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -1694,4 +1717,5 @@
   }
 </script>
 </body>
+
 </html>
