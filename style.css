@@ -41,20 +41,29 @@
         margin-left: 0; /* Remove a margem lateral no celular */
         width: 100%;
     }
-
-    .nav-links a {
-        display: block;
-        padding: 10px;
-        background-color: #444; /* Dá um leve destaque nos botões */
-        border-radius: 5px;
-    }
+    
+/* Estilo global para todos os links do menu */
+.nav-links a {
+    color: white;               /* Muda de azul para branco */
+    text-decoration: none;      /* Remove o sublinhado feio */
+    font-weight: 500;           /* Deixa a letra um pouco mais gordinha */
+    font-size: 1.1rem;          /* Aumenta um pouco o tamanho */
+    transition: all 0.3s ease;  /* Faz as mudanças de cor serem suaves */
+    display: inline-block;
+    padding: 5px 10px;          /* Dá uma área de clique maior */
 }
 
-/* Efeito ao passar o mouse */
+/* Efeito quando você passa o mouse (Hover) */
 .nav-links a:hover {
-    color: #ff9800;
+    color: #ff9800;             /* Muda para laranja (ou a cor que preferir) */
+    transform: translateY(-2px); /* Dá um leve pulinho para cima */
 }
 
+/* Estilo específico para o item "Endocrino" se quiser destacar */
+.nav-links a[href*="endocrino"] {
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Um contorno sutil */
+    border-radius: 4px;
+}
 /* Destaque para a página atual */
 .nav-links a.active {
     border-bottom: 2px solid #ff9800;
