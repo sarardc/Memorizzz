@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurologia — Guia de Revisão Completo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f7f4;color:#1a1a1a;min-height:100vh}
+header{background:#2d2d6b;color:#fff;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100}
+header h1{font-size:18px;font-weight:600;letter-spacing:-.3px}
+header p{font-size:12px;opacity:.7;margin-top:2px}
+.dl-btn{background:#fff;color:#2d2d6b;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.dl-btn:hover{background:#eeedfe}
+.container{max-width:980px;margin:0 auto;padding:1.5rem 1rem}
+
+/* NAV */
+.nav-wrapper{overflow-x:auto;padding-bottom:4px;margin-bottom:1.25rem}
+.nav{display:flex;gap:6px;min-width:max-content}
+.nav button{font-size:12px;font-weight:500;padding:6px 12px;border-radius:20px;border:1.5px solid #d0cfe8;background:#fff;color:#555;cursor:pointer;white-space:nowrap;transition:all .15s}
+.nav button.active{background:#2d2d6b;border-color:#2d2d6b;color:#fff}
+.nav button:hover:not(.active){border-color:#9998d0;color:#2d2d6b;background:#eeedfe}
+
+/* SECTIONS */
+.section{display:none}
+.section.active{display:block;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:#fff;border:1px solid #e5e3f0;border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.card-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:750px){.row3{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.row3{grid-template-columns:1fr}}
+
+/* ITEMS */
+.item{font-size:13px;color:#444;padding:5px 0;border-bottom:1px solid #f0eef8;line-height:1.55}
+.item:last-child{border-bottom:none}
+.item b,.item strong{color:#1a1a1a;font-weight:600}
+.sub{font-size:12px;font-weight:700;color:#2d2d6b;text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px;padding-bottom:4px;border-bottom:2px solid #eeedfe}
+
+/* BADGES */
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
+.b-purple{background:#eeedfe;color:#3c3489}
+.b-teal{background:#e1f5ee;color:#085041}
+.b-red{background:#fcebeb;color:#791f1f}
+.b-amber{background:#faeeda;color:#633806}
+.b-blue{background:#e6f1fb;color:#0c447c}
+.b-coral{background:#faece7;color:#712b13}
+.b-pink{background:#fbeaf0;color:#72243e}
+.b-green{background:#eaf3de;color:#27500a}
+
+/* ALERTS */
+.alert{border-radius:8px;padding:9px 13px;font-size:13px;margin-bottom:10px;border-left:3px solid;line-height:1.5}
+.alert b,.alert strong{font-weight:700}
+.al-red{background:#fcebeb;color:#791f1f;border-color:#e24b4a}
+.al-amber{background:#faeeda;color:#633806;border-color:#ef9f27}
+.al-teal{background:#e1f5ee;color:#085041;border-color:#1d9e75}
+.al-blue{background:#e6f1fb;color:#0c447c;border-color:#378add}
+.al-purple{background:#eeedfe;color:#3c3489;border-color:#7f77dd}
+.al-green{background:#eaf3de;color:#27500a;border-color:#639922}
+
+/* QUIZ */
+.quiz-q{background:#fff;border:1px solid #e5e3f0;border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:14px}
+.quiz-q .qnum{font-size:11px;font-weight:700;color:#9998d0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.quiz-q .qtext{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:10px;line-height:1.5}
+.quiz-q .opts{display:flex;flex-direction:column;gap:6px}
+.quiz-q .opt{font-size:13px;padding:8px 12px;border-radius:8px;border:1.5px solid #e5e3f0;background:#faf9ff;cursor:pointer;text-align:left;color:#333;transition:all .15s}
+.quiz-q .opt:hover:not(:disabled){border-color:#9998d0;background:#eeedfe;color:#2d2d6b}
+.opt.correct{background:#e1f5ee!important;border-color:#1d9e75!important;color:#085041!important}
+.opt.wrong{background:#fcebeb!important;border-color:#e24b4a!important;color:#791f1f!important}
+.opt:disabled{cursor:default}
+.explanation{display:none;margin-top:10px;padding:10px 12px;background:#eeedfe;border-radius:8px;font-size:13px;color:#3c3489;line-height:1.55;border-left:3px solid #7f77dd}
+.explanation.show{display:block}
+.explanation b{font-weight:700}
+.quiz-score{background:#2d2d6b;color:#fff;border-radius:12px;padding:1.25rem;text-align:center;margin-bottom:16px;display:none}
+.quiz-score h2{font-size:22px;margin-bottom:6px}
+.quiz-score p{font-size:14px;opacity:.85}
+.quiz-controls{display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap}
+.qbtn{padding:8px 18px;border-radius:8px;border:1.5px solid #2d2d6b;font-size:13px;font-weight:600;cursor:pointer;background:#2d2d6b;color:#fff;transition:all .15s}
+.qbtn.outline{background:#fff;color:#2d2d6b}
+.qbtn:hover{opacity:.85}
+
+/* TOPIC GRID */
+.topic-intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:1rem}
+.topic-card{background:#fff;border:1px solid #e5e3f0;border-radius:10px;padding:.75rem 1rem;text-align:center;cursor:pointer;transition:all .15s}
+.topic-card:hover{border-color:#9998d0;background:#eeedfe}
+.topic-card .tc-icon{font-size:20px;margin-bottom:4px}
+.topic-card .tc-name{font-size:12px;font-weight:600;color:#2d2d6b}
+
+/* TABLE */
+table.neat{width:100%;border-collapse:collapse;font-size:12.5px}
+table.neat th{background:#2d2d6b;color:#fff;padding:7px 10px;text-align:left;font-weight:600}
+table.neat td{padding:6px 10px;border-bottom:1px solid #f0eef8;color:#333;vertical-align:top}
+table.neat tr:nth-child(even) td{background:#faf9ff}
+
+/* PROGRESS */
+.prog-bar{height:6px;background:#e5e3f0;border-radius:3px;margin-bottom:1rem;overflow:hidden}
+.prog-fill{height:100%;background:#2d2d6b;border-radius:3px;transition:width .4s}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🧠 Neurologia — Guia de Revisão Completo</h1>
+    <p>13 temas • Quiz com gabarito comentado</p>
+  </div>
+  <button class="dl-btn" onclick="downloadPage()">⬇ Baixar HTML</button>
+</header>
+
+<div class="container">
+  <div class="nav-wrapper">
+    <div class="nav" id="mainNav">
+      <button class="active" onclick="show('sono',this)">Distúrbios do sono</button>
+      <button onclick="show('parkinson',this)">Parkinson e mov.</button>
+      <button onclick="show('em',this)">Esclerose múltipla</button>
+      <button onclick="show('desmiel',this)">Doenças desmiel.</button>
+      <button onclick="show('coma',this)">Coma / Morte enc.</button>
+      <button onclick="show('hic',this)">HIC</button>
+      <button onclick="show('hidro',this)">Hidrocefalia</button>
+      <button onclick="show('compressao',this)">Compressões rad.</button>
+      <button onclick="show('tumores',this)">Tumores / Disraf.</button>
+      <button onclick="show('epilepsia',this)">Epilepsia</button>
+      <button onclick="show('avci',this)">AVCi</button>
+      <button onclick="show('ela',this)">ELA</button>
+      <button onclick="show('demencias',this)">Demências</button>
+      <button onclick="show('quiz',this)" style="background:#eeedfe;border-color:#9998d0;color:#2d2d6b">🎯 Quiz</button>
+    </div>
+  </div>
+
+<!-- ===================== SONO ===================== -->
+<div class="section active" id="sono">
+  <div class="alert al-amber"><strong>⚠️ Mais cobrados:</strong> Narcolepsia (cataplexia + hipocretina), RBD como marcador de sinucleinopatia, CPAP para SAOS</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Insônia</span></div>
+      <div class="item"><strong>Definição:</strong> dificuldade em iniciar/manter sono ou despertar precoce; impacto diurno</div>
+      <div class="item"><strong>Primária</strong> (sem causa identificável) vs <strong>secundária</strong> (dor, ansiedade, medicamentos)</div>
+      <div class="item"><strong>Trat.:</strong> TCC-I é 1ª linha; benzodiazepínicos e zolpidem são 2ª linha (risco de dependência)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-red">Narcolepsia</span></div>
+      <div class="item"><strong>Tétrade clássica:</strong> sonolência diurna excessiva + cataplexia + paralisia do sono + alucinações hipnagógicas</div>
+      <div class="item"><strong>Cataplexia:</strong> perda súbita do tônus muscular por emoção (riso, susto)</div>
+      <div class="item"><strong>Fisiopatologia:</strong> deficit de hipocretina/orexina (hipotálamo lateral) — destruição autoimune</div>
+      <div class="item"><strong>Trat.:</strong> modafinil (sonolência); venlafaxina/clomipramina (cataplexia); oxibato de sódio</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-teal">Apneia do Sono</span></div>
+      <div class="item"><strong>SAOS:</strong> colapso das VAS; ronco, dessaturação, sonolência diurna; FDR: obesidade, pescoço grosso, retrognatia</div>
+      <div class="item"><strong>Central:</strong> sem esforço respiratório; ICC, AVC, opioides, altitude</div>
+      <div class="item"><strong>Diagnóstico:</strong> polissonografia (padrão-ouro); IAH ≥5/h</div>
+      <div class="item"><strong>Trat.:</strong> CPAP; emagrecimento; cirurgia (casos selecionados)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-amber">Sínd. Pernas Inquietas</span></div>
+      <div class="item"><strong>Clínica:</strong> desconforto nos MMII, piora no repouso/noite, melhora com movimento</div>
+      <div class="item"><strong>Associação:</strong> déficit de ferro (ferritina &lt;50), gestação, IRC, déficit dopaminérgico</div>
+      <div class="item"><strong>Trat.:</strong> reposição de ferro; agonistas dopaminérgicos (pramipexol, ropinirol)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-blue">Parassônias</span></div>
+    <div class="row">
+      <div>
+        <div class="sub">NREM (sono profundo — início da noite)</div>
+        <div class="item"><strong>Sonambulismo:</strong> deambulação automática + amnésia do episódio; crianças; evitar acordar</div>
+        <div class="item"><strong>Terror noturno:</strong> despertar abrupto com grito + confusão + taquicardia; sem memória do episódio</div>
+        <div class="item"><strong>Despertar confusional:</strong> desorientação ao acordar sem deambulação</div>
+      </div>
+      <div>
+        <div class="sub">REM — RBD ⚠️ (final da noite)</div>
+        <div class="item"><strong>Distúrbio comportamental do REM:</strong> age os sonhos com violência (atonia do REM ausente)</div>
+        <div class="item"><strong>Marcador de sinucleinopatia:</strong> Parkinson, MSA, DCL — pode preceder por décadas</div>
+        <div class="item"><strong>Diagnóstico:</strong> polissonografia (sem atonia no REM)</div>
+        <div class="item"><strong>Trat.:</strong> clonazepam 0,5–2mg hs; melatonina 3–12mg</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PARKINSON ===================== -->
+<div class="section" id="parkinson">
+  <div class="alert al-red"><strong>🚨 Tríade TRB:</strong> Tremor de repouso + Rigidez em roda dentada + Bradicinesia. Instabilidade postural = 4º sinal (tardia)</div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-purple">Fisiopatologia</span></div>
+    <div class="item"><strong>Lesão:</strong> degeneração dos neurônios dopaminérgicos da <strong>substância negra pars compacta</strong></div>
+    <div class="item"><strong>Achado histopatológico:</strong> corpos de Lewy (inclusões intracitoplasmáticas de alfa-sinucleína)</div>
+    <div class="item">Sintomas aparecem com &gt;60–70% de perda neuronal; via nigroestriatal comprometida</div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-red">Sintomas Motores</span></div>
+      <div class="item"><strong>Tremor de repouso:</strong> 4–6 Hz, "pílula rolante/conta-moedas", assimétrico, melhora com ação voluntária</div>
+      <div class="item"><strong>Rigidez:</strong> "roda dentada" (com tremor) ou "cano de chumbo" (sem tremor); resistência ao movimento passivo</div>
+      <div class="item"><strong>Bradicinesia:</strong> lentidão + micrografia + hipomimia + hipofonia + disfagia</div>
+      <div class="item"><strong>Instabilidade postural:</strong> Pull Test positivo (cai para trás sem correção)</div>
+      <div class="item"><strong>Marcha festinante:</strong> passos curtos rápidos, freezing, diminuição balanço braços</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-blue">Sintomas Não-Motores (pré-motores)</span></div>
+      <div class="item"><strong>Anosmia</strong> — sintoma pré-motor mais precoce</div>
+      <div class="item"><strong>Constipação</strong> — precede em anos</div>
+      <div class="item"><strong>RBD</strong> — distúrbio sono REM; age sonhos</div>
+      <div class="item"><strong>Depressão e ansiedade</strong></div>
+      <div class="item"><strong>Demência</strong> — tardia (DCL se precoce)</div>
+      <div class="item"><strong>Disautonomia:</strong> hipotensão ortostática, sialorreia</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Tratamento</span></div>
+    <div class="row">
+      <div>
+        <div class="sub">1ª linha</div>
+        <div class="item"><strong>Levodopa + carbidopa:</strong> mais eficaz; carbidopa inibe DDC periférica → ↑levodopa central; tomar 30min antes das refeições</div>
+        <div class="item"><strong>Agonistas dopaminérgicos:</strong> pramipexol, ropinirol; preferir em jovens (&lt;60a); risco: compulsões, sonolência</div>
+      </div>
+      <div>
+        <div class="sub">Adjuvantes e cirúrgico</div>
+        <div class="item"><strong>MAO-B:</strong> rasagilina, selegilina → ↓catabolismo da dopamina</div>
+        <div class="item"><strong>COMT:</strong> entacapona, tolcapona → prolongam ação da levodopa (usar em wearing off)</div>
+        <div class="item"><strong>DBS (estimulação cerebral profunda):</strong> núcleo subtalâmico; flutuações/discinesias refratárias</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-amber">Complicações da Levodopa e Outros Distúrbios do Movimento</span></div>
+    <div class="item"><strong>Wearing off:</strong> fim do efeito antes da próxima dose; trat: COMT, MAO-B, aumentar doses</div>
+    <div class="item"><strong>Discinesias:</strong> movimentos involuntários no pico do efeito; trat: amantadina, reduzir dose</div>
+    <div class="item"><strong>Tremor essencial:</strong> postural/cinético bilateral, melhora com álcool; trat: propranolol, primidona</div>
+    <div class="item"><strong>Huntington:</strong> autossômica dominante; ↑CAG no cromossomo 4; coréia + demência + psiquiatria; antecipação genética</div>
+    <div class="item"><strong>Distonia:</strong> contrações sustentadas; focal (torcicolo espasmódico) → toxina botulínica; generalizada → anticolinérgicos</div>
+    <div class="item"><strong>Parkinsonismos atípicos (PSP/MSA/DCB):</strong> não respondem a levodopa; queda precoce (PSP), disautonomia grave (MSA)</div>
+  </div>
+</div>
+
+<!-- ===================== EM ===================== -->
+<div class="section" id="em">
+  <div class="alert al-blue"><strong>📌 Critérios de McDonald:</strong> disseminação no espaço (≥2 lesões) + no tempo (≥2 momentos) ou bandas oligoclonais</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Epidemiologia e Patologia</span></div>
+      <div class="item"><strong>Doença:</strong> autoimune inflamatória desmielinizante do SNC (oligodendrócitos atacados)</div>
+      <div class="item"><strong>Pico:</strong> 20–40 anos; mulheres (2:1); raça branca, zonas de clima temperado</div>
+      <div class="item"><strong>Lesões:</strong> desmielinização + gliose (cicatriz) + perda axonal (irreversível)</div>
+      <div class="item"><strong>Locais típicos:</strong> periventricular, corpo caloso, nervo óptico, tronco, medula</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-blue">Formas Clínicas</span></div>
+      <div class="item"><strong>RR (Remitente-Recorrente):</strong> 85%; surtos com remissão total ou parcial; forma mais comum</div>
+      <div class="item"><strong>SP (Sec. Progressiva):</strong> progressão após fase RR; perda de funcionalidade acumulada</div>
+      <div class="item"><strong>PP (Prim. Progressiva):</strong> 15%; progressão desde o início; homens = mulheres; mielite progressiva</div>
+      <div class="item"><strong>Sínd. Clínica Isolada (SCI):</strong> 1º evento; risco de EM se lesões na RM</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-red">Apresentações Clínicas Típicas</span></div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>Neurite óptica:</strong> dor à movimentação ocular + embaçamento + escotoma central + DPAR; unilateral; 1ª manifestação em 25%</div>
+        <div class="item"><strong>Mielite transversa:</strong> nível sensitivo + paraparesia + bexiga neurogênica; incompleta na EM</div>
+        <div class="item"><strong>OIN (Oftalmoplegia internuclear):</strong> lesão do FML; adução ipsilateral prejudicada + nistagmo no olho contralateral em abdução</div>
+      </div>
+      <div>
+        <div class="item"><strong>Sinal de Lhermitte:</strong> descarga elétrica pela coluna ao fletir o pescoço (lesão cordão dorsal cervical)</div>
+        <div class="item"><strong>Fenômeno de Uhthoff:</strong> piora temporária com calor (banho quente, febre, exercício) — NÃO é surto novo!</div>
+        <div class="item"><strong>Fadiga:</strong> sintoma mais frequente e incapacitante</div>
+        <div class="item"><strong>Trigeminalgia:</strong> pode ser apresentação de EM em jovem</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Diagnóstico</span></div>
+    <div class="item"><strong>RM:</strong> lesões hiperintensas em T2/FLAIR; "dedos de Dawson" (corpo caloso, perpendiculares ao ventrículo); gadolínio marca lesão ativa (quebra de BHE)</div>
+    <div class="item"><strong>LCR:</strong> bandas oligoclonais de IgG (90%); índice de IgG elevado; pleocitose leve (&lt;50 células)</div>
+    <div class="item"><strong>PEV:</strong> latência aumentada mesmo sem sintomas visuais ativos (neurite óptica subclínica)</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-amber">Tratamento</span></div>
+    <div class="item"><strong>Surto agudo:</strong> metilprednisolona IV 1 g/dia × 3–5 dias (acelera recuperação, não muda prognóstico a longo prazo)</div>
+    <div class="item"><strong>Eficácia moderada (1ª linha RR):</strong> interferon-β, acetato de glatiramer</div>
+    <div class="item"><strong>Alta eficácia:</strong> natalizumabe (anti-VLA-4; risco LMP por JC vírus), fingolimode, ocrelizumabe (anti-CD20 — também para PP)</div>
+    <div class="item"><strong>Sintomático:</strong> baclofeno (espasticidade), amantadina (fadiga), oxibutinina (bexiga neurogênica)</div>
+  </div>
+</div>
+
+<!-- ===================== DESMIELINIZANTES ===================== -->
+<div class="section" id="desmiel">
+  <div class="alert al-amber"><strong>⚠️ NMOSD:</strong> anti-AQP4 + mielite ≥3 seg = mais grave que EM. SGB: corticoide NÃO tem papel!</div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-red">NMOSD — Neuromielite Óptica (Devic)</span></div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>Anticorpo:</strong> anti-AQP4 (aquaporina-4); anti-MOG em forma séronegativa</div>
+        <div class="item"><strong>Clínica:</strong> neurite óptica bilateral grave (cegueira) + mielite extensa (≥3 segmentos medulares)</div>
+        <div class="item"><strong>RM medula:</strong> lesão central longitudinal ≥3 segmentos; ao contrário da EM (&lt;2 seg, periférica)</div>
+      </div>
+      <div>
+        <div class="item"><strong>Diferencial com EM:</strong> lesões cerebrais menos típicas, LCR pode ter pleocitose maior, pior prognóstico</div>
+        <div class="item"><strong>Trat. surto:</strong> pulsoterapia IV + plasmaférese (mais agressivo que EM)</div>
+        <div class="item"><strong>Manutenção:</strong> azatioprina, rituximabe, inebilizumabe, satralizumabe</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-blue">ADEM — Encefalomielite Disseminada Aguda</span></div>
+    <div class="item"><strong>Gatilho:</strong> pós-infecciosa (1–4 sem) ou pós-vacinal; mais em crianças</div>
+    <div class="item"><strong>Clínica:</strong> encefalopatia aguda + déficits multifocais; <strong>monofásica</strong> (diferencia de EM)</div>
+    <div class="item"><strong>RM:</strong> lesões extensas, assimétricas, bilaterais de substância branca; podem poupar corpo caloso (diferente da EM)</div>
+    <div class="item"><strong>Trat.:</strong> corticosteroide IV; IVIG ou plasmaférese nos refratários; bom prognóstico em crianças</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-purple">Síndrome de Guillain-Barré (SGB)</span></div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>Mecanismo:</strong> polirradiculoneuropatia desmielinizante pós-infecciosa; mimetismo molecular (C. jejuni, CMV, EBV, influenza, SARS-CoV-2)</div>
+        <div class="item"><strong>Clínica:</strong> fraqueza progressiva ascendente + arreflexia; pico em ≤4 semanas; pode comprometer nervos cranianos e respiração</div>
+        <div class="item"><strong>LCR:</strong> dissociação albumino-citológica (↑proteína + celularidade normal) — aparece após 1ª semana</div>
+        <div class="item"><strong>ENMG:</strong> desmielinização (↓VCN, bloqueio de condução); axonal nas formas AMAN/AMSAN</div>
+      </div>
+      <div>
+        <div class="item"><strong>AIDP:</strong> forma mais comum; desmielinizante</div>
+        <div class="item"><strong>AMAN/AMSAN:</strong> axonais; associadas a C. jejuni; anti-GM1, anti-GD1a</div>
+        <div class="item"><strong>Miller-Fisher:</strong> OFtalmoplegia + Ataxia + Arreflexia; anti-GQ1b; forma regional benigna</div>
+        <div class="item"><strong>Trat.:</strong> IVIG 0,4g/kg/dia × 5d ou plasmaférese (5 sessões); <strong>corticoide NÃO tem papel!</strong></div>
+        <div class="item"><strong>Monitorar:</strong> CVF (VNI/IOT se &lt;20mL/kg), deglutição, autonômico</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== COMA ===================== -->
+<div class="section" id="coma">
+  <div class="alert al-red"><strong>🚨 Tríade de Cushing:</strong> HAS + Bradicardia + Irregularidade respiratória = herniação iminente — agir IMEDIATAMENTE</div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-purple">Escala de Coma de Glasgow (ECG) — mínimo 3, máximo 15</span></div>
+    <div class="row3">
+      <div>
+        <div class="sub">Abertura ocular (1–4)</div>
+        <div class="item">4 — Espontânea</div>
+        <div class="item">3 — Ao comando verbal</div>
+        <div class="item">2 — À dor</div>
+        <div class="item">1 — Nenhuma</div>
+      </div>
+      <div>
+        <div class="sub">Resposta verbal (1–5)</div>
+        <div class="item">5 — Orientado</div>
+        <div class="item">4 — Confuso</div>
+        <div class="item">3 — Palavras inapropriadas</div>
+        <div class="item">2 — Sons inespecíficos</div>
+        <div class="item">1 — Nenhuma</div>
+      </div>
+      <div>
+        <div class="sub">Resposta motora (1–6)</div>
+        <div class="item">6 — Obedece comandos</div>
+        <div class="item">5 — Localiza a dor</div>
+        <div class="item">4 — Retirada inespecífica</div>
+        <div class="item">3 — Flexão (decorticação)</div>
+        <div class="item">2 — Extensão (descerebração)</div>
+        <div class="item">1 — Nenhuma</div>
+      </div>
+    </div>
+    <div class="alert al-blue" style="margin-top:10px"><strong>Decorticação (flexão):</strong> lesão hemisférica/cápsula interna | <strong>Descerebração (extensão):</strong> lesão de tronco → pior prognóstico</div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-amber">Padrões Respiratórios</span></div>
+      <div class="item"><strong>Cheyne-Stokes:</strong> crescendo-decrescendo com apneia; lesão hemisférica/diencéfalo</div>
+      <div class="item"><strong>Hiperpneia central neurogênica:</strong> rápida e regular; lesão mesencéfalo</div>
+      <div class="item"><strong>Apnêustica:</strong> pausa longa na inspiração; lesão da ponte</div>
+      <div class="item"><strong>Atáxica (Biot):</strong> irregular e caótica; lesão bulbar — iminência de PCR!</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-blue">Estados de Consciência Alterada</span></div>
+      <div class="item"><strong>Estado vegetativo:</strong> ciclos sono-vigília presentes; sem consciência do ambiente; sem resposta significativa</div>
+      <div class="item"><strong>Estado minimamente consciente:</strong> evidência mínima e inconsistente de consciência; resposta reprodutível a comandos</div>
+      <div class="item"><strong>Locked-in:</strong> lesão da ponte (trato corticoespinhal + bulboespinhal); tetraplegia + anartria; <strong>CONSCIÊNCIA PRESERVADA</strong>; comunica pelos olhos (vertical)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-red">Morte Encefálica</span></div>
+    <div class="row">
+      <div>
+        <div class="sub">Pré-requisitos</div>
+        <div class="item">Causa conhecida e irreversível documentada</div>
+        <div class="item">Excluir: hipotermia (&lt;35°C), drogas depressoras, distúrbios metabólicos graves, PA instável</div>
+      </div>
+      <div>
+        <div class="sub">Critérios clínicos</div>
+        <div class="item">Ausência de resposta motora ao estímulo</div>
+        <div class="item">Ausência de reflexos de tronco: fotomotor, córneopalpebral, óculo-cefálico, óculo-vestibular (calórico), tosse</div>
+        <div class="item"><strong>Teste de apneia:</strong> pCO₂ ≥60 mmHg sem esforço respiratório</div>
+      </div>
+      <div>
+        <div class="sub">Confirmatórios (Brasil — obrigatórios)</div>
+        <div class="item">EEG — silêncio elétrico cerebral</div>
+        <div class="item">Doppler transcraniano (DTC)</div>
+        <div class="item">Angiografia cerebral (padrão-ouro)</div>
+        <div class="item">PEAT (potencial evocado auditivo de tronco)</div>
+      </div>
+      <div>
+        <div class="sub">Protocolo Brasil</div>
+        <div class="item">2 avaliações por médicos distintos (≠ equipe de transplante)</div>
+        <div class="item">Intervalo entre avaliações: &gt;7 dias (RN); &gt;24h (1–2 meses); &gt;12h (2m–2a); &gt;6h (&gt;2 anos)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HIC ===================== -->
+<div class="section" id="hic">
+  <div class="alert al-red"><strong>🚨 Tríade de Cushing:</strong> HAS + Bradicardia + Irregularidade resp. = herniação iminente. Midríase unilateral = herniação uncal até prova em contrário!</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Fundamentos</span></div>
+      <div class="item"><strong>PIC normal:</strong> 5–15 mmHg (adulto em decúbito); HIC: &gt;20 mmHg</div>
+      <div class="item"><strong>Doutrina de Monro-Kellie:</strong> encéfalo + LCR + sangue = constante; ↑qualquer componente → ↑PIC</div>
+      <div class="item"><strong>PPC = PAM − PIC</strong> (alvo: 50–70 mmHg); PPC &lt;50 → isquemia cerebral</div>
+      <div class="item"><strong>Causas:</strong> trauma (hematoma, edema), AVE, tumor, meningite, hidrocefalia, pseudotumor cerebri</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-red">Manifestações Clínicas</span></div>
+      <div class="item"><strong>Cefaleia:</strong> piora pela manhã, piora com Valsalva/tosse; progressiva</div>
+      <div class="item"><strong>Vômitos:</strong> em jato, sem náusea precedente</div>
+      <div class="item"><strong>Papiledema:</strong> sinal mais específico — edema do disco óptico à fundoscopia; pode levar a perda visual</div>
+      <div class="item"><strong>Diplopia:</strong> paralisia do VI par (sinal de falsa localização — nervo tem trajeto longo)</div>
+      <div class="item"><strong>Alteração de consciência:</strong> sinal tardio de HIC grave</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-red">Síndromes de Herniação</span></div>
+    <table class="neat">
+      <tr><th>Tipo</th><th>Mecanismo</th><th>Clínica</th></tr>
+      <tr><td><strong>Uncal (transtentorial)</strong></td><td>Uncus comprime III par e pedúnculo cerebral</td><td>Midríase ipsilateral + hemiplegia contralateral (→ sinal de Kernohan: hemiplegia ipsilateral se pedúnculo oposto comprimido)</td></tr>
+      <tr><td><strong>Central</strong></td><td>Bilateral, descendente, tronco comprimido</td><td>Alteração de consciência, pupilas mióticas simétricas, depois midriáticas</td></tr>
+      <tr><td><strong>Subfalcina</strong></td><td>Giro cíngulo sob a foice do cérebro</td><td>Comprime ACA → fraqueza de MMII contralateral</td></tr>
+      <tr><td><strong>Tonsilar (amigdaliana)</strong></td><td>Tonsila cerebelar no forame magno</td><td>Comprime bulbo → apneia → PCR; punção lombar contraindicada!</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Tratamento da HIC</span></div>
+    <div class="item"><strong>Posicionamento:</strong> cabeceira 30°, cabeça em posição neutra (evitar compressão jugular)</div>
+    <div class="item"><strong>Osmoterapia:</strong> manitol 20% (0,25–1 g/kg IV em bolus) ou solução salina hipertônica (NaCl 3%); objetivo: osmolaridade 300–320 mOsm</div>
+    <div class="item"><strong>Hiperventilação:</strong> pCO₂ alvo 35 mmHg → vasoconstrição → ↓PIC; medida de EMERGÊNCIA temporária (máx 30 min)</div>
+    <div class="item"><strong>Corticoide:</strong> dexametasona eficaz apenas para edema vasogênico tumoral; NÃO usar em trauma craniano ou AVE isquêmico</div>
+    <div class="item"><strong>Cirúrgico:</strong> DVE (derivação ventricular externa), craniectomia descompressiva, evacuação de hematoma</div>
+    <div class="item"><strong>Metas sistêmicas:</strong> normotermia, normoglicemia (70–180), PaO₂ &gt;60mmHg, sedação/analgesia adequada</div>
+  </div>
+</div>
+
+<!-- ===================== HIDROCEFALIA ===================== -->
+<div class="section" id="hidro">
+  <div class="alert al-teal"><strong>📌 Tríade de Hakim-Adams:</strong> Marcha magnética + Memória (demência subcortical) + Micção (incontinência) = HPN</div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-purple">Classificação</span></div>
+    <div class="row">
+      <div>
+        <div class="sub">Obstrutiva (não-comunicante)</div>
+        <div class="item">Obstrução dentro do sistema ventricular</div>
+        <div class="item">Locais comuns: aqueduto de Sylvius, forame de Monro</div>
+        <div class="item">Causas: estenose congênita, tumores, sangramento intraventricular</div>
+        <div class="item">Ventrículo a montante da obstrução dilata</div>
+      </div>
+      <div>
+        <div class="sub">Comunicante</div>
+        <div class="item">Obstrução após saída do sistema ventricular</div>
+        <div class="item">Local: granulações aracnóideas (reabsorção do LCR)</div>
+        <div class="item">Causas: meningite, HSA, carcinomatose meníngea</div>
+        <div class="item">Todos os ventrículos dilatam</div>
+      </div>
+    </div>
+    <div class="item" style="margin-top:8px"><strong>Ex-vacuo:</strong> dilatação ventricular por atrofia cerebral (Alzheimer, etc.); PIC NORMAL; não é hidrocefalia verdadeira; não tratar</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-blue">Hidrocefalia de Pressão Normal (HPN)</span></div>
+    <div class="item"><strong>Tríade de Hakim-Adams — em ordem de surgimento:</strong></div>
+    <div class="item">1. <strong>Marcha:</strong> passos curtos e largos, "magnética" (como se os pés estivessem colados ao chão), instabilidade — sinal mais precoce</div>
+    <div class="item">2. <strong>Memória:</strong> demência subcortical, lentidão, dificuldade de atenção — sinal mais variável</div>
+    <div class="item">3. <strong>Micção:</strong> incontinência urinária (imperiosidade), urgência — sinal mais tardio</div>
+    <div class="item"><strong>Diagnóstico:</strong> PIC normal na PL + melhora clínica após retirada de 30–50 mL de LCR (tap test / teste de Miller)</div>
+    <div class="item"><strong>Tratamento:</strong> DVP (derivação ventrículo-peritoneal); melhora mais evidente na marcha</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-amber">Hidrocefalia Congênita e Tratamento Geral</span></div>
+    <div class="item"><strong>Causa congênita mais comum:</strong> estenose do aqueduto de Sylvius</div>
+    <div class="item"><strong>Clínica em lactentes:</strong> macrocefalia progressiva, fontanela abaulada, veias do couro cabeludo dilatadas, "sinal do sol poente" (olhar para baixo com esclera visível), irritabilidade</div>
+    <div class="item"><strong>DVP:</strong> mais utilizada; drena ventrículo → peritônio; complicações: infecção, obstrução, hematoma subdural</div>
+    <div class="item"><strong>ETV (ventriculostomia do 3º ventrículo):</strong> alternativa para obstrutiva; faz comunicação para cisternas basais; evita shunt</div>
+  </div>
+</div>
+
+<!-- ===================== COMPRESSÃO ===================== -->
+<div class="section" id="compressao">
+  <div class="alert al-red"><strong>🚨 Sínd. da cauda equina = emergência cirúrgica!</strong> Anestesia em sela + retenção urinária → descompressão em &lt;24–48h preserva função esfincteriana</div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-purple">Síndromes Medulares</span></div>
+    <table class="neat">
+      <tr><th>Síndrome</th><th>Causa</th><th>Ipsilateral</th><th>Contralateral</th></tr>
+      <tr><td><strong>Brown-Séquard</strong></td><td>Hemisecção medular (trauma penetrante)</td><td>↓Força (CST) + ↓Propriocepção/vibração (CD)</td><td>↓Dor e temperatura (EST) — 1–2 níveis abaixo</td></tr>
+      <tr><td><strong>Artéria espinhal anterior</strong></td><td>Trombose, dissecção aórtica</td><td colspan="2"><strong>Bilateral:</strong> ↓Força + ↓Dor/temp; Propriocepção PRESERVADA (CD preservada)</td></tr>
+      <tr><td><strong>Central da medula</strong></td><td>Trauma hiperextensão em canal estenótico (idosos)</td><td colspan="2">MMSS &gt; MMII; disfunção vesical; déficits sensitivos variáveis</td></tr>
+      <tr><td><strong>Cone medular (L1–L2)</strong></td><td>Trauma, tumor</td><td colspan="2">Mix NMS + NMI; disfunção esfincteriana precoce e proeminente</td></tr>
+      <tr><td><strong>Cauda equina (&gt;L2)</strong></td><td>Hérnia discal, tumor, estenose</td><td colspan="2">NMI puro; paraparesia flácida + arreflexia + anestesia em sela (S3–S5) + retenção urinária</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-blue">Dermátomos Essenciais</span></div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>C5:</strong> ombro / deltóide</div>
+        <div class="item"><strong>C6:</strong> polegar e indicador; reflexo bicipital</div>
+        <div class="item"><strong>C7:</strong> dedo médio; reflexo tricipital</div>
+        <div class="item"><strong>C8:</strong> dedo mínimo e anular</div>
+        <div class="item"><strong>T4:</strong> mamilo</div>
+        <div class="item"><strong>T10:</strong> umbigo</div>
+      </div>
+      <div>
+        <div class="item"><strong>L2–L3:</strong> face anterior coxa / virilha</div>
+        <div class="item"><strong>L4:</strong> face medial da perna e pé; reflexo patelar</div>
+        <div class="item"><strong>L5:</strong> dorso do pé, hálux, face lateral da perna</div>
+        <div class="item"><strong>S1:</strong> calcâneo, maléolo lateral, planta lateral; reflexo aquileu</div>
+        <div class="item"><strong>S3–S5:</strong> períneo (sela) — perda = alarme da cauda equina</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-amber">Causas e Conduta</span></div>
+    <div class="item"><strong>Degenerativas:</strong> hérnia de disco, espondilose, canal estenótico — mais comuns</div>
+    <div class="item"><strong>Tumorais:</strong> metástases vertebrais (mama, pulmão, próstata = BIG 3) &gt; tumores primários; mieloma</div>
+    <div class="item"><strong>Infecciosas/vasculares:</strong> abscesso epidural (febre + dor lombar + déficit = tríade), hematoma epidural (anticoagulados, pós-punção)</div>
+    <div class="item"><strong>Diagnóstico:</strong> RM de urgência — exame de escolha para avaliar medula e raízes</div>
+    <div class="item"><strong>Tratamento:</strong> dexametasona 10 mg IV imediato + descompressão cirúrgica (idealmente &lt;24h do início dos déficits)</div>
+  </div>
+</div>
+
+<!-- ===================== TUMORES ===================== -->
+<div class="section" id="tumores">
+  <div class="alert al-blue"><strong>📌</strong> Metástases &gt; tumores primários em adultos. Em crianças: fossa posterior predomina. Sempre suspeitar se crise focal &gt;30 anos</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-red">Tumores — Adultos</span></div>
+      <div class="item"><strong>Glioblastoma (GBM, grau IV WHO):</strong> mais comum tumor maligno primário; IDH selvagem; RM: necrose central + realce em anel; trat.: cirurgia + RT + temozolomida (protocolo de Stupp)</div>
+      <div class="item"><strong>Meningioma:</strong> origem nas células aracnóideas; extraaxial; benigno; trat.: cirurgia ou radiocirurgia (Gamma Knife)</div>
+      <div class="item"><strong>Metástases:</strong> pulmão &gt; mama &gt; melanoma &gt; rim &gt; cólon; junção córtico-medular; realce em anel; podem ser múltiplas</div>
+      <div class="item"><strong>Schwannoma vestibular:</strong> APC (ângulo ponto-cerebelar); bilateral = NF2; perda auditiva + zumbido + vertigem</div>
+      <div class="item"><strong>Linfoma primário do SNC:</strong> periventricular; imunossuprimidos; realce homogêneo; responde a MTX/corticoide</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Tumores — Crianças</span></div>
+      <div class="item"><strong>Meduloblastoma:</strong> mais comum maligno infantil; vermis cerebelar; dissemina por LCR ("gotas de neve"); trat.: cirurgia + RT crânio-espinhal + QT</div>
+      <div class="item"><strong>Astrocitoma pilocítico (grau I):</strong> mais comum geral em crianças; cerebelo; benign; cisto com nódulo mural; BRAF V600E; curado com cirurgia</div>
+      <div class="item"><strong>Ependimoma:</strong> assoalho do 4º ventrículo; criança; obstrução do LCR; ressecção difícil</div>
+      <div class="item"><strong>Craniofaringioma:</strong> selar/suprasselar; calcificações; déficits hormonais + hemianopsia bitemporal (compressão do quiasma óptico)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Disrafismos — Defeitos do Fechamento do Tubo Neural (4ª semana)</span></div>
+    <div class="alert al-amber" style="margin-bottom:10px"><strong>Prevenção:</strong> ácido fólico 400 mcg/dia periconcepcional (iniciar 1–3 meses antes da concepção)</div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>Espinha bífida oculta:</strong> defeito apenas do arco vertebral; sem hérnia; assintomática; marca cutânea (fosseta, tufo de pelos, mancha). Pode ter médula presa</div>
+        <div class="item"><strong>Meningocele:</strong> hérnia de meninges + LCR (sem tecido neural); bom prognóstico; correção cirúrgica eletiva</div>
+        <div class="item"><strong>Mielomeningocele:</strong> mais grave; hérnia de meninges + medula/raízes; paraplegia, bexiga neurogênica; <strong>Chiari II</strong> (tonsila + vermis herniados); hidrocefalia em 90%; correção cirúrgica neonatal precoce (ou intraútero)</div>
+      </div>
+      <div>
+        <div class="item"><strong>Anencefalia:</strong> ausência de hemisférios + calota craniana; incompatível com vida extrauterina</div>
+        <div class="item"><strong>Encefalocele:</strong> hérnia do tecido cerebral por defeito do crânio; occipital (mais comum no ocidente)</div>
+        <div class="item"><strong>Médula presa (tethered cord):</strong> medula fixada por lipoma, filum espessado ou tecido fibroso; progressão de déficits neurológicos com crescimento; trat.: cirurgia de desancoramento</div>
+        <div class="item"><strong>Diagnóstico pré-natal:</strong> ↑alfafetoproteína (soro materno/LA) + USG morfológico de 2º trimestre</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== EPILEPSIA ===================== -->
+<div class="section" id="epilepsia">
+  <div class="alert al-red"><strong>🚨 Status epilepticus:</strong> crise &gt;5 min ou ≥2 sem recuperação → emergência! 1ª linha: benzodiazepínico (BZD) IV/IM imediato</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Definição e Classificação (ILAE 2017)</span></div>
+      <div class="item"><strong>Epilepsia:</strong> ≥2 crises não provocadas com intervalo &gt;24h; OU 1 crise + risco ≥60% de recorrência; OU síndrome epiléptica</div>
+      <div class="item"><strong>Crises focais:</strong> origem em rede neuronal de um hemisfério; com ou sem comprometimento da consciência; podem evoluir para bilateral tônico-clônica (BTCS)</div>
+      <div class="item"><strong>Crises generalizadas:</strong> origem simultânea nos dois hemisférios; inclui ausência, tônica, clônica, tônico-clônica (GTC), mioclônica, atônica</div>
+      <div class="item"><strong>Diagnóstico:</strong> clínico + EEG (exame principal) + RM (detectar causa estrutural)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-blue">Síndromes Epilépticas Importantes</span></div>
+      <div class="item"><strong>West (espasmos infantis):</strong> &lt;1 ano; espasmos em flexão + hipsarritmia (EEG caótico) + atraso do desenvolvimento; trat.: ACTH, vigabatrina, corticoide</div>
+      <div class="item"><strong>Lennox-Gastaut:</strong> 1–7 anos; múltiplos tipos de crise + déficit cognitivo + ponta-onda lenta &lt;2,5 Hz; refratário</div>
+      <div class="item"><strong>Epilepsia do lobo temporal (ELT):</strong> mais comum focal em adultos; aura (déjà vu, epigástrica, olfativa) + automatismos oroalimentares + confusão pós-ictal</div>
+      <div class="item"><strong>Crise febril:</strong> 6m–5a; simples (&lt;15min, generalizada, sem recorrência em 24h) vs complexa (focal, &gt;15min, recorre)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Drogas Antiepilépticas (DAE)</span></div>
+    <table class="neat">
+      <tr><th>Situação</th><th>1ª escolha</th><th>Alternativas</th><th>EVITAR</th></tr>
+      <tr><td>Focal</td><td>Carbamazepina, lamotrigina</td><td>Oxcarbazepina, levetiracetam, lacosamida</td><td>—</td></tr>
+      <tr><td>Generalizada GTC</td><td>Valproato (exceto mulheres férteis)</td><td>Lamotrigina, levetiracetam, topiramato</td><td>Carbamazepina, fenitoína (pioram mioclonias)</td></tr>
+      <tr><td>Ausência</td><td>Etossuximida</td><td>Valproato, lamotrigina</td><td>Carbamazepina (piora!)</td></tr>
+      <tr><td>Mioclônica (JME)</td><td>Valproato</td><td>Levetiracetam, lamotrigina</td><td>Carbamazepina, fenitoína</td></tr>
+    </table>
+    <div class="alert al-amber" style="margin-top:10px"><strong>⚠️ Valproato:</strong> altamente teratogênico (espinha bífida, CID da face); evitar em mulheres em idade fértil sempre que possível</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-red">Status Epilepticus — Protocolo</span></div>
+    <div class="item"><strong>0–5 min:</strong> ABC, acesso venoso, glicemia, tiamina se suspeita de alcoolismo</div>
+    <div class="item"><strong>5–20 min (1ª linha — BZD):</strong> diazepam IV 10mg ou midazolam IM 10mg; repetir 1x se necessário</div>
+    <div class="item"><strong>20–40 min (2ª linha):</strong> fenitoína IV 20mg/kg (ou fosfenitoína), valproato IV 40mg/kg, ou levetiracetam IV 60mg/kg</div>
+    <div class="item"><strong>40–60 min (refratário):</strong> intubação + propofol/midazolam/pentobarbital em infusão contínua; EEG contínuo</div>
+    <div class="item"><strong>Super-refratário (&gt;24h):</strong> cetamina, anestesia barbitúrica, hipotermia, dieta cetogênica</div>
+  </div>
+</div>
+
+<!-- ===================== AVCi ===================== -->
+<div class="section" id="avci">
+  <div class="alert al-red"><strong>🚨 Tempo é cérebro!</strong> ~1,9 milhão de neurônios morrem por minuto sem tratamento. Janela rtPA: 4,5h. Trombectomia: até 24h (com imagem favorável)</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Classificação Etiológica (TOAST)</span></div>
+      <div class="item"><strong>Aterosclerótico (grandes artérias):</strong> estenose ≥50% de carótida ou vertebral; risco de recorrência precoce alta</div>
+      <div class="item"><strong>Cardioembólico:</strong> FA (mais comum), trombo mural, valvopatia, FOP; déficit máximo no início; maior transformação hemorrágica</div>
+      <div class="item"><strong>Lacunar (pequenas artérias):</strong> HAS e DM; síndromes puras (motora pura, sensitiva pura, atáxico-parética, disartria-mão desajeitada)</div>
+      <div class="item"><strong>Criptogênico:</strong> sem causa identificada após investigação completa; 25–40% dos casos</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-blue">Territórios Vasculares</span></div>
+      <div class="item"><strong>ACM (mais comum):</strong> hemiplegia + hemianestesia contralateral + hemianopsia homônima; Dominante: afasia; Não-dominante: negligência, anosognosia</div>
+      <div class="item"><strong>ACA:</strong> fraqueza MMII &gt; MMSS; abulia (lesão bilateral)</div>
+      <div class="item"><strong>ACP:</strong> hemianopsia homônima; alexia sem agrafia (lesão ocipital E)</div>
+      <div class="item"><strong>Basilar:</strong> déficits de pares cranianos ipsi + motor contralateral; locked-in; potencialmente fatal</div>
+      <div class="item"><strong>PICA (Wallenberg):</strong> disfagia + vertigem + nistagmo + Horner ipsilateral + hemianestesia facial ipsi + corpo contralateral</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-amber">Diagnóstico por Imagem</span></div>
+    <div class="item"><strong>TC sem contraste (1ª escolha):</strong> excluir hemorragia (hiperdensidade = sangue); pode ser normal nas 1ªs horas; sinal da artéria hiperdensa (trombo); hipodensidade precoce (sinal ruim)</div>
+    <div class="item"><strong>RM DWI:</strong> mais sensível; positiva em minutos; restrição à difusão = infarto agudo; ADC baixo</div>
+    <div class="item"><strong>AngioTC/RM:</strong> identifica oclusão de grande vaso (LVO) — essencial para indicar trombectomia</div>
+    <div class="item"><strong>ASPECTS (TC):</strong> score 0–10; &lt;6 = infarto extenso; ASPECTS ≥6 → melhor resposta à trombectomia</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-red">Tratamento Agudo</span></div>
+    <div class="row">
+      <div>
+        <div class="sub">Trombólise (rtPA IV)</div>
+        <div class="item"><strong>Janela:</strong> até 4,5h do início dos sintomas</div>
+        <div class="item"><strong>Dose:</strong> 0,9 mg/kg (máx 90 mg); 10% em bolus, 90% em 60 min</div>
+        <div class="item"><strong>Contraindicações:</strong> hemorragia no TC, PA &gt;185/110 não controlada, cirurgia &lt;14 dias, INR &gt;1,7, plaquetas &lt;100k, AVC prévio &lt;3 meses, uso de anticoagulantes plenos</div>
+        <div class="item"><strong>PA antes do rtPA:</strong> manter &lt;185/110 (labetalol, nicardipina)</div>
+      </div>
+      <div>
+        <div class="sub">Trombectomia mecânica</div>
+        <div class="item"><strong>Indicação:</strong> oclusão de grande vaso (LVO: ACI, ACM M1, basilar)</div>
+        <div class="item"><strong>Janela:</strong> até 6h (critérios clínicos); 6–24h (selecionados por mismatch na perfusão — DAWN/DEFUSE-3)</div>
+        <div class="item"><strong>ASPECTS ≥6</strong> → maior benefício</div>
+        <div class="item">Pode ser feita MESMO após rtPA</div>
+      </div>
+    </div>
+    <div class="alert al-blue" style="margin-top:10px"><strong>PA sem rtPA:</strong> não tratar se &lt;220/120 (hipotensão é mais perigosa que hipertensão no AVC agudo) | <strong>Antiagregação:</strong> AAS 100–300 mg: iniciar em 24–48h após rtPA; imediatamente se sem rtPA</div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Prevenção Secundária e AIT</span></div>
+    <div class="item"><strong>Antiagregantes:</strong> AAS; clopidogrel; AAS + dipiridamol de liberação lenta; dupla antiagregação (AAS + clopidogrel por 21 dias em AIT/AVC minor de alto risco)</div>
+    <div class="item"><strong>Anticoagulação (FA):</strong> NOACs (apixabana, rivaroxabana, dabigatrana) preferidos à varfarina; iniciar 3–14 dias após AVC (depende do tamanho do infarto)</div>
+    <div class="item"><strong>Estenose carotídea sintomática ≥70%:</strong> endarterectomia carotídea (ECA) &lt;2 semanas; stenting em casos selecionados</div>
+    <div class="item"><strong>AIT:</strong> sintomas isquêmicos transitórios (&lt;24h, geralmente &lt;1h) sem infarto confirmado; <strong>ESCORE ABCD2</strong>: age (≥60=1), BP (≥140/90=1), clinical (fraqueza=2, fala=1), duration (≥60min=2, 10–59min=1), diabetes(=1); ≥4 = alto risco → internação</div>
+  </div>
+</div>
+
+<!-- ===================== ELA ===================== -->
+<div class="section" id="ela">
+  <div class="alert al-purple"><strong>🔑 ELA = NMS + NMI no mesmo paciente.</strong> Fasciculações + atrofia (NMI) + hiperreflexia + Babinski (NMS) = sinal patognomônico do conjunto</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-purple">Fisiopatologia e Diagnóstico</span></div>
+      <div class="item"><strong>Doença do neurônio motor:</strong> acomete NMS (corticoespinhal) E NMI (corno anterior + núcleos bulbares) simultânea e progressivamente</div>
+      <div class="item"><strong>Critérios de El Escorial / Awaji:</strong> sinais de NMS + NMI em ≥2 regiões (bulbar, cervical, torácica, lombo-sacra)</div>
+      <div class="item"><strong>EMG/ENMG:</strong> padrão de denervação ativa (fibrilações, ondas agudas positivas) + reinervação em múltiplos miótomos — fundamental para diagnóstico</div>
+      <div class="item"><strong>RM:</strong> para exclusão de outras causas (compressão medular); pode mostrar hipersinal do trato corticoespinhal</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-red">Apresentações Clínicas</span></div>
+      <div class="item"><strong>Forma clássica (espinhal):</strong> fraqueza assimétrica de MMSS → progressão para MMII e bulbar; fasciculações + atrofia + hiperreflexia</div>
+      <div class="item"><strong>Forma bulbar (início bulbar):</strong> disfagia progressiva + disartria espástica/flácida + fasciculações de língua; pior prognóstico; 25–30% dos casos</div>
+      <div class="item"><strong>Forma respiratória:</strong> início com dispneia de esforço ou insuficiência respiratória; rara</div>
+      <div class="item"><strong>Sobrevida média:</strong> 3–5 anos; melhor prognóstico na forma espinhal, pior na bulbar; 10% sobrevivem &gt;10 anos</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-green">Funções Preservadas na ELA</span></div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>Cognição:</strong> geralmente preservada (5–10% têm demência frontotemporal associada — ELA-DFT)</div>
+        <div class="item"><strong>Sensibilidade:</strong> normal — ausência de déficits sensitivos é essencial para o diagnóstico</div>
+      </div>
+      <div>
+        <div class="item"><strong>Esfíncteres:</strong> preservados até estágios avançados</div>
+        <div class="item"><strong>Movimentos oculares:</strong> poupados até estágios terminais (base para comunicação em fase final)</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Tratamento e Cuidados</span></div>
+    <div class="item"><strong>Riluzol:</strong> único com evidência de modificação da doença; bloqueia liberação de glutamato; prolonga sobrevida ~2–3 meses; hepatotoxicidade (monitorar TGO/TGP)</div>
+    <div class="item"><strong>Edaravone:</strong> antioxidante; aprovado EUA/Japão; alguns estudos mostraram retardo da progressão funcional</div>
+    <div class="item"><strong>Fisioterapia:</strong> manutenção da função motora, prevenção de contraturas, reabilitação respiratória</div>
+    <div class="item"><strong>Fonoaudiologia:</strong> adaptação da dieta (disfagia), comunicação alternativa</div>
+    <div class="item"><strong>Gastrostomia (GTT/PEG):</strong> indicar quando perda de peso &gt;10% ou disfagia grave; fazer precocemente (antes CVF &lt;50%)</div>
+    <div class="item"><strong>VNI (ventilação não-invasiva):</strong> quando CVF &lt;50% ou sintomas de hipoventilação; melhora QV e sobrevida</div>
+    <div class="item"><strong>Cuidados paliativos:</strong> discutir precocemente desejos do paciente sobre intubação, traqueostomia, gastrostomia</div>
+  </div>
+</div>
+
+<!-- ===================== DEMÊNCIAS ===================== -->
+<div class="section" id="demencias">
+  <div class="alert al-blue"><strong>📌</strong> Alzheimer = 60-70% das demências. Sempre investigar causas tratáveis (hipotireoidismo, B12, sífilis, HPN) antes de selar diagnóstico!</div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-purple">Alzheimer — A mais importante</span></div>
+    <div class="row">
+      <div>
+        <div class="item"><strong>Epidemiologia:</strong> 60–70% das demências; pico após 65a; APOE ε4 = principal fator de risco genético</div>
+        <div class="item"><strong>Patologia:</strong> placas senis (beta-amiloide extracelular) + emaranhados neurofibrilares (tau hiperfosforilada intracelular)</div>
+        <div class="item"><strong>Clínica:</strong> início insidioso com comprometimento de <strong>memória episódica</strong> (conversas recentes, nomes), depois linguagem, praxia, visuoespacial, executivo</div>
+        <div class="item"><strong>RM:</strong> atrofia hipocampal/temporal medial bilateral</div>
+      </div>
+      <div>
+        <div class="item"><strong>Biomarcadores LCR:</strong> ↓Aβ42, ↑tau total, ↑ptau → confirmação do diagnóstico</div>
+        <div class="item"><strong>PET amiloide:</strong> acumulação de amiloide visível anos antes dos sintomas</div>
+        <div class="item"><strong>Trat. sintomático:</strong> inibidores de colinesterase — donepezila, rivastigmina, galantamina (leve a moderado); memantina antagonista NMDA (moderado a grave); podem ser combinados</div>
+        <div class="item"><strong>Trat. modificador:</strong> lecanemabe, donanemabe (anti-amiloide; para DA leve com biomarcadores positivos)</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-blue">Demência por Corpos de Lewy (DCL)</span></div>
+      <div class="item"><strong>Tríade:</strong> flutuação da cognição + alucinações visuais bem formadas (pessoas, animais) + parkinsonismo</div>
+      <div class="item"><strong>+RBD</strong> (distúrbio sono REM) = 4ª característica central; frequentemente precede demência</div>
+      <div class="item"><strong>⚠️ Hipersensibilidade a neurolépticos:</strong> antipsicóticos típicos (haloperidol) podem causar piora grave e até morte — EVITAR!</div>
+      <div class="item"><strong>Diagnóstico:</strong> clínico; DaT scan (SPECT/PET dopaminérgico) reduzido — auxilia diferencial com Alzheimer</div>
+      <div class="item"><strong>Trat.:</strong> inibidores de colinesterase (rivastigmina, donepezila); antipsicóticos atípicos se necessário (quetiapina, clozapina)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-coral">Demência Frontotemporal (DFT)</span></div>
+      <div class="item"><strong>Mais comum em &lt;65 anos;</strong> familiar em 30-40%</div>
+      <div class="item"><strong>Variante comportamental (bvDFT):</strong> desinibição + apátia + hiperoralidade + perseveação + perda de empatia/julgamento social; <strong>memória relativamente preservada</strong></div>
+      <div class="item"><strong>Afasia progressiva primária:</strong> variante semântica (perda de significado das palavras); variante não-fluente/agramática (fala laboriosa)</div>
+      <div class="item"><strong>Associação:</strong> ELA (10–15%), PSP, DCB</div>
+      <div class="item"><strong>Patologia:</strong> TDP-43, tau, FUS; mutações em GRN, MAPT, C9orf72</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-title"><span class="badge b-amber">Demência Vascular</span></div>
+      <div class="item"><strong>2ª causa mais comum</strong> de demência em geral</div>
+      <div class="item"><strong>Início abrupto</strong> com progressão em degraus (diferente do Alzheimer — gradual)</div>
+      <div class="item"><strong>Clínica:</strong> déficits focais neurológicos, déficit de funções executivas e atenção, marcha anormal; memória menos afetada que no Alzheimer</div>
+      <div class="item"><strong>FDR:</strong> HAS, DM, FA, tabagismo, dislipidemia</div>
+      <div class="item"><strong>RM:</strong> infartos (lacunares ou corticais) + leucoaraiose (hipersinal periventricular)</div>
+      <div class="item"><strong>Trat.:</strong> controle rigoroso dos FRCV; antiagregação/anticoagulação conforme indicação</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge b-red">⚠️ Causas Tratáveis de Demência — NÃO ESQUECER!</span></div>
+      <div class="item"><strong>Hipotireoidismo</strong> — dosar TSH em toda demência</div>
+      <div class="item"><strong>Deficiência de B12</strong> — neuropatia + déficit cognitivo</div>
+      <div class="item"><strong>Wernicke-Korsakoff (B1):</strong> confusão + oftalmoplegia + ataxia (Wernicke); amnésia + confabulação (Korsakoff); tratar com tiamina IV ANTES da glicose!</div>
+      <div class="item"><strong>Neurossífilis</strong> — VDRL/FTA-Abs no LCR</div>
+      <div class="item"><strong>HPN (Hakim-Adams)</strong> — ver aba hidrocefalia</div>
+      <div class="item"><strong>Depressão (pseudodemência):</strong> comprometimento cognitivo reversível; paciente se queixa ativamente; início agudo</div>
+      <div class="item"><strong>Neoplasia, meningite, hematoma subdural, infecções (HIV, encefalite herpética)</strong></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge b-teal">Comparativo Rápido</span></div>
+    <table class="neat">
+      <tr><th>Característica</th><th>Alzheimer</th><th>DCL</th><th>DFT</th><th>Vascular</th></tr>
+      <tr><td>Início</td><td>Insidioso, gradual</td><td>Insidioso</td><td>Insidioso</td><td>Abrupto, em degraus</td></tr>
+      <tr><td>1º sintoma</td><td>Memória episódica</td><td>Cognição flutuante</td><td>Comportamento/personalidade</td><td>Déficits focais</td></tr>
+      <tr><td>Alucinações</td><td>Tardias</td><td>Precoces, vívidas</td><td>Incomuns</td><td>Incomuns</td></tr>
+      <tr><td>Parkinsonismo</td><td>Tardio</td><td>Precoce</td><td>Raro (exceto DFT-ELA)</td><td>Possível</td></tr>
+      <tr><td>EEG</td><td>Lentificação inesp.</td><td>Flutuação</td><td>Normal nas fases precoces</td><td>Focal</td></tr>
+      <tr><td>Biomarcador chave</td><td>↓Aβ42, ↑tau LCR</td><td>DaT scan ↓</td><td>Atrofia frontotemporal</td><td>Infartos/leucoaraiose</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== QUIZ ===================== -->
+<div class="section" id="quiz">
+  <div class="quiz-score" id="scorePanel">
+    <h2 id="scoreVal">0/20</h2>
+    <p id="scoreMsg"></p>
+  </div>
+  <div class="quiz-controls">
+    <button class="qbtn" onclick="checkAll()">✓ Ver todas as respostas</button>
+    <button class="qbtn outline" onclick="resetQuiz()">↺ Reiniciar Quiz</button>
+  </div>
+  <div id="quizContainer"></div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function downloadPage() {
+  const html = '<!DOCTYPE html>' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'neurologia_revisao_completa.html';
+  a.click();
+}
+
+const questions = [
+  {topic:'Distúrbios do Sono', q:'Qual neurotransmissor está deficiente na narcolepsia?', opts:['Dopamina','Serotonina','Hipocretina/Orexina','GABA'], ans:2, exp:'A narcolepsia é causada pela destruição autoimune dos neurônios produtores de <b>hipocretina (orexina)</b> no hipotálamo lateral. A ausência desse neuropeptídeo explica a cataplexia, a sonolência excessiva e a paralisia do sono.'},
+  {topic:'Distúrbios do Sono', q:'O distúrbio comportamental do sono REM (RBD) é um marcador precoce de qual grupo de doenças?', opts:['Tauopatias (Alzheimer, PSP)','Sinucleinopatias (Parkinson, MSA, DCL)','Esclerose múltipla','Epilepsia do lobo temporal'], ans:1, exp:'O RBD — em que o paciente age os sonhos com violência porque a atonia do sono REM está abolida — é considerado um <b>marcador prodrômico de sinucleinopatias</b> (Parkinson, MSA e DCL), podendo preceder o diagnóstico em 10–15 anos.'},
+  {topic:'Parkinson', q:'Qual é o achado histopatológico característico da Doença de Parkinson?', opts:['Placas senis de beta-amiloide','Emaranhados de tau','Corpos de Lewy (alfa-sinucleína)','Corpos de Bunina'], ans:2, exp:'Os <b>corpos de Lewy</b> são inclusões intracitoplasmáticas de alfa-sinucleína ubiquitinada encontradas nos neurônios dopaminérgicos da substância negra. São o marcador histopatológico do Parkinson e de outras sinucleinopatias como a DCL.'},
+  {topic:'Parkinson', q:'Um paciente jovem (50 anos) com diagnóstico recente de Parkinson deseja iniciar tratamento. Qual a preferência para 1ª linha nessa faixa etária?', opts:['Levodopa + carbidopa imediatamente','Agonistas dopaminérgicos (pramipexol/ropinirol)','MAO-B inibidores em monoterapia','Anticolinérgicos'], ans:1, exp:'Em pacientes <b>jovens (&lt;60 anos)</b>, prefere-se iniciar com <b>agonistas dopaminérgicos</b> para retardar a exposição à levodopa e suas complicações tardias (flutuações, discinesias). A levodopa é a mais eficaz, mas suas complicações motoras aparecem com mais tempo de uso.'},
+  {topic:'Esclerose Múltipla', q:'O que é o fenômeno de Uhthoff?', opts:['Novo surto da EM desencadeado por febre','Piora temporária dos sintomas com aumento da temperatura corporal, sem ser surto novo','Choque elétrico na coluna ao fletir o pescoço','Perda visual por neurite óptica bilateral'], ans:1, exp:'O <b>fenômeno de Uhthoff</b> é a piora temporária e reversível de sintomas preexistentes da EM com o calor (banho quente, febre, exercício). Ocorre porque a temperatura reduz a velocidade de condução nas fibras desmielinizadas. <b>NÃO é um surto novo</b> e não requer pulsoterapia.'},
+  {topic:'Esclerose Múltipla', q:'Qual é o tratamento de um surto agudo de Esclerose Múltipla?', opts:['Interferon-beta subcutâneo','Natalizumabe IV mensal','Metilprednisolona IV 1g/dia por 3–5 dias','Azatioprina oral 2mg/kg/dia'], ans:2, exp:'O surto agudo da EM é tratado com <b>pulsoterapia com metilprednisolona IV 1g/dia por 3–5 dias</b>. Acelera a recuperação do surto, mas não muda o prognóstico a longo prazo. Interferon-beta, natalizumabe e azatioprina são usados para prevenção de novos surtos (modificadores da doença).'},
+  {topic:'Doenças Desmielinizantes', q:'Por que os corticosteroides são contraindicados no tratamento da Síndrome de Guillain-Barré (SGB)?', opts:['Aumentam a hepatotoxicidade dos outros fármacos','Estudos controlados não mostraram benefício e podem ser prejudiciais','Causam supressão imune excessiva','São reservados para o status epilepticus'], ans:1, exp:'Diferente de outras doenças autoimunes, na <b>SGB os corticosteroides não têm papel</b> — estudos randomizados não demonstraram benefício e há evidências de possível efeito negativo. O tratamento é IVIG (0,4g/kg/dia × 5 dias) ou plasmaférese, com mesma eficácia.'},
+  {topic:'Coma e Morte Encefálica', q:'Um paciente com TCE apresenta flexão das extremidades superiores (cotovelos fletidos em direção ao tórax) ao estímulo doloroso. Qual é a pontuação na Escala de Glasgow para resposta motora e o que esse padrão indica?', opts:['M6 — resposta normal','M4 — retirada inespecífica','M3 — decorticação (lesão hemisférica)','M2 — descerebração (lesão de tronco)'], ans:2, exp:'A <b>decorticação (flexão) = M3 na ECG</b> indica lesão acima do mesencéfalo (hemisférica ou cápsula interna), com interrupção das vias descendentes mas preservação do tronco. Já a descerebração (extensão) = M2, indica lesão de tronco e pior prognóstico.'},
+  {topic:'Coma e Morte Encefálica', q:'Qual das seguintes afirmações sobre o locked-in syndrome está CORRETA?', opts:['O paciente está em coma profundo sem consciência','A lesão está nos hemisférios cerebrais','A consciência está preservada — o paciente ouve e entende tudo','O EEG é plano (silêncio elétrico)'], ans:2, exp:'No <b>locked-in syndrome</b>, a lesão é na <b>ponte ventral</b>, interrompendo tratos corticoespinhal e bulboespinhal → tetraplegia + anartria. As vias ascendentes (consciência) estão PRESERVADAS — o paciente está completamente consciente e pode comunicar-se pelos movimentos oculares verticais.'},
+  {topic:'HIC', q:'Qual é a interpretação da Tríade de Cushing?', opts:['Hipotensão + Taquicardia + Irregularidade respiratória','HAS + Bradicardia + Irregularidade respiratória — sinal de herniação iminente','HAS + Taquicardia + Febre — sinal de sepse','Hipotensão + Bradicardia + Apneia — morte encefálica'], ans:1, exp:'A <b>Tríade de Cushing (HAS + Bradicardia + Irregularidade respiratória)</b> é um reflexo autonômico tardio que indica compressão do tronco cerebral por herniação iminente. É uma emergência — agir imediatamente com manitol, hiperventilação e preparar para cirurgia.'},
+  {topic:'Hidrocefalia', q:'A tríade de Hakim-Adams é diagnóstica de qual condição?', opts:['Hidrocefalia obstrutiva aguda','Hidrocefalia de pressão normal (HPN)','Meningite bacteriana','Encefalopatia hipertensiva'], ans:1, exp:'A tríade de <b>Hakim-Adams (Marcha magnética + Memória prejudicada + Micção incontinente)</b> é clássica da <b>HPN</b>. O diagnóstico é confirmado pela melhora clínica após retirada de 30–50 mL de LCR no tap test, com PIC normal. Tratamento: derivação ventrículo-peritoneal (DVP).'},
+  {topic:'Compressões Radiculomedulares', q:'Paciente com hérnia de disco lombar apresenta anestesia em sela (S3–S5), retenção urinária e paraparesia flácida. Qual é o diagnóstico e a conduta?', opts:['Síndrome do cone medular — tratamento conservador','Síndrome da cauda equina — cirurgia de urgência em &lt;24–48h','Síndrome central da medula — reabilitação','Brown-Séquard — fisioterapia'], ans:1, exp:'A <b>Síndrome da Cauda Equina</b> se apresenta com anestesia em sela (dermátomos S3–S5), retenção urinária, paraparesia flácida e arreflexia. É uma <b>emergência cirúrgica</b> — a descompressão em menos de 24–48h é essencial para preservar a função esfincteriana e sexual.'},
+  {topic:'Epilepsia', q:'Qual droga antiepiléptica é 1ª linha para ausências (pequeno mal) e é CONTRAINDICADA por piorar esse tipo de crise?', opts:['1ª linha: etossuximida | Contraindicada: carbamazepina','1ª linha: levetiracetam | Contraindicada: valproato','1ª linha: fenitoína | Contraindicada: lamotrigina','1ª linha: carbamazepina | Contraindicada: etossuximida'], ans:0, exp:'Para crises de <b>ausência</b>, a 1ª escolha é a <b>etossuximida</b>. O valproato é alternativa. A <b>carbamazepina</b> (e também fenitoína, oxcarbazepina) é <b>contraindicada</b> porque pode agravar as ausências e mioclonias em epilepsias generalizadas idiopáticas.'},
+  {topic:'Epilepsia', q:'Qual é a 1ª medida farmacológica no status epilepticus (após estabilização do ABCs)?', opts:['Fenitoína IV 20mg/kg','Propofol em infusão','Benzodiazepínico IV (diazepam) ou IM (midazolam)','Valproato IV 40mg/kg'], ans:2, exp:'O status epilepticus é uma emergência. A <b>1ª linha são os benzodiazepínicos</b>: diazepam 10mg IV ou midazolam 10mg IM (pode ser dado por não-médicos, inclusive por familiares). Se sem acesso venoso, o midazolam IM é igualmente eficaz. Em seguida, 2ª linha: fenitoína, valproato ou levetiracetam IV.'},
+  {topic:'AVCi', q:'Qual é a janela terapêutica para trombólise com rtPA IV e qual a dose correta?', opts:['3h; 1,5mg/kg (máx 150mg)','4,5h; 0,9mg/kg (máx 90mg); 10% bolus + 90% em 60min','6h; 0,5mg/kg (máx 50mg)','24h; 0,9mg/kg somente em infusão contínua'], ans:1, exp:'A janela para <b>rtPA IV</b> é de até <b>4,5 horas</b> do início dos sintomas. A dose é <b>0,9mg/kg (máx 90mg)</b> — 10% administrados em bolus e os 90% restantes em 60 minutos. A PA deve ser controlada para &lt;185/110 antes e durante a infusão.'},
+  {topic:'AVCi', q:'Paciente com FA não anticoagulada tem AVC isquêmico. Qual a estratégia preventiva principal para evitar novo AVC?', opts:['Dupla antiagregação com AAS + clopidogrel indefinidamente','Anticoagulação oral (NOAC preferido à varfarina)','AAS em dose baixa isolada','Endarterectomia carotídea'], ans:1, exp:'Na <b>FA</b>, o mecanismo do AVC é cardioembólico (trombo no apêndice atrial esquerdo). A prevenção secundária é feita com <b>anticoagulação oral</b> — os <b>NOACs</b> (apixabana, rivaroxabana, dabigatrana) são preferidos por melhor perfil de segurança e eficácia. A dupla antiagregação aumenta o risco de hemorragia sem superar a anticoagulação.'},
+  {topic:'ELA', q:'Quais são as características da ELA que a distinguem das mielopatias compressivas e neuropatias periféricas?', opts:['Presença de déficits sensitivos proeminentes','Coexistência de sinais de NMS e NMI + ausência de déficits sensitivos','Comprometimento dos movimentos oculares desde o início','Disfunção esfincteriana precoce e grave'], ans:1, exp:'A ELA é única pela <b>coexistência de NMS (hiperreflexia, Babinski, espasticidade) e NMI (fasciculações, atrofia, arreflexia) no mesmo paciente</b>. Fundamental: a <b>sensibilidade é preservada</b>, os esfíncteres são poupados por longo tempo, assim como os movimentos oculares — sua perda ajuda a diferenciar ELA de outras doenças do neurônio motor.'},
+  {topic:'ELA', q:'Qual é o único fármaco comprovado como modificador da doença na ELA?', opts:['Edaravone','Riluzol','Interferon-beta','Rituximabe'], ans:1, exp:'O <b>riluzol</b> é o único com comprovação robusta de modificação da doença na ELA — prolonga a sobrevida em ~2–3 meses e retarda a necessidade de ventilação mecânica. Atua bloqueando a liberação presináptica de glutamato, reduzindo a excitotoxicidade. O edaravone está aprovado nos EUA, mas com evidências mais limitadas.'},
+  {topic:'Demências', q:'Qual demência tem hipersensibilidade grave a antipsicóticos típicos, podendo evoluir para síndrome neuroléptica maligna?', opts:['Doença de Alzheimer','Demência frontotemporal','Demência por corpos de Lewy (DCL)','Demência vascular'], ans:2, exp:'A <b>Demência por Corpos de Lewy (DCL)</b> tem hipersensibilidade grave aos antipsicóticos típicos (haloperidol, clorpromazina), que podem causar piora abrupta do parkinsonismo, alteração de consciência, febre e até morte. Se antipsicóticos forem necessários, prefere-se <b>quetiapina ou clozapina</b> em dose mínima.'},
+  {topic:'Demências', q:'Qual a tríade clássica da Encefalopatia de Wernicke e como ela deve ser tratada?', opts:['Confusão + Afasia + Hemianopsia → corticoide IV','Confusão + Oftalmoplegia + Ataxia → tiamina IV ANTES da glicose','Demência + Marcha magnética + Incontinência → DVP','Febre + Cefaleia + Rigidez de nuca → antibiótico IV'], ans:1, exp:'A <b>Encefalopatia de Wernicke</b> (déficit de tiamina/B1) apresenta a tríade: <b>Confusão mental + Oftalmoplegia (VI par bilateral) + Ataxia de marcha</b>. O tratamento é tiamina IV (100–500mg) — <b>sempre ANTES de administrar glicose</b>, pois glicose sem tiamina pode precipitar ou agravar o quadro. Comum em alcoolistas e desnutridos.'}
+];
+
+let answered = [];
+
+function buildQuiz() {
+  answered = new Array(questions.length).fill(false);
+  const c = document.getElementById('quizContainer');
+  c.innerHTML = '';
+  document.getElementById('scorePanel').style.display = 'none';
+  questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.id = 'q' + i;
+    div.innerHTML = `
+      <div class="qnum">Questão ${i+1}/20 — ${q.topic}</div>
+      <div class="qtext">${q.q}</div>
+      <div class="opts">
+        ${q.opts.map((o,j) => `<button class="opt" onclick="answer(${i},${j},this)">${String.fromCharCode(65+j)}) ${o}</button>`).join('')}
+      </div>
+      <div class="explanation" id="exp${i}"><b>📖 Gabarito comentado:</b> ${q.exp}</div>
+    `;
+    c.appendChild(div);
+  });
+}
+
+function answer(qi, chosen, btn) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = questions[qi];
+  const opts = document.querySelectorAll('#q'+qi+' .opt');
+  opts.forEach((o, j) => {
+    o.disabled = true;
+    if (j === q.ans) o.classList.add('correct');
+    else if (j === chosen && j !== q.ans) o.classList.add('wrong');
+  });
+  document.getElementById('exp'+qi).classList.add('show');
+  updateScore();
+}
+
+function checkAll() {
+  questions.forEach((q, i) => {
+    if (answered[i]) return;
+    answered[i] = true;
+    const opts = document.querySelectorAll('#q'+i+' .opt');
+    opts.forEach((o, j) => {
+      o.disabled = true;
+      if (j === q.ans) o.classList.add('correct');
+    });
+    document.getElementById('exp'+i).classList.add('show');
+  });
+  updateScore();
+}
+
+function updateScore() {
+  let correct = 0;
+  questions.forEach((q, i) => {
+    if (!answered[i]) return;
+    const opts = document.querySelectorAll('#q'+i+' .opt');
+    opts.forEach((o, j) => { if (j === q.ans && o.classList.contains('correct') && !o.classList.contains('wrong')) { /* check if user chose it or just revealed */ } });
+  });
+  // count questions where user answered correctly
+  let userCorrect = 0;
+  questions.forEach((q, i) => {
+    const opts = document.querySelectorAll('#q'+i+' .opt');
+    opts.forEach((o, j) => {
+      if (o.classList.contains('correct') && !document.querySelectorAll('#q'+i+' .opt.wrong').length && answered[i]) {
+        // simplified: count if answer revealed and no wrong selected
+      }
+    });
+  });
+  // better approach: track in answered array
+  const panel = document.getElementById('scorePanel');
+  const total = answered.filter(Boolean).length;
+  panel.style.display = total > 0 ? 'block' : 'none';
+  document.getElementById('scoreVal').textContent = total + '/20 respondidas';
+  document.getElementById('scoreMsg').textContent = total === 20 ? 'Quiz completo! Revise as respostas abaixo.' : `${20 - total} questões restantes`;
+}
+
+function resetQuiz() {
+  buildQuiz();
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
